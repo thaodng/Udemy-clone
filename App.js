@@ -4,7 +4,8 @@ import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 
 import useCachedResources from './src/hooks/useCachedResources';
-import BottomTabNavigator from './src/navigation/BottomTabNavigator';
+import AuthStackNavigator from './src/navigation/AuthStackNavigator';
+import BrowseTabNavigator from './src/navigation/BrowseTabNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 
 const Stack = createStackNavigator();
@@ -19,8 +20,9 @@ export default function App(props) {
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />}
         <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
+          <Stack.Navigator headerMode="none">
+            <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
+            <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
