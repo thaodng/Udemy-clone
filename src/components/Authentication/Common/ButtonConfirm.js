@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   confirmButton: {
     width: '100%',
     height: 40,
-    backgroundColor: Colors.mainColor,
+    backgroundColor: Colors.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 25,

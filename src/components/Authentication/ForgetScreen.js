@@ -18,7 +18,7 @@ const ForgetScreen = ({ navigation }) => {
         <Row
           icon="email"
           placeholder="Email"
-          color={focus === 'Email' ? Colors.mainColor : 'gray'}
+          color={focus === 'Email' ? Colors.tintColor : 'gray'}
           secureTextEntry={false}
           onFocus={() => setFocus('Email')}
         />

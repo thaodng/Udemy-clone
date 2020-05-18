@@ -7,7 +7,7 @@ const Footer = ({ label, onPress, content }) => {
     <View style={styles.footer}>
       <Text style={{ color: 'gray' }}>{label}</Text>
       <TouchableOpacity onPress={onPress}>
-        <Text style={{ color: Colors.mainColor, marginLeft: 3 }}>{content}</Text>
+        <Text style={{ color: Colors.tintColor, marginLeft: 3 }}>{content}</Text>
       </TouchableOpacity>
     </View>
   );

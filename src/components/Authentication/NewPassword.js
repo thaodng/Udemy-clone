@@ -18,7 +18,7 @@ const NewPassword = ({navigation}) => {
         <Row
           icon="lock-outline"
           placeholder="New password"
-          color={focus === 'Password' ? Colors.mainColor : 'gray'}
+          color={focus === 'Password' ? Colors.tintColor : 'gray'}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
         />
@@ -26,7 +26,7 @@ const NewPassword = ({navigation}) => {
         <Row
           icon="check"
           placeholder="Confirm new password"
-          color={focus === 'ConfirmPassword' ? Colors.mainColor : 'gray'}
+          color={focus === 'ConfirmPassword' ? Colors.tintColor : 'gray'}
           secureTextEntry={true}
           onFocus={() => setFocus('ConfirmPassword')}
         />

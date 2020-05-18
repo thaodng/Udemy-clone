@@ -20,7 +20,7 @@ const SignupScreen = ({ navigation }) => {
         <Row
           icon="email"
           placeholder="Email"
-          color={focus === 'Email' ? Colors.mainColor : 'gray'}
+          color={focus === 'Email' ? Colors.tintColor : 'gray'}
           secureTextEntry={false}
           onFocus={() => setFocus('Email')}
         />
@@ -28,7 +28,7 @@ const SignupScreen = ({ navigation }) => {
         <Row
           icon="lock-outline"
           placeholder="Password"
-          color={focus === 'Password' ? Colors.mainColor : 'gray'}
+          color={focus === 'Password' ? Colors.tintColor : 'gray'}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
         />
@@ -36,7 +36,7 @@ const SignupScreen = ({ navigation }) => {
         <Row
           icon="check"
           placeholder="Confirm password"
-          color={focus === 'ConfirmPassword' ? Colors.mainColor : 'gray'}
+          color={focus === 'ConfirmPassword' ? Colors.tintColor : 'gray'}
           secureTextEntry={true}
           onFocus={() => setFocus('ConfirmPassword')}
         />
