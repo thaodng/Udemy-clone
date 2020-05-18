@@ -1,14 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Alert } from 'react-native'
 import Header from './Common/Header';
 import Row from './Common/Row';
-import LinkScreen from './Common/LinkScreen';
 import ButtonConfirm from './Common/ButtonConfirm';
 import Footer from './Common/Footer';
 import Colors from '../../constants/Colors';
 
-
-const SignupScreen = ({ navigation }) => {
+const NewPassword = ({navigation}) => {
   const [focus, setFocus] = useState(null);
 
   return (
@@ -18,16 +16,8 @@ const SignupScreen = ({ navigation }) => {
 
       <View style={styles.action}>
         <Row
-          icon="email"
-          placeholder="Email"
-          color={focus === 'Email' ? Colors.mainColor : 'gray'}
-          secureTextEntry={false}
-          onFocus={() => setFocus('Email')}
-        />
-
-        <Row
           icon="lock-outline"
-          placeholder="Password"
+          placeholder="New password"
           color={focus === 'Password' ? Colors.mainColor : 'gray'}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
@@ -35,35 +25,32 @@ const SignupScreen = ({ navigation }) => {
 
         <Row
           icon="check"
-          placeholder="Confirm password"
+          placeholder="Confirm new password"
           color={focus === 'ConfirmPassword' ? Colors.mainColor : 'gray'}
           secureTextEntry={true}
           onFocus={() => setFocus('ConfirmPassword')}
         />
-
       </View>
 
-      <LinkScreen
-        content="Forgot password?"
-        onPress={() => { navigation.navigate('ForgetScreen') }}
-      />
-
       <ButtonConfirm
-        content="Signup"
-        onPress={() => { navigation.navigate('BrowseTabNavigator') }}
-      />
-
-      <Footer
-        label="Already have an account?"
-        onPress={() => { navigation.navigate('LoginScreen') }}
-        content="Login"
+        content="Reset password"
+        onPress={() => {
+          Alert.alert(
+            "Message",
+            "Reset password success",
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          );
+          navigation.navigate('LoginScreen');
+        }}
       />
 
     </View>
   );
 };
 
-export default SignupScreen;
+export default NewPassword;
 
 const styles = StyleSheet.create({
   container: {
