@@ -13,21 +13,6 @@ import authors from '../../mooks/authors.json'
 
 const W = Dimensions.get('window').width / 4;
 
-const styles = StyleSheet.create({
-  buttonAuthor: {
-    padding: 5
-  },
-  avatarAuthor: {
-    width: W,
-    height: W,
-    borderRadius: W / 2,
-  },
-  nameAuthor: {
-    width: W,
-    padding: 8,
-    textAlign: 'center'
-  }
-});
 
 const TopAuthors = () => {
   const renderItem = ({ item }) => {
@@ -56,3 +41,19 @@ const TopAuthors = () => {
 };
 
 export default TopAuthors;
+
+const styles = StyleSheet.create({
+  buttonAuthor: {
+    padding: 5
+  },
+  avatarAuthor: {
+    width: W,
+    height: W,
+    borderRadius: W / 2,
+  },
+  nameAuthor: {
+    width: W,
+    padding: 8,
+    textAlign: 'center'
+  }
+});
