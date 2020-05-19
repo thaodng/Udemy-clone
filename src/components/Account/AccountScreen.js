@@ -4,7 +4,7 @@ import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 
-export default function LinksScreen() {
+const AccountScreen = () => {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <OptionButton
@@ -28,6 +28,8 @@ export default function LinksScreen() {
     </ScrollView>
   );
 }
+
+export default AccountScreen;
 
 function OptionButton({ icon, label, onPress, isLastOption }) {
   return (
