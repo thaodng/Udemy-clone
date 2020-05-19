@@ -8,10 +8,17 @@ const { width, height } = Dimensions.get('window');
 
 const CourseItemColumn = ({ item }) => {
 
-  const { title, preview, author, saved, level, dateRelease, rating, reviews } = item;
+  const { id, title, preview, author, saved, level, dateRelease, rating, reviews } = item;
 
   return (
-    <TouchableOpacity style={[styles.container, styles.shadow]}>
+    <TouchableOpacity
+      style={[styles.container, styles.shadow]}
+      onPress={() => {
+        navigation.navigate('CourseDetailScreen', {
+          courseId: id
+        })
+      }}>
+
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{ uri: preview }} />
       </View>
@@ -48,7 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     marginHorizontal: 8,
-    marginVertical: 5,
+    marginVertical: 4,
   },
   imageContainer: {
     // marginRight: 5,

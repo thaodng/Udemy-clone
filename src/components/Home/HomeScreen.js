@@ -14,12 +14,14 @@ const HomeScreen = ({ navigation }) => {
         <SearchBar />
         <HeaderList title="Top authors" />
         <TopAuthors />
+
         <HeaderList title="Software development" />
         <ListCourses direction="row" />
+
+        {/* 
         <HeaderList title="Software development" />
         <ListCourses direction="column" />
-        <HeaderList title="Software development" />
-        <ListCourses />
+       */}
       </ScrollView>
     </SafeAreaView>
   )

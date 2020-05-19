@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import Rating from '../Common/Rating';
@@ -7,11 +8,17 @@ import Rating from '../Common/Rating';
 const { width, height } = Dimensions.get('window');
 
 const CourseItemRow = ({ item }) => {
-
-  const { title, preview, author, saved, level, dateRelease, rating, reviews } = item;
+  const navigation = useNavigation();
+  const { id, title, preview, author, saved, level, dateRelease, rating, reviews } = item;
 
   return (
-    <View style={[styles.container, styles.shadow]}>
+    <TouchableOpacity
+      style={[styles.container, styles.shadow]}
+      onPress={() => {
+        navigation.navigate('CourseDetailScreen', {
+          courseId: id
+        })
+      }}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{ uri: preview }} />
         <View style={styles.imageOption}>
@@ -35,7 +42,7 @@ const CourseItemRow = ({ item }) => {
         </View>
       </View>
 
-    </View>
+    </TouchableOpacity>
   )
 }
 
