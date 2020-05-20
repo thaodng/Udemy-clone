@@ -37,7 +37,7 @@ const SearchScreen = ({ navigation }) => {
               style={{ flex: 1, flexDirection: 'row', alignItems: 'center', padding: 10 }}
               onPress={() => {
                 navigation.navigate('SearchResult',
-                  { keyword: 'React native' })
+                  { keyword: item.title })
               }}
             >
               <MaterialIcons name="replay" size={22} />
@@ -55,6 +55,7 @@ export default SearchScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: 10,
   },
   shadow: {
     shadowColor: '#000',

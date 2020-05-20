@@ -13,7 +13,8 @@ const SearchBar = () => {
       <View style={styles.searchInputContainer}>
         <TextInput
           style={styles.textInput}
-          placeholder="Search course" />
+          placeholder="Search course"
+          onEndEditing={() => alert('Search!!!')}/>
         <Feather name="search" size={20} />
       </View>
     </View>
@@ -25,7 +26,9 @@ export default SearchBar;
 const styles = StyleSheet.create({
   searchBarContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
   },
   buttonMap: {
     padding: 10,
