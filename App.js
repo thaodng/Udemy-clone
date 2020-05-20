@@ -17,15 +17,17 @@ export default function App(props) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        {/* {Platform.OS === 'ios' && <StatusBar barStyle="dark-content" />} */}
-        <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator headerMode="none">
-            <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
-            <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <>
+        <StatusBar />
+        <View style={styles.container}>
+          <NavigationContainer linking={LinkingConfiguration}>
+            <Stack.Navigator headerMode="none">
+              <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
+              <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </>
     );
   }
 }
