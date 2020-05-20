@@ -4,12 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import CourseItemRow from './CourseItemRow';
 import CourseItemColumn from './CourseItemColumn';
 import courses from '../../mooks/courses.json';
+import { MenuProvider } from 'react-native-popup-menu';
 
 
 // List horizontal
 const ListCourses = ({ direction }) => {
   return (
-    <>
+    <MenuProvider>
       <FlatList
         horizontal={direction === 'row' ? true : false}
         showsHorizontalScrollIndicator={false}
@@ -22,7 +23,7 @@ const ListCourses = ({ direction }) => {
             : <CourseItemColumn item={item} />
         )}
       />
-    </>
+    </MenuProvider>
   )
 }
 
@@ -38,6 +39,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.05,
     shadowRadius: 10,
-    elevation: 5,
+    // elevation: 5,
   },
 })

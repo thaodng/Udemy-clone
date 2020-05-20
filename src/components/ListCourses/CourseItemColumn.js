@@ -1,6 +1,9 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions, Alert } from 'react-native';
+import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { useNavigationF, useNavigation } from '@react-navigation/native';
+import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
+
 import Colors from '../../constants/Colors';
 import Rating from '../Common/Rating';
 
@@ -9,9 +12,10 @@ const { width, height } = Dimensions.get('window');
 const CourseItemColumn = ({ item }) => {
 
   const { id, title, preview, author, saved, level, dateRelease, rating, reviews } = item;
+  const navigation = useNavigation();
 
   return (
-    <TouchableOpacity
+    <View
       style={[styles.container, styles.shadow]}
       onPress={() => {
         navigation.navigate('CourseDetailScreen', {
@@ -35,15 +39,23 @@ const CourseItemColumn = ({ item }) => {
         </View>
       </View>
 
-      <View style={styles.imageOption}>
-        <FontAwesome
-          name={saved ? 'bookmark' : 'bookmark-o'}
-          color={'black'}
-          size={18}
-        />
-      </View>
+      <Menu onSelect={value => Alert.alert(value)}>
+        <MenuTrigger>
+          <Entypo
+            style={{ padding: 10 }}
+            name='dots-three-vertical'
+            color={'black'}
+            size={18}
+          />
+        </MenuTrigger>
+        <MenuOptions>
+          <MenuOption value="Download" text="Download" />
+          <MenuOption value="Bookmark" text="Bookmark" />
+          <MenuOption value="Share" text="Share" />
+        </MenuOptions>
+      </Menu>
 
-    </TouchableOpacity>
+    </View>
   )
 }
 
@@ -72,6 +84,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   contentContainer: {
+    flex: 1,
     paddingHorizontal: 5
   },
   title: {
@@ -91,6 +104,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.05,
     shadowRadius: 10,
-    elevation: 5,
+    // elevation: 5,
   },
 });
