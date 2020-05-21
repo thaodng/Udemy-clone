@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-import ListCoursesScreen from '../ListCourses/ListCoursesScreen';
 import Colors from '../../constants/Colors';
 import DATA from '../../mooks/courses.json';
 

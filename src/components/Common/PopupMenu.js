@@ -3,7 +3,7 @@ import { StyleSheet, Alert, Share } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 
-const PopupMenu = ({ style, item }) => {
+const PopupMenu = ({ style, item, colorDot }) => {
 
   const onShare = async () => {
     try {
@@ -25,14 +25,17 @@ const PopupMenu = ({ style, item }) => {
     }
   };
 
+  const { id, title } = item;
+  const msg = id !== undefined ? id : title;
+
   return (
     <Menu
-      onSelect={value => value === 'Share' ? onShare(item) : Alert.alert(`${value} ${item.id}`)}
+      onSelect={value => value === 'Share' ? onShare(item) : Alert.alert(`${value} ${msg}`)}
       style={style}>
       <MenuTrigger>
         <Entypo
           name='dots-three-vertical'
-          color={'white'}
+          color={colorDot}
           size={20}
         />
       </MenuTrigger>

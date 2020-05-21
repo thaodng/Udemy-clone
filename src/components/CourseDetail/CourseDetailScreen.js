@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity, Alert, SectionList } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, TouchableOpacity, SectionList } from 'react-native'
 import { Video } from 'expo-av'
-import { Entypo } from '@expo/vector-icons';
-import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
 
-import DATA from '../../mooks/detail.json'
+import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
+import DATA from '../../mooks/detail.json'
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { courseId } = route.params;
@@ -23,22 +22,10 @@ const CourseDetailScreen = ({ route, navigation }) => {
           <Text style={styles.itemTime}>{time} mins</Text>
           <Text style={styles.itemTitle}>{title}</Text>
         </View>
-        <Menu
-          onSelect={value => Alert.alert(`${value} ${title}`)}
-          style={styles.itemOption}>
-          <MenuTrigger>
-            <Entypo
-              name='dots-three-vertical'
-              color={'black'}
-              size={18}
-            />
-          </MenuTrigger>
-          <MenuOptions>
-            <MenuOption value="Download" text="Download" />
-            <MenuOption value="Bookmark" text="Bookmark" />
-            <MenuOption value="Share" text="Share" />
-          </MenuOptions>
-        </Menu>
+
+        <PopupMenu style={styles.itemOption} item={{ id, time, title }} colorDot='black' />
+
+
       </TouchableOpacity>
     )
   };
@@ -65,24 +52,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
           keyExtractor={(item, index) => item.id + index}
           renderItem={({ item }) => renderItem(item)}
           renderSectionHeader={({ section: { title } }) => (
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: '#D3D3D3'}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: '#D3D3D3' }}>
               <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{title}</Text>
-              <Menu
-                onSelect={value => Alert.alert(`${value} ${title}`)}
-                style={styles.itemOption}>
-                <MenuTrigger>
-                  <Entypo
-                    name='dots-three-vertical'
-                    color={'black'}
-                    size={18}
-                  />
-                </MenuTrigger>
-                <MenuOptions>
-                  <MenuOption value="Download" text="Download" />
-                  <MenuOption value="Bookmark" text="Bookmark" />
-                  <MenuOption value="Share" text="Share" />
-                </MenuOptions>
-              </Menu>
+              <PopupMenu style={styles.itemOption} item={{ title }} colorDot='black' />
             </View>
           )}
         />
@@ -115,7 +87,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: 'black'
+    color: Colors.tintColor
   },
   item: {
     flexDirection: 'row',

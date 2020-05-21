@@ -13,19 +13,17 @@ const CourseItemRow = ({ item }) => {
   const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
 
   return (
-    <View
+    <TouchableOpacity onPress={() => {
+      navigation.navigate('CourseDetailScreen', {
+        courseId: id
+      })
+    }}
       style={[styles.container, styles.shadow]}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{ uri: preview }} />
-        <PopupMenu style={styles.imageOption} item={item} />
+        <PopupMenu style={styles.imageOption} item={item} colorDot='white' />
       </View>
-      <TouchableOpacity
-        style={styles.contentContainer}
-        onPress={() => {
-          navigation.navigate('CourseDetailScreen', {
-            courseId: id
-          })
-        }}>
+      <View style={styles.contentContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={{ color: 'black' }}>{author.name}</Text>
         <Text numberOfLines={1} style={{ color: 'gray', width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
@@ -35,8 +33,8 @@ const CourseItemRow = ({ item }) => {
             ({rating})
             </Text>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

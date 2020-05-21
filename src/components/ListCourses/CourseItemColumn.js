@@ -1,22 +1,21 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions, Alert } from 'react-native';
-import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
-const { ContextMenu, SlideInMenu, Popover } = renderers;
 
-import Colors from '../../constants/Colors';
+import PopupMenu from '../Common/PopupMenu';
 import Rating from '../Common/Rating';
+import Colors from '../../constants/Colors';
+import Layout from '../../constants/Layout';
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Layout.window;
 
 const CourseItemColumn = ({ item }) => {
 
-  const { id, title, preview, author, saved, level, dateRelease, rating, reviews } = item;
+  const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
   const navigation = useNavigation();
 
   return (
-    <View
+    <TouchableOpacity
       style={[styles.container, styles.shadow]}
       onPress={() => {
         navigation.navigate('CourseDetailScreen', {
@@ -25,7 +24,7 @@ const CourseItemColumn = ({ item }) => {
       }}>
 
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: preview }} />
+        <Image style={styles.image} source={{ uri: preview }} resizeMode="cover" />
       </View>
 
       <View style={styles.contentContainer}>
@@ -40,27 +39,13 @@ const CourseItemColumn = ({ item }) => {
         </View>
       </View>
 
-      <Menu
-        renderer={ContextMenu}
-        onSelect={value => Alert.alert(value + item.id)}
-        style={{ alignSelf: 'flex-start'}}
-      >
-        <MenuTrigger>
-          <Entypo
-            style={{ padding: 10 }}
-            name='dots-three-vertical'
-            color={'black'}
-            size={18}
-          />
-        </MenuTrigger>
-        <MenuOptions>
-          <MenuOption value="Download" text="Download" />
-          <MenuOption value="Bookmark" text="Bookmark" />
-          <MenuOption value="Share" text="Share" />
-        </MenuOptions>
-      </Menu>
+      <PopupMenu
+        style={{ alignSelf: 'flex-start', padding: 10 }}
+        item={item}
+        colorDot='black'
+      />
 
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -70,12 +55,12 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    marginHorizontal: 8,
+    backgroundColor: 'white',
+    marginHorizontal: 4,
     marginVertical: 4,
   },
   imageContainer: {
-    // marginRight: 5,
+    marginRight: 2,
   },
   image: {
     width: width / 3.33,
@@ -102,7 +87,7 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 6,
