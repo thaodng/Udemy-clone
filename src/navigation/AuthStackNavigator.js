@@ -12,12 +12,12 @@ const AuthStack = createStackNavigator();
 const AuthStackNavigator = () => {
   return (
     <AuthStack.Navigator headerMode="none">
-      <AuthStack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
       <AuthStack.Screen name="SwiperScreen" component={SwiperScreen} />
       <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
       <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
       <AuthStack.Screen name="ForgetScreen" component={ForgetScreen} />
       <AuthStack.Screen name="NewPassword" component={NewPassword} />
+      <AuthStack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
     </AuthStack.Navigator>
   );
 };

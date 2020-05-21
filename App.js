@@ -1,7 +1,7 @@
+import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { MenuProvider } from 'react-native-popup-menu';
 import useCachedResources from './src/hooks/useCachedResources';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
@@ -23,7 +23,9 @@ export default function App(props) {
           <MenuProvider >
             <NavigationContainer linking={LinkingConfiguration}>
               <Stack.Navigator headerMode="none">
+                {/* Not login */}
                 <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
+                {/* Already login  */}
                 <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
               </Stack.Navigator>
             </NavigationContainer>

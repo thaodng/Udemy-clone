@@ -1,21 +1,30 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'
-import HeaderList from './HeaderList'
-import TopAuthors from './TopAuthors'
+import { StyleSheet, View, Image, SafeAreaView, ScrollView } from 'react-native'
+import HeaderList from '../Common/HeaderList';
 import ListCourses from '../ListCourses/ListCourses';
+import Banner from '../../assets/images/banner.png';
+import Layout from '../../constants/Layout';
+
+const { width, height } = Layout.window;
 
 const HomeScreen = ({ navigation }) => {
-  //  navigation.navigate('ListCoursesScreen')
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <HeaderList title="Top authors" />
-        <TopAuthors />
+        <View style={styles.imageBanner}>
+          <Image
+            style={{ width: '100%', height: '100%' }}
+            source={Banner}
+            resizeMode="stretch"
+          />
+        </View>
         <HeaderList title="Software development" />
         <ListCourses direction="row" />
-        {/*<HeaderList title="Software development" />
-        <ListCourses direction="column" /> */}
+        <HeaderList title="Personal development" />
+        <ListCourses direction="row" />
+        <HeaderList title="Office Productivity" />
+        <ListCourses direction="row" />
       </ScrollView>
     </SafeAreaView>
   )
@@ -23,4 +32,12 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  imageBanner: {
+    width: width,
+    height: height / 2.5,
+    marginBottom: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: 'gray'
+  }
+})

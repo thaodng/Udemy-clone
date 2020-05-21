@@ -4,23 +4,27 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 
-const HeaderList = ({ title }) => {
+const HeaderList = ({ title, noIcon }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.text}>
         {title}
       </Text>
-      <TouchableOpacity onPress={() =>
-        navigation.navigate('ListCoursesScreen', { subject: title })
-      }>
-        <View style={styles.buttonViewAll}>
-          <Text style={{ color: Colors.tintColor }} >
-            See all
+      {!noIcon &&
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ListCoursesScreen', { subject: title })
+          }>
+
+          <View style={styles.buttonViewAll}>
+            <Text style={{ color: Colors.tintColor }} >
+              See all
           </Text>
-          <Entypo size={18} color={Colors.tintColor} name="chevron-small-right" />
-        </View>
-      </TouchableOpacity>
+            <Entypo size={18} color={Colors.tintColor} name="chevron-small-right" />
+          </View>
+        </TouchableOpacity>
+      }
     </View>
   );
 };

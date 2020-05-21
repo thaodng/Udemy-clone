@@ -3,6 +3,7 @@ import { StyleSheet, Text, Image, View, Dimensions, TouchableOpacity } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import * as Animable from 'react-native-animatable';
 import Swiper from 'react-native-swiper';
+import Colors from '../../constants/Colors';
 
 const BrowseLogin = ({ animateSignUp, animateLogin }) => {
   const navigation = useNavigation();
@@ -15,10 +16,10 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
         duration={1500}
         useNativeDriver>
         <TouchableOpacity
-          style={{ ...styles.button, borderColor: '#3465d9', borderWidth: 1, borderRadius: 50, marginTop: 15 }}
+          style={{ ...styles.button, borderColor: Colors.tintColor, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
           onPress={() => { navigation.navigate('BrowseTabNavigator') }}
         >
-          <Text style={{ color: '#3465d9' }}> Browse </Text>
+          <Text style={{ color: Colors.tintColor }}> Browse </Text>
         </TouchableOpacity>
       </Animable.View>
 
@@ -28,7 +29,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
         duration={1500}
         useNativeDriver>
         <TouchableOpacity
-          style={{ ...styles.button, backgroundColor: '#3465d9', marginLeft: 20, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
+          style={{ ...styles.button, backgroundColor: Colors.tintColor, marginLeft: 20, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
           onPress={() => { navigation.navigate('LoginScreen') }}>
           <Text style={{ color: 'white' }}> Login </Text>
         </TouchableOpacity>
@@ -36,6 +37,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
     </View>
   );
 };
+
 
 const Slide = ({ image, title, text, children }) => {
   return (
@@ -56,12 +58,13 @@ const Slide = ({ image, title, text, children }) => {
   );
 };
 
+
 const SwiperScreen = () => {
   const [animateSignUp, setAnimateSignUp] = useState(null);
   const [animateLogin, setAnimateLogin] = useState(null);
 
   const onIndexChanged = (index) => {
-    if (index == 0) {
+    if (index == 2) {
       setAnimateSignUp('bounceInLeft');
       setAnimateLogin('bounceInRight');
     } else {
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: 'bold',
-    color: '#3465d9',
+    color: Colors.tintColor,
     textAlign: 'center'
   },
   text: {
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
     marginVertical: 3
   },
   activeDot: {
-    backgroundColor: '#3465d9',
+    backgroundColor: Colors.tintColor,
     width: 20,
     height: 8,
     borderRadius: 4,

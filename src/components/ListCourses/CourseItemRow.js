@@ -1,39 +1,23 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome, Entypo } from '@expo/vector-icons';
-import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
-
+import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
+import Layout from '../../constants/Layout';
 import Rating from '../Common/Rating';
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Layout.window;
 
 const CourseItemRow = ({ item }) => {
   const navigation = useNavigation();
-  const { id, title, preview, author, saved, level, dateRelease, rating, reviews } = item;
+  const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
 
   return (
     <View
       style={[styles.container, styles.shadow]}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{ uri: preview }} />
-        <Menu
-          onSelect={value => Alert.alert(value + item.id)}
-          style={styles.imageOption}>
-          <MenuTrigger>
-            <Entypo
-              name='dots-three-vertical'
-              color={'black'}
-              size={18}
-            />
-          </MenuTrigger>
-          <MenuOptions>
-            <MenuOption value="Download" text="Download" />
-            <MenuOption value="Bookmark" text="Bookmark" />
-            <MenuOption value="Share" text="Share" />
-          </MenuOptions>
-        </Menu>
+        <PopupMenu style={styles.imageOption} item={item} />
       </View>
       <TouchableOpacity
         style={styles.contentContainer}
@@ -44,7 +28,7 @@ const CourseItemRow = ({ item }) => {
         }}>
         <Text style={styles.title}>{title}</Text>
         <Text style={{ color: 'black' }}>{author.name}</Text>
-        <Text style={{ color: 'gray', width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
+        <Text numberOfLines={1} style={{ color: 'gray', width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
         <View style={styles.rating}>
           <Rating rating={rating} />
           <Text style={{ color: Colors.tintColor }}>
@@ -52,16 +36,15 @@ const CourseItemRow = ({ item }) => {
             </Text>
         </View>
       </TouchableOpacity>
-
     </View>
-  )
-}
+  );
+};
 
 export default CourseItemRow;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     margin: 5
   },
   imageContainer: {
@@ -72,16 +55,14 @@ const styles = StyleSheet.create({
     height: width / 3
   },
   imageOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
     position: 'absolute',
-    top: 0,
-    right: 0,
-    // backgroundColor: 'red'
+    top: 8,
+    right: 5,
   },
   contentContainer: {
-    padding: 8
+    padding: 8,
+    width: width / 2,
+    height: width / 3
   },
   title: {
     fontSize: 18,
@@ -93,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   shadow: {
-    shadowColor: '#000',
+    shadowColor: 'black',
     shadowOffset: {
       width: 0,
       height: 6,

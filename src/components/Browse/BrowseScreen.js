@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Text, View, Image, Dimensions, SafeAreaView, ScrollView } from 'react-native'
 import Swiper from 'react-native-swiper';
-import HeaderList from '../Home/HeaderList';
-import TopAuthors from '../Home/TopAuthors';
+import HeaderList from '../Common/HeaderList';
+import TopAuthors from './TopAuthors';
 import ListCourses from '../ListCourses/ListCourses';
 
 const { width, height } = Dimensions.get('window')

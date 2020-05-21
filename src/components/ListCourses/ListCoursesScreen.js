@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'
-import HeaderList from '../Home/HeaderList';
+import HeaderList from '../Common/HeaderList';
 import ListCourses from '../ListCourses/ListCourses';
 
 const ListCoursesScreen = ({ navigation }) => {
