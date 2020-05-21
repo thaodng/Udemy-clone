@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome, Entypo } from '@expo/vector-icons';
 import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';

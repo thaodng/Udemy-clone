@@ -2,7 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-
+import { MenuProvider } from 'react-native-popup-menu';
 import useCachedResources from './src/hooks/useCachedResources';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
 import BrowseTabNavigator from './src/navigation/BrowseTabNavigator';
@@ -20,12 +20,14 @@ export default function App(props) {
       <>
         <StatusBar />
         <View style={styles.container}>
-          <NavigationContainer linking={LinkingConfiguration}>
-            <Stack.Navigator headerMode="none">
-              <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
-              <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <MenuProvider >
+            <NavigationContainer linking={LinkingConfiguration}>
+              <Stack.Navigator headerMode="none">
+                <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
+                <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </MenuProvider>
         </View>
       </>
     );

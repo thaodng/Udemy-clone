@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity, Alert } from 'react-native'
 import { Video } from 'expo-av'
-import { MaterialIcons } from '@expo/vector-icons'
+import { Entypo } from '@expo/vector-icons';
+import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
+
 import detail from '../../mooks/detail.json'
 import Colors from '../../constants/Colors';
 
@@ -20,9 +22,22 @@ const CourseDetailScreen = ({ route, navigation }) => {
           <Text style={styles.itemTime}>{item.time} mins</Text>
           <Text style={styles.itemTitle}>{item.title}</Text>
         </View>
-        <View style={styles.itemOption}>
-          <MaterialIcons name="file-download" size={20} color="black" />
-        </View>
+        <Menu
+          onSelect={value => Alert.alert(value + item.id)}
+          style={styles.itemOption}>
+          <MenuTrigger>
+            <Entypo
+              name='dots-three-vertical'
+              color={'black'}
+              size={18}
+            />
+          </MenuTrigger>
+          <MenuOptions>
+            <MenuOption value="Download" text="Download" />
+            <MenuOption value="Bookmark" text="Bookmark" />
+            <MenuOption value="Share" text="Share" />
+          </MenuOptions>
+        </Menu>
       </TouchableOpacity>
     )
   };
@@ -41,16 +56,14 @@ const CourseDetailScreen = ({ route, navigation }) => {
         style={styles.video}
       />
       <View style={styles.playlistContainer}>
-        <View style={styles.topContainer}>
-          <Text style={styles.heading}>Course Content</Text>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            style={styles.list}
-            data={detail}
-            keyExtractor={item => { item.id }}
-            renderItem={({ item }) => renderItem(item)}
-          />
-        </View>
+        <Text style={styles.heading}>Course Content</Text>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          style={styles.list}
+          data={detail}
+          keyExtractor={item => { item.id }}
+          renderItem={({ item }) => renderItem(item)}
+        />
       </View>
     </View>
   )
@@ -69,16 +82,13 @@ const styles = StyleSheet.create({
   },
   playlistContainer: {
     flex: 1,
-    paddingBottom: 28,
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 6,
     shadowOpacity: 0.1,
     shadowColor: '#000',
-  },
-  topContainer: {
     paddingHorizontal: 5,
     borderWidth: 1,
-    borderColor: Colors.tintColor
+    borderColor: Colors.tintColor,
   },
   heading: {
     fontSize: 18,
@@ -115,6 +125,6 @@ const styles = StyleSheet.create({
   },
   itemOption: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 })
