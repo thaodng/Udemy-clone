@@ -8,7 +8,11 @@ const BrowseStack = createStackNavigator();
 const BrowseStackNavigator = () => {
   return (
     <BrowseStack.Navigator>
-      <BrowseStack.Screen name="Browse" component={BrowseScreen} />
+      <BrowseStack.Screen
+        name="Browse"
+        component={BrowseScreen}
+        options={{ headerShown: false }}
+      />
     </BrowseStack.Navigator>
   );
 };

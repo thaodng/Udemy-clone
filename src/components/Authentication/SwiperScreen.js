@@ -45,8 +45,7 @@ const Slide = ({ image, title, text, children }) => {
           source={image}
           style={styles.image}
           resizeMode="stretch"
-        >
-        </Image>
+        />
       </View>
       <View style={styles.footer}>
         <Text style={styles.title}>{title}</Text>
