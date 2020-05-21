@@ -10,11 +10,11 @@ import { MenuProvider } from 'react-native-popup-menu';
 // List horizontal
 const ListCourses = ({ direction }) => {
   return (
-    <MenuProvider>
+    <MenuProvider style={[styles.shadow]}>
       <FlatList
         horizontal={direction === 'row' ? true : false}
+        showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        style={[styles.shadow]}
         data={courses}
         keyExtractor={(item) => `${item.id}`}
         renderItem={({ item }) => (

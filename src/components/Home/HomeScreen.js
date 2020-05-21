@@ -10,18 +10,12 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        {
-          /*         
-          <HeaderList title="Top authors" />
-          <TopAuthors />
-  
-          <HeaderList title="Software development" />
-          <ListCourses direction="row" /> 
-          */
-        }
-
+        <HeaderList title="Top authors" />
+        <TopAuthors />
         <HeaderList title="Software development" />
-        <ListCourses direction="column" />
+        <ListCourses direction="row" />
+        {/*<HeaderList title="Software development" />
+        <ListCourses direction="column" /> */}
       </ScrollView>
     </SafeAreaView>
   )

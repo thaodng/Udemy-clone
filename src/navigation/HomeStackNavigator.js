@@ -15,7 +15,8 @@ const HomeStackScreens = () => {
         component={HomeScreen}
         options={
           {
-            title: 'Home',
+            // title: 'Home',
+            headerShown: false
           }
         }
       />

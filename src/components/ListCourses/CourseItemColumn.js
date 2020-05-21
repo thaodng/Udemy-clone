@@ -1,8 +1,9 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions, Alert } from 'react-native';
 import { FontAwesome, Entypo } from '@expo/vector-icons';
-import { useNavigationF, useNavigation } from '@react-navigation/native';
-import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
+import { useNavigation } from '@react-navigation/native';
+import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
+const { ContextMenu, SlideInMenu, Popover } = renderers;
 
 import Colors from '../../constants/Colors';
 import Rating from '../Common/Rating';
@@ -39,7 +40,11 @@ const CourseItemColumn = ({ item }) => {
         </View>
       </View>
 
-      <Menu onSelect={value => Alert.alert(value)}>
+      <Menu
+        renderer={ContextMenu}
+        onSelect={value => Alert.alert(value + item.id)}
+        style={{ alignSelf: 'flex-start'}}
+      >
         <MenuTrigger>
           <Entypo
             style={{ padding: 10 }}

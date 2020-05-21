@@ -1,7 +1,9 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Entypo } from '@expo/vector-icons';
+import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
+
 import Colors from '../../constants/Colors';
 import Rating from '../Common/Rating';
 
@@ -12,25 +14,34 @@ const CourseItemRow = ({ item }) => {
   const { id, title, preview, author, saved, level, dateRelease, rating, reviews } = item;
 
   return (
-    <TouchableOpacity
-      style={[styles.container, styles.shadow]}
-      onPress={() => {
-        navigation.navigate('CourseDetailScreen', {
-          courseId: id
-        })
-      }}>
+    <View
+      style={[styles.container, styles.shadow]}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{ uri: preview }} />
-        <View style={styles.imageOption}>
-          <FontAwesome
-            name={saved ? 'bookmark' : 'bookmark-o'}
-            color={'black'}
-            size={18}
-          />
-        </View>
+        <Menu
+          onSelect={value => Alert.alert(value + item.id)}
+          style={styles.imageOption}>
+          <MenuTrigger>
+            <Entypo
+              name='dots-three-vertical'
+              color={'black'}
+              size={18}
+            />
+          </MenuTrigger>
+          <MenuOptions>
+            <MenuOption value="Download" text="Download" />
+            <MenuOption value="Bookmark" text="Bookmark" />
+            <MenuOption value="Share" text="Share" />
+          </MenuOptions>
+        </Menu>
       </View>
-
-      <View style={styles.contentContainer}>
+      <TouchableOpacity
+        style={styles.contentContainer}
+        onPress={() => {
+          navigation.navigate('CourseDetailScreen', {
+            courseId: id
+          })
+        }}>
         <Text style={styles.title}>{title}</Text>
         <Text style={{ color: 'black' }}>{author.name}</Text>
         <Text style={{ color: 'gray', width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
@@ -40,9 +51,9 @@ const CourseItemRow = ({ item }) => {
             ({rating})
             </Text>
         </View>
-      </View>
+      </TouchableOpacity>
 
-    </TouchableOpacity>
+    </View>
   )
 }
 
@@ -67,6 +78,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 0,
+    // backgroundColor: 'red'
   },
   contentContainer: {
     padding: 8
