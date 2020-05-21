@@ -9,11 +9,10 @@ const { width, height } = Dimensions.get('window')
 
 const styles = {
   wrapper: {
-    height: height / 2
+    height: height / 2  
   },
   slide: {
     flex: 1,
-    // height: height / 2,
     justifyContent: 'center',
     backgroundColor: 'transparent'
   },

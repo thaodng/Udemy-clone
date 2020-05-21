@@ -1,29 +1,30 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity, Alert } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity, Alert, SectionList } from 'react-native'
 import { Video } from 'expo-av'
 import { Entypo } from '@expo/vector-icons';
 import { Menu, MenuTrigger, MenuOptions, MenuOption, renderers } from 'react-native-popup-menu';
 
-import detail from '../../mooks/detail.json'
+import DATA from '../../mooks/detail.json'
 import Colors from '../../constants/Colors';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { courseId } = route.params;
   const [videoUrl, setVideoUrl] = useState('https://www.radiantmediaplayer.com/media/bbb-360p.mp4')
 
-  const renderItem = (item) => {
+  const renderItem = ({ id, time, title }) => {
+
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => alert(`Detail Id: ${item.id}`)}
+        onPress={() => alert(`Detail Id: ${id}`)}
       >
         <Text style={styles.numHead}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={styles.itemTime}>{item.time} mins</Text>
-          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text style={styles.itemTime}>{time} mins</Text>
+          <Text style={styles.itemTitle}>{title}</Text>
         </View>
         <Menu
-          onSelect={value => Alert.alert(value + item.id)}
+          onSelect={value => Alert.alert(`${value} ${title}`)}
           style={styles.itemOption}>
           <MenuTrigger>
             <Entypo
@@ -57,12 +58,33 @@ const CourseDetailScreen = ({ route, navigation }) => {
       />
       <View style={styles.playlistContainer}>
         <Text style={styles.heading}>Course Content</Text>
-        <FlatList
-          showsVerticalScrollIndicator={false}
+        <SectionList
           style={styles.list}
-          data={detail}
-          keyExtractor={item => { item.id }}
+          showsVerticalScrollIndicator={false}
+          sections={DATA}
+          keyExtractor={(item, index) => item.id + index}
           renderItem={({ item }) => renderItem(item)}
+          renderSectionHeader={({ section: { title } }) => (
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: '#D3D3D3'}}>
+              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{title}</Text>
+              <Menu
+                onSelect={value => Alert.alert(`${value} ${title}`)}
+                style={styles.itemOption}>
+                <MenuTrigger>
+                  <Entypo
+                    name='dots-three-vertical'
+                    color={'black'}
+                    size={18}
+                  />
+                </MenuTrigger>
+                <MenuOptions>
+                  <MenuOption value="Download" text="Download" />
+                  <MenuOption value="Bookmark" text="Bookmark" />
+                  <MenuOption value="Share" text="Share" />
+                </MenuOptions>
+              </Menu>
+            </View>
+          )}
         />
       </View>
     </View>
@@ -91,7 +113,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.tintColor,
   },
   heading: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'black'
   },
