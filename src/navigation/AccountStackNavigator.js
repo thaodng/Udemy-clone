@@ -9,7 +9,11 @@ const AccountStack = createStackNavigator();
 const AccountStackNavigator = () => {
   return (
     <AccountStack.Navigator>
-      <AccountStack.Screen name="AccountScreen" component={AccountScreen} />
+      <AccountStack.Screen
+        name="AccountScreen"
+        component={AccountScreen}
+        options={{ headerShown: false }}
+      />
       <AccountStack.Screen name="ProfileScreen" component={ProfileScreen} />
       <AccountStack.Screen name="SettingsScreen" component={SettingsScreen} />
     </AccountStack.Navigator>
