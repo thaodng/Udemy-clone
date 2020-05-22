@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     backgroundColor: 'white',
+    borderBottomColor: Colors.lightgray,
+    borderBottomWidth: 0.5,
     marginHorizontal: 4,
     marginVertical: 4,
   },
@@ -75,7 +77,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    // justifyContent: 'space-around'
   },
   title: {
     fontSize: 18,
@@ -84,7 +87,8 @@ const styles = StyleSheet.create({
   rating: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5
+    marginTop: 5,
+    marginRight: 14
   },
   shadow: {
     shadowColor: 'black',

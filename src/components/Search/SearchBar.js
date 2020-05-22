@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
 
 const SearchBar = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.searchBarContainer}>
       <TouchableOpacity style={styles.buttonMap} onPress={() => { alert('Click button map') }}>
@@ -14,7 +17,8 @@ const SearchBar = () => {
         <TextInput
           style={styles.textInput}
           placeholder="Search course"
-          onEndEditing={() => alert('Search!!!')}/>
+          onEndEditing={() => navigation.navigate('SearchResult',
+            { keyword: 'Search keyboard' })} />
         <Feather name="search" size={20} />
       </View>
     </View>

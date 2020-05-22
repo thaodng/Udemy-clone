@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, ImageBackground, ScrollView } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native'
+import { Entypo } from '@expo/vector-icons';
 import MapView, { Marker } from "react-native-maps";
-import { Entypo } from '@expo/vector-icons'
-import courses from '../../mooks/courses.json';
+import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
+import Layout from '../../constants/Layout';
 
-const SearchResult = ({ route }) => {
-  const navigation = useNavigation();
+
+const { width, height } = Layout.window;
+
+const SearchResult = ({ navigation, route }) => {
   const { keyword } = route.params;
   const myLocation = {
     latitude: 10.763140,
@@ -17,7 +19,6 @@ const SearchResult = ({ route }) => {
   };
 
   const [activeTab, setActiveTab] = useState('ALL');
-  // const filters = ['all', 'courses', 'paths', 'authors'];
 
   const Tab = ({ title }) => {
     return (
@@ -62,90 +63,19 @@ const SearchResult = ({ route }) => {
     );
   }
 
-  const renderResults = () => {
-
-    return courses.map(course => {
-      return (
-        <View
-          key={`course-${course.id}`}
-          style={styles.course}>
-          {<ImageBackground
-            style={styles.courseImage}
-            imageStyle={styles.courseImage}
-            source={{ uri: course.preview }}
-          />}
-
-          <View style={styles.courseDetails}>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "center"
-              }}
-            >
-              <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-                {course.title}
-              </Text>
-              <Text style={{ fontSize: 12, color: "#A5A5A5", paddingTop: 5 }}>
-                {course.author.name}
-              </Text>
-            </View>
-
-            <View style={{ flex: 1, flexDirection: "row" }}>
-
-              <View style={styles.courseInfo}>
-                <Entypo name="star" color={Colors.tintColor} size={12} />
-                <Text style={{ marginLeft: 4, color: Colors.tintColor }}>
-                  {course.rating}
-                </Text>
-              </View>
-
-              <View style={styles.courseInfo}>
-                <Entypo
-                  name="location-pin"
-                  color={Colors.tintColor}
-                  size={12}
-                />
-                <Text style={{ marginLeft: 4, color: Colors.tintColor }}>
-                  {course.reviews} kms
-                </Text>
-              </View>
-
-              {/* <View style={styles.courseInfo}>
-                <Icon.Ionicons name="md-pricetag" color="black" size={12} />
-                <Text style={{ marginLeft: 4, color: "black" }}>
-                  {course.price}
-                </Text>
-              </View> */}
-            </View>
-          </View>
-
-          <View style={{ flex: 0.2, justifyContent: "center" }}>
-            <Entypo
-              name="dots-three-vertical"
-              color="#A5A5A5"
-              size={24}
-            />
-          </View>
-        </View>
-      );
-    });
-  }
-
   return (
     <View style={styles.container}>
       {renderTabs()}
       {renderMap()}
-      <ScrollView style={styles.map}>
-        {renderResults()}
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <ListCourses direction="column"/>
+      </View>
     </View>
   );
 }
 
 export default SearchResult
 
-const { width, height } = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -198,27 +128,4 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#3353FB"
   },
-  course: {
-    flex: 1,
-    flexDirection: "row",
-    borderBottomColor: "#A5A5A5",
-    borderBottomWidth: 0.5,
-    padding: 20
-  },
-  courseImage: {
-    width: width * 0.3,
-    height: width * 0.25,
-    borderRadius: 6
-  },
-  courseDetails: {
-    flex: 2,
-    paddingLeft: 20,
-    flexDirection: "column",
-    justifyContent: "space-around"
-  },
-  courseInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 14
-  },
-})
+});
