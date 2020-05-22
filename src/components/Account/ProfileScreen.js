@@ -2,13 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons';
 
-const ProfileItem = ({ icon, name }) => (
-  <View style={styles.itemContainer}>
-    <MaterialCommunityIcons name={icon} size={26} color="#1e1e1e" />
-    <Text style={[styles.itemText, { marginLeft: icon ? 20 : 0 }]}>{name}</Text>
-    <FontAwesome name="angle-right" size={26} color="#1e1e1e" />
-  </View>
-);
+import RowItem from '../Common/RowItem';
 
 const ProfileScreen = () => {
   return (
@@ -27,18 +21,11 @@ const ProfileScreen = () => {
         </View>
         {/*  */}
         <View style={styles.divider} />
-        <ProfileItem icon="format-list-bulleted" name="Setting one" />
-        <ProfileItem icon="eye-outline" name="Setting two" />
-        <ProfileItem icon="heart-outline" name="Setting three" />
-        <ProfileItem icon="bookmark-outline" name="Setting four" />
-        <ProfileItem icon="star-outline" name="Setting five" />
+        <RowItem title="Other setting one" />
+        <RowItem title="Other setting two" />
         {/*  */}
         <View style={styles.divider} />
-        <ProfileItem name="Other setting one" />
-        <ProfileItem name="Other setting two" />
-        {/*  */}
-        <View style={styles.divider} />
-        <ProfileItem icon="headphones" name="Support" />
+        <RowItem icon="headphones" title="Support" />
       </View>
     </View>
   );
@@ -80,19 +67,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
   },
-  //
-  itemContainer: {
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  itemText: {
-    flex: 1,
-    color: '#1e1e1e',
-  },
-  //
   divider: {
     height: 10,
   },

@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 
@@ -20,32 +21,87 @@ const SearchScreen = ({ navigation }) => {
     },
   ];
 
+  const categories = [
+    {
+      id: '1',
+      icon: 'bookmark-outline',
+      title: 'Most bookmarked'
+    },
+    {
+      id: '2',
+      icon: 'eye-outline',
+      title: 'Most viewd'
+    },
+    {
+      id: '3',
+      icon: 'heart-outline',
+      title: 'Most loved'
+    },
+    {
+      id: '4',
+      icon: 'star-outline',
+      title: 'Most stars'
+    },
+  ]
+
+  const renderItem = ({ title }) => {
+    return (
+      <RowItem
+        icon="replay"
+        title={title}
+        rightIcon={false}
+        onPress={() => {
+          navigation.navigate('SearchResult',
+            { keyword: title })
+        }}
+      />
+    );
+  };
+
+
+  const renderCategories = ({ id, icon, title }) => {
+    return (
+      <RowItem
+        icon={icon}
+        title={title}
+        rightIcon={true}
+        onPress={() => {
+          navigation.navigate('SearchResult',
+            { keyword: title })
+        }}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar />
       <View style={styles.shadow}>
         <View style={styles.recentBar}>
-          <Text>Recent searches</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }} >Recent searches</Text>
           <Text style={{ color: Colors.tintColor }}>CLEAR ALL</Text>
         </View>
+
         <FlatList
           showsVerticalScrollIndicator={false}
           data={recentList}
           keyExtractor={item => item.id}
-          renderItem={({ item }) =>
-            <TouchableOpacity
-              style={{ flex: 1, flexDirection: 'row', alignItems: 'center', padding: 10 }}
-              onPress={() => {
-                navigation.navigate('SearchResult',
-                  { keyword: item.title })
-              }}
-            >
-              <MaterialIcons name="replay" size={22} />
-              <Text style={{ fontSize: 18, marginHorizontal: 5 }}>{item.title}</Text>
-            </TouchableOpacity>
-          }
+          renderItem={({ item }) => renderItem(item)}
         />
+
+        <View style={styles.recentBar}>
+          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Top categories</Text>
+        </View>
+
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={categories}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => renderCategories(item)}
+        />
+
       </View>
+
     </SafeAreaView>
   )
 }
