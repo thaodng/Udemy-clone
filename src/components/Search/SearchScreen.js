@@ -30,7 +30,7 @@ const SearchScreen = ({ navigation }) => {
     {
       id: '2',
       icon: 'eye-outline',
-      title: 'Most viewd'
+      title: 'Most viewed'
     },
     {
       id: '3',

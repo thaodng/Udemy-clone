@@ -10,7 +10,7 @@ const RowItem = ({ icon, title, rightIcon, onPress }) => {
       onPress={onPress}
     >
       <MaterialCommunityIcons name={icon} size={20} color={Colors.dark} />
-      <Text style={[styles.itemText, { marginLeft: icon ? 10 : 0 }]}>{title}</Text>
+      <Text style={[styles.itemText, { marginLeft: icon ? 12 : 0 }]}>{title}</Text>
       {rightIcon && <FontAwesome name="angle-right" size={20} color={Colors.dark} />}
     </TouchableOpacity>
   )
@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    // backgroundColor: '#fff',
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    backgroundColor: '#fff',
   },
   itemText: {
     flex: 1,

@@ -8,7 +8,8 @@ const AccountStack = createStackNavigator();
 const AccountStackNavigator = () => {
   return (
     <AccountStack.Navigator>
-      <AccountStack.Screen name="Account" component={ProfileScreen} />
+      <AccountStack.Screen name="Account" component={AccountScreen} />
+      <AccountStack.Screen name="Profile" component={ProfileScreen} />
     </AccountStack.Navigator>
   );
 };
