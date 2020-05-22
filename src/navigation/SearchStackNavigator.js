@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, Button } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -44,14 +44,14 @@ const SearchStackNavigator = () => {
         component={FilterScreen}
         options={{
           title: 'Filter',
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ paddingHorizontal: 10 }}
-              onPress={() => { navigation.pop() }}
-            >
-              <MaterialIcons name="check" size={24} color="black" />
-            </TouchableOpacity>
-          )
+          // headerRight: () => (
+          //   <TouchableOpacity
+          //     style={{ paddingHorizontal: 10 }}
+          //     onPress={() => { navigation.pop() }}
+          //   >
+          //     <MaterialIcons name="check" size={24} color="black" />
+          //   </TouchableOpacity>
+          // )
         }}
       />
 
