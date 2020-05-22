@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    paddingTop: 10,
+    // paddingTop: 10,
   },
 
   userContainer: {

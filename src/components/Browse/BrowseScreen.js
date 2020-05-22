@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Image, Dimensions, ScrollView } from 'react-native'
+import { Text, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native'
 import Swiper from 'react-native-swiper';
 import HeaderList from '../Common/HeaderList';
 import TopAuthors from './TopAuthors';
@@ -7,9 +7,7 @@ import ListCourses from '../ListCourses/ListCourses';
 
 const { width, height } = Dimensions.get('window')
 
-
 const BrowseScreen = () => {
-
   const Slide = ({ uri, title }) => {
     return (
       <>
@@ -69,7 +67,7 @@ export default BrowseScreen;
 
 const styles = {
   wrapper: {
-    height: height / 2
+    height: height / 3
   },
   slide: {
     flex: 1,

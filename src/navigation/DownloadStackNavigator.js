@@ -7,7 +7,11 @@ const DownloadStack = createStackNavigator();
 const DownloadStackNavigator = () => {
   return (
     <DownloadStack.Navigator>
-      <DownloadStack.Screen name="Download" component={DownloadScreen} />
+      <DownloadStack.Screen
+        name="DownloadScreen"
+        component={DownloadScreen}
+        options={{ title: 'Download courses' }}
+      />
     </DownloadStack.Navigator>
   );
 };

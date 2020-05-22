@@ -22,8 +22,6 @@ const Setting = ({ title }) => {
 };
 
 const SettingsScreen = () => {
-
-
   return (
     <View style={styles.container}>
       <Setting title="Notifications" />
@@ -32,7 +30,7 @@ const SettingsScreen = () => {
       <Setting title="Recommended content push notifications" />
     </View>
   );
-}
+};
 
 export default SettingsScreen;
 
