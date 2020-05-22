@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 16,
     color: Colors.dark,
   },
 })
