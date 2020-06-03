@@ -9,12 +9,10 @@ import { UserProvider } from './src/context/UserContext';
 
 import useCachedResources from './src/hooks/useCachedResources';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
-import BrowseTabNavigator from './src/navigation/BrowseTabNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 
-import ScreenKey from './src/constants/ScreenKey';
-
-const Stack = createStackNavigator();
+// import ScreenKey from './src/constants/ScreenKey';
+// const Stack = createStackNavigator();
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
@@ -30,12 +28,13 @@ export default function App(props) {
             <UserProvider>
               <MenuProvider >
                 <NavigationContainer linking={LinkingConfiguration}>
-                  <Stack.Navigator headerMode="none">
-                    {/* Not login */}
-                    <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
-                    {/* Already login  */}
-                    <Stack.Screen name={ScreenKey.BrowseTabNavigator} component={BrowseTabNavigator} />
-                  </Stack.Navigator>
+                  {/* 
+                    <Stack.Navigator headerMode="none">
+                      <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
+                    </Stack.Navigator> 
+                    */
+                  }
+                  <AuthStackNavigator />
                 </NavigationContainer>
               </MenuProvider>
             </UserProvider>

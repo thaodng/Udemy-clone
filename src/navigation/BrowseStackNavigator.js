@@ -26,6 +26,7 @@ const BrowseStackNavigator = () => {
       <BrowseStack.Screen
         name={ScreenKey.BrowseCourseDetailScreen}
         component={CourseDetailScreen}
+        options={{ headerShown: false }}
       />
     </BrowseStack.Navigator>
   );

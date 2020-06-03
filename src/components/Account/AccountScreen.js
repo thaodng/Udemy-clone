@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import * as WebBrowser from 'expo-web-browser';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper'
@@ -9,52 +9,52 @@ import RowItem from '../Common/RowItem';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import user from '../../mooks/user.json';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 
 const AccountScreen = ({ navigation }) => {
   const { authentication: { isAuthenicated }, setAuthentication } = useContext(AuthContext);
-  const { userInfo: { name, avatar } } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { name, avatar } = userInfo;
 
   const onSignOut = () => {
     setAuthentication({});
+    setUserInfo({});
     navigation.navigate(ScreenKey.LoginScreen);
   }
 
   const Intro = ({ isAuthenicated }) => {
-    if (!isAuthenicated) {
-      return (
-        <View style={styles.userContainer}>
-          <View style={styles.avatarContainer}>
-            <MaterialIcons name="person" size={26} color="#fff" />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.welcomeText}>Welcome to Online education</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
-                <Text style={styles.authText}>Login</Text>
-              </TouchableOpacity>
-              <Text style={styles.authText}>/</Text>
-              <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}>
-                <Text style={styles.authText}>Signup</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      );
-    }
 
     return (
       <View style={styles.userContainer}>
         <View style={styles.avatarContainer}>
-          <MaterialIcons name="person" size={26} color="#fff" />
+          {
+            avatar
+              ? <Image style={{ width: '100%', height: '100%' }} source={{ uri: avatar }} resizeMode="stretch" />
+              : <MaterialIcons name="person" size={26} color="#fff" />
+          }
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.welcomeText}>Welcome to back!</Text>
-          <Text style={styles.authText}>{name}</Text>
+          <Text style={styles.welcomeText}>Welcome to online education</Text>
+          <View style={{ flexDirection: 'row' }}>
+            {
+              name
+                ? <Text style={styles.authText}>{name}</Text>
+                : (
+                  <>
+                    <TouchableOpacity TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
+                      <Text style={styles.authText}>Login</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.authText}>/</Text>
+                    <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}>
+                      <Text style={styles.authText}>Signup</Text>
+                    </TouchableOpacity>
+                  </>
+                )
+            }
+          </View>
         </View>
-      </View>
+      </View >
     );
   };
 
@@ -64,12 +64,21 @@ const AccountScreen = ({ navigation }) => {
         <RowItem
           icon="account-circle"
           title="User profile"
-          onPress={() => { navigation.navigate(ScreenKey.ProfileScreen, { user }) }}
+          onPress={() => {
+            navigation.navigate(ScreenKey.ProfileScreen, {
+              user: userInfo,
+              // setUser: setUserInfo -> don't do this
+            })
+          }}
         />
         <RowItem
           icon="settings"
           title="Settings"
-          onPress={() => { navigation.navigate(ScreenKey.SettingScreen) }}
+          onPress={() => {
+            navigation.navigate(ScreenKey.SettingScreen), {
+              userInfo
+            }
+          }}
         />
       </>
     );
@@ -176,6 +185,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors.tintColor,
+    borderWidth: 1,
+    borderColor: Colors.lightgray
   },
   textContainer: {
     flex: 1,

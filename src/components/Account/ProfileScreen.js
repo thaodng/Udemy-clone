@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Modal, Alert, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View, TouchableOpacity, Modal, Alert, KeyboardAvoidingView } from 'react-native';
 import { TextInput, Button, Avatar } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
-import ScreenKey from '../../constants/ScreenKey';
+
+import { updateUserInfo } from '../../core/services/user-service';
+
+import { AuthContext } from '../../context/AuthContext'
+import { UserContext } from '../../context/UserContext';
 
 const theme = {
   colors: {
@@ -15,8 +19,11 @@ const theme = {
 
 const { width, height } = Layout.window;
 
-const ProfileScreen = ({ navigation, route }) => {
+const ProfileScreen = ({ route }) => {
   const { user } = route.params;
+
+  const { authentication: { token } } = useContext(AuthContext);
+  const { setUserInfo } = useContext(UserContext);
 
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
@@ -27,7 +34,13 @@ const ProfileScreen = ({ navigation, route }) => {
   const [enableshift, setenableShift] = useState(false);
 
   const updateDetails = () => {
-    Alert.alert('Update user profile');
+    // update in database
+    const result = updateUserInfo({ token, newInfo: { name, email, phone, address, avatar } });
+    if (result.status === 200) {
+      // update in user context
+      setUserInfo(result.user);
+      Alert.alert('Update success!');
+    }
   }
 
   const pickImage = async (type) => {

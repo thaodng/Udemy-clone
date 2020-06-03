@@ -18,6 +18,7 @@ const DownloadStackNavigator = () => {
       <DownloadStack.Screen
         name={ScreenKey.DownloadedCourseDetailScreen}
         component={CourseDetailScreen}
+        options={{ headerShown: false }}
       />
     </DownloadStack.Navigator>
   );

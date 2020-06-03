@@ -61,6 +61,7 @@ const SearchStackNavigator = () => {
       <SearchStack.Screen
         name={ScreenKey.SearchCourseDetailScreen}
         component={CourseDetailScreen}
+        options={{ headerShown: false }}
       />
 
     </SearchStack.Navigator>
