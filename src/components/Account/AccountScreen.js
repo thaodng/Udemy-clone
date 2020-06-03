@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
@@ -9,6 +9,7 @@ import RowItem from '../Common/RowItem';
 import Colors from '../../constants/Colors';
 
 import user from '../../mooks/user.json';
+import { AuthContext } from '../../context/AuthContext';
 
 const OptionButton = ({ icon, label, onPress, isLastOption }) => {
   return (
@@ -52,25 +53,45 @@ const renderSupport = () => {
 };
 
 const AccountScreen = ({ navigation }) => {
+  const { authentication, setAuthentication } = useContext(AuthContext);
+  const { isAuthenicated } = authentication;
+
+  const onSignOut = () => {
+    setAuthentication({});
+    navigation.navigate('LoginScreen');
+  }
 
   const Intro = ({ isAuthenicated }) => {
-    // not login
+    if (!isAuthenicated) {
+      return (
+        <View style={styles.userContainer}>
+          <View style={styles.avatarContainer}>
+            <MaterialIcons name="person" size={26} color="#fff" />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.welcomeText}>Welcome to Online education</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity onPress={() => { navigation.navigate('LoginScreen') }}>
+                <Text style={styles.authText}>Login</Text>
+              </TouchableOpacity>
+              <Text style={styles.authText}>/</Text>
+              <TouchableOpacity onPress={() => { navigation.navigate('SignupScreen') }}>
+                <Text style={styles.authText}>Signup</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.userContainer}>
         <View style={styles.avatarContainer}>
           <MaterialIcons name="person" size={26} color="#fff" />
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.welcomeText}>Welcome to Online education</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => { navigation.navigate('LoginScreen') }}>
-              <Text style={styles.authText}>Login</Text>
-            </TouchableOpacity>
-            <Text style={styles.authText}>/</Text>
-            <TouchableOpacity onPress={() => { navigation.navigate('SignupScreen') }}>
-              <Text style={styles.authText}>Signup</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={styles.welcomeText}>Welcome to back!</Text>
+          <Text style={styles.authText}>Username</Text>
         </View>
       </View>
     );
@@ -96,30 +117,34 @@ const AccountScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Intro />
+        <Intro isAuthenicated={isAuthenicated} />
 
-        <View style={styles.divider} />
-        {renderUserInfo()}
+        {isAuthenicated && (
+          <>
+            <View style={styles.divider} />
+            {renderUserInfo()}
+          </>
+        )}
 
         <View style={styles.divider} />
         {renderSupport()}
       </ScrollView>
 
-      <Button
-        mode="outlined"
-        theme={{
-          colors: {
-            primary: Colors.tintColor
-          },
-        }}
-        style={styles.buttonSignOut}
-        onPress={() => {
-          alert('Clear state');
-          navigation.navigate('LoginScreen');
-        }}>
-        Sign out
+      {
+        isAuthenicated &&
+        <Button
+          mode="outlined"
+          theme={{
+            colors: {
+              primary: Colors.tintColor
+            },
+          }}
+          style={styles.buttonSignOut}
+          onPress={onSignOut}>
+          Sign out
       </Button>
-    </View>
+      }
+    </View >
   );
 }
 
