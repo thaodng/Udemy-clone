@@ -6,9 +6,13 @@ import LinkScreen from './Common/LinkScreen';
 import ButtonConfirm from './Common/ButtonConfirm';
 import Footer from './Common/Footer';
 import Colors from '../../constants/Colors';
+import ScreenKey from '../../constants/ScreenKey';
 
 import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
 import { login } from '../../core/services/authentication-service';
+import { getUserInfo } from '../../core/services/user-service';
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -16,15 +20,23 @@ const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(null);
 
   const { setAuthentication } = useContext(AuthContext);
+  const { setUserInfo } = useContext(UserContext);
 
   const onSubmit = () => {
     const { status, token, isAuthenicated, errorString } = login({ email, password });
     if (status === 200) {
       setAuthentication({ token, isAuthenicated });
-      navigation.navigate('BrowseTabNavigator');
+
+      const { user } = getUserInfo({ token });
+      setUserInfo(user);
+
+      navigation.navigate(ScreenKey.BrowseTabNavigator);
     } else {
       Alert.alert(errorString);
     }
+
+    setEmail('');
+    setPassword('');
   };
 
   return (
@@ -57,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
 
       <LinkScreen
         content="Forgot password?"
-        onPress={() => { navigation.navigate('ForgetScreen') }}
+        onPress={() => { navigation.navigate(ScreenKey.ForgetScreen) }}
       />
 
       <ButtonConfirm
@@ -67,7 +79,7 @@ const LoginScreen = ({ navigation }) => {
 
       <Footer
         label="Don't have an account?"
-        onPress={() => { navigation.navigate('SignupScreen') }}
+        onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}
         content="Signup"
       />
 

@@ -9,7 +9,7 @@ import Layout from '../../constants/Layout';
 
 const { width, height } = Layout.window;
 
-const CourseItemColumn = ({ item }) => {
+const CourseItemColumn = ({ item, screenDetail }) => {
 
   const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
   const navigation = useNavigation();
@@ -18,7 +18,7 @@ const CourseItemColumn = ({ item }) => {
     <TouchableOpacity
       style={[styles.container, styles.shadow]}
       onPress={() => {
-        navigation.navigate('CourseDetailScreen', {
+        navigation.navigate(screenDetail, {
           courseId: id
         })
       }}>

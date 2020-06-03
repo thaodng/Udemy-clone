@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet, Text, View, SafeAreaView, FlatList } from 'react-native';
 import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
+import ScreenKey from '../../constants/ScreenKey';
 
 const SearchScreen = ({ navigation }) => {
   const recentList = [
@@ -51,23 +51,29 @@ const SearchScreen = ({ navigation }) => {
         title={title}
         rightIcon={false}
         onPress={() => {
-          navigation.navigate('SearchResult',
-            { keyword: title })
+          navigation.navigate(
+            ScreenKey.SearchResultScreen, {
+            screenDetail: ScreenKey.SearchCourseDetailScreen,
+            keyword: title
+          })
         }}
       />
     );
   };
 
 
-  const renderCategories = ({ id, icon, title }) => {
+  const renderCategories = ({ icon, title }) => {
     return (
       <RowItem
         icon={icon}
         title={title}
         rightIcon={true}
         onPress={() => {
-          navigation.navigate('SearchResult',
-            { keyword: title })
+          navigation.navigate(
+            ScreenKey.SearchResultScreen, {
+            screenDetail: ScreenKey.SearchCourseDetailScreen,
+            keyword: title
+          })
         }}
       />
     );

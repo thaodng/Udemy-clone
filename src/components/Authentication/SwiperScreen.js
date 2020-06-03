@@ -4,10 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import * as Animable from 'react-native-animatable';
 import Swiper from 'react-native-swiper';
 import Colors from '../../constants/Colors';
+import ScreenKey from '../../constants/ScreenKey';
 
 const BrowseLogin = ({ animateSignUp, animateLogin }) => {
   const navigation = useNavigation();
-  
+
   return (
     <View style={{ flexDirection: 'row' }}>
       <Animable.View
@@ -17,7 +18,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
         useNativeDriver>
         <TouchableOpacity
           style={{ ...styles.button, borderColor: Colors.tintColor, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
-          onPress={() => { navigation.navigate('BrowseTabNavigator') }}
+          onPress={() => { navigation.navigate(ScreenKey.BrowseTabNavigator) }}
         >
           <Text style={{ color: Colors.tintColor }}> Browse </Text>
         </TouchableOpacity>
@@ -30,7 +31,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
         useNativeDriver>
         <TouchableOpacity
           style={{ ...styles.button, backgroundColor: Colors.tintColor, marginLeft: 20, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
-          onPress={() => { navigation.navigate('LoginScreen') }}>
+          onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
           <Text style={{ color: 'white' }}> Login </Text>
         </TouchableOpacity>
       </Animable.View>

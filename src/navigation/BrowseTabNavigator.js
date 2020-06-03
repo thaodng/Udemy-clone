@@ -7,19 +7,18 @@ import SearchStackNavigator from './SearchStackNavigator';
 import AccountStackNavigator from './AccountStackNavigator';
 import TabBarIcon from '../components/Common/TabBarIcon';
 
-
+import ScreenKey from '../constants/ScreenKey';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
 
-export default function BottomTabNavigator({ navigation, route }) {
+const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator initialRouteName={ScreenKey.HomeTabStackNavigator}>
 
       <BottomTab.Screen
-        name="HomeStackNavigator"
+        name={ScreenKey.HomeTabStackNavigator}
         component={HomeStackNavigator}
         options={{
           title: 'Home',
@@ -28,7 +27,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
 
       <BottomTab.Screen
-        name="DownloadStackNavigator"
+        name={ScreenKey.DownloadTabStackNavigator}
         component={DownloadStackNavigator}
         options={{
           title: 'Download',
@@ -36,7 +35,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="BrowseStackNavigator"
+        name={ScreenKey.BrowseTabStackNavigator}
         component={BrowseStackNavigator}
         options={{
           title: 'Browse',
@@ -44,7 +43,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="SearchStackNavigator"
+        name={ScreenKey.SearchTabStackNavigator}
         component={SearchStackNavigator}
         options={{
           title: 'Search',
@@ -53,7 +52,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
 
       <BottomTab.Screen
-        name="AccountStackNavigator"
+        name={ScreenKey.AccountTabStackNavigator}
         component={AccountStackNavigator}
         options={{
           title: 'Account',
@@ -64,3 +63,5 @@ export default function BottomTabNavigator({ navigation, route }) {
     </BottomTab.Navigator>
   );
 }
+
+export default BottomTabNavigator;

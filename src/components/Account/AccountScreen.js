@@ -7,9 +7,108 @@ import { Button } from 'react-native-paper'
 
 import RowItem from '../Common/RowItem';
 import Colors from '../../constants/Colors';
+import ScreenKey from '../../constants/ScreenKey';
 
 import user from '../../mooks/user.json';
 import { AuthContext } from '../../context/AuthContext';
+import { UserContext } from '../../context/UserContext';
+
+const AccountScreen = ({ navigation }) => {
+  const { authentication: { isAuthenicated }, setAuthentication } = useContext(AuthContext);
+  const { userInfo: { name, avatar } } = useContext(UserContext);
+
+  const onSignOut = () => {
+    setAuthentication({});
+    navigation.navigate(ScreenKey.LoginScreen);
+  }
+
+  const Intro = ({ isAuthenicated }) => {
+    if (!isAuthenicated) {
+      return (
+        <View style={styles.userContainer}>
+          <View style={styles.avatarContainer}>
+            <MaterialIcons name="person" size={26} color="#fff" />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.welcomeText}>Welcome to Online education</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
+                <Text style={styles.authText}>Login</Text>
+              </TouchableOpacity>
+              <Text style={styles.authText}>/</Text>
+              <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}>
+                <Text style={styles.authText}>Signup</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <View style={styles.userContainer}>
+        <View style={styles.avatarContainer}>
+          <MaterialIcons name="person" size={26} color="#fff" />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.welcomeText}>Welcome to back!</Text>
+          <Text style={styles.authText}>{name}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  const renderUserInfo = () => {
+    return (
+      <>
+        <RowItem
+          icon="account-circle"
+          title="User profile"
+          onPress={() => { navigation.navigate(ScreenKey.ProfileScreen, { user }) }}
+        />
+        <RowItem
+          icon="settings"
+          title="Settings"
+          onPress={() => { navigation.navigate(ScreenKey.SettingScreen) }}
+        />
+      </>
+    );
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <Intro isAuthenicated={isAuthenicated} />
+
+        {isAuthenicated && (
+          <>
+            <View style={styles.divider} />
+            {renderUserInfo()}
+          </>
+        )}
+
+        <View style={styles.divider} />
+        {renderSupport()}
+      </ScrollView>
+
+      {
+        isAuthenicated &&
+        <Button
+          mode="outlined"
+          theme={{
+            colors: {
+              primary: Colors.tintColor
+            },
+          }}
+          style={styles.buttonSignOut}
+          onPress={onSignOut}>
+          Sign out
+      </Button>
+      }
+    </View >
+  );
+}
+
 
 const OptionButton = ({ icon, label, onPress, isLastOption }) => {
   return (
@@ -52,101 +151,6 @@ const renderSupport = () => {
   );
 };
 
-const AccountScreen = ({ navigation }) => {
-  const { authentication, setAuthentication } = useContext(AuthContext);
-  const { isAuthenicated } = authentication;
-
-  const onSignOut = () => {
-    setAuthentication({});
-    navigation.navigate('LoginScreen');
-  }
-
-  const Intro = ({ isAuthenicated }) => {
-    if (!isAuthenicated) {
-      return (
-        <View style={styles.userContainer}>
-          <View style={styles.avatarContainer}>
-            <MaterialIcons name="person" size={26} color="#fff" />
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.welcomeText}>Welcome to Online education</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => { navigation.navigate('LoginScreen') }}>
-                <Text style={styles.authText}>Login</Text>
-              </TouchableOpacity>
-              <Text style={styles.authText}>/</Text>
-              <TouchableOpacity onPress={() => { navigation.navigate('SignupScreen') }}>
-                <Text style={styles.authText}>Signup</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      );
-    }
-
-    return (
-      <View style={styles.userContainer}>
-        <View style={styles.avatarContainer}>
-          <MaterialIcons name="person" size={26} color="#fff" />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.welcomeText}>Welcome to back!</Text>
-          <Text style={styles.authText}>Username</Text>
-        </View>
-      </View>
-    );
-  };
-
-  const renderUserInfo = () => {
-    return (
-      <>
-        <RowItem
-          icon="account-circle"
-          title="User profile"
-          onPress={() => { navigation.navigate('ProfileScreen', { user }) }}
-        />
-        <RowItem
-          icon="settings"
-          title="Settings"
-          onPress={() => { navigation.navigate('SettingsScreen') }}
-        />
-      </>
-    );
-  };
-
-  return (
-    <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Intro isAuthenicated={isAuthenicated} />
-
-        {isAuthenicated && (
-          <>
-            <View style={styles.divider} />
-            {renderUserInfo()}
-          </>
-        )}
-
-        <View style={styles.divider} />
-        {renderSupport()}
-      </ScrollView>
-
-      {
-        isAuthenicated &&
-        <Button
-          mode="outlined"
-          theme={{
-            colors: {
-              primary: Colors.tintColor
-            },
-          }}
-          style={styles.buttonSignOut}
-          onPress={onSignOut}>
-          Sign out
-      </Button>
-      }
-    </View >
-  );
-}
 
 export default AccountScreen;
 

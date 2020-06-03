@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
+import ScreenKey from '../../constants/ScreenKey';
+
 import DATA from '../../mooks/courses.json';
 
 const DownloadScreen = () => {
@@ -14,7 +16,7 @@ const DownloadScreen = () => {
           <Text style={styles.remove}>REMOVE ALL</Text>
         </TouchableOpacity>
       </View>
-      <ListCourses direction="column"/>
+      <ListCourses direction="column" screenDetail={ScreenKey.DownloadedCourseDetailScreen} />
     </View>
   )
 }

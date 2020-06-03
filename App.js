@@ -1,13 +1,18 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar, StyleSheet, View } from 'react-native';
+
 import { MenuProvider } from 'react-native-popup-menu';
 import { AuthenticationProvider } from './src/context/AuthContext';
+import { UserProvider } from './src/context/UserContext';
+
 import useCachedResources from './src/hooks/useCachedResources';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
 import BrowseTabNavigator from './src/navigation/BrowseTabNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
+
+import ScreenKey from './src/constants/ScreenKey';
 
 const Stack = createStackNavigator();
 
@@ -22,16 +27,18 @@ export default function App(props) {
         <StatusBar />
         <View style={styles.container}>
           <AuthenticationProvider>
-            <MenuProvider >
-              <NavigationContainer linking={LinkingConfiguration}>
-                <Stack.Navigator headerMode="none">
-                  {/* Not login */}
-                  <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
-                  {/* Already login  */}
-                  <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </MenuProvider>
+            <UserProvider>
+              <MenuProvider >
+                <NavigationContainer linking={LinkingConfiguration}>
+                  <Stack.Navigator headerMode="none">
+                    {/* Not login */}
+                    <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
+                    {/* Already login  */}
+                    <Stack.Screen name={ScreenKey.BrowseTabNavigator} component={BrowseTabNavigator} />
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </MenuProvider>
+            </UserProvider>
           </AuthenticationProvider>
         </View>
       </>

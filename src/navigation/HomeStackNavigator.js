@@ -2,8 +2,10 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from '../components/Home/HomeScreen';
-import ListCoursesScreen from '../components/Home/ListCoursesScreen';
+import ListCoursesScreen from '../components/ListCourses/ListCoursesScreen';
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen'
+
+import ScreenKey from '../constants/ScreenKey';
 
 const HomeStack = createStackNavigator();
 
@@ -11,14 +13,14 @@ const HomeStackScreens = () => {
   return (
     <HomeStack.Navigator >
       <HomeStack.Screen
-        name="HomeScreen"
+        name={ScreenKey.HomeScreen}
         component={HomeScreen}
         options={{
           headerShown: false
         }}
       />
       <HomeStack.Screen
-        name="ListCoursesScreen"
+        name={ScreenKey.ListCoursesScreen}
         component={ListCoursesScreen}
         options={({ route }) => (
           {
@@ -27,7 +29,7 @@ const HomeStackScreens = () => {
         )}
       />
       <HomeStack.Screen
-        name="CourseDetailScreen"
+        name={ScreenKey.CourseDetailScreen}
         component={CourseDetailScreen}
         options={{
           headerShown: false

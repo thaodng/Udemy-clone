@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native'
-import { Entypo } from '@expo/vector-icons';
+import { StyleSheet, Text, View } from 'react-native'
 import MapView, { Marker } from "react-native-maps";
 import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
@@ -9,8 +8,10 @@ import Layout from '../../constants/Layout';
 
 const { width, height } = Layout.window;
 
-const SearchResult = ({ navigation, route }) => {
-  const { keyword } = route.params;
+const SearchResult = ({ route }) => {
+  const { screenDetail } = route.params;
+  console.log(screenDetail);
+
   const myLocation = {
     latitude: 10.763140,
     longitude: 106.682150,
@@ -68,7 +69,7 @@ const SearchResult = ({ navigation, route }) => {
       {renderTabs()}
       {renderMap()}
       <View style={{ flex: 1 }}>
-        <ListCourses direction="column"/>
+        <ListCourses direction="column" screenDetail={screenDetail} />
       </View>
     </View>
   );

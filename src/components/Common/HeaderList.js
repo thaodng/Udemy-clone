@@ -1,31 +1,34 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 
-const HeaderList = ({ title, noIcon }) => {
+const HeaderList = ({ title, listCoursesScreen, screenDetail }) => {
   const navigation = useNavigation();
+
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.text}>
         {title}
       </Text>
-      {!noIcon &&
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('ListCoursesScreen', { subject: title })
-          }>
-
+      {listCoursesScreen &&
+        <TouchableOpacity onPress={() =>
+          navigation.navigate(
+            listCoursesScreen, {
+            screenDetail: screenDetail,
+            subject: title
+          })
+        }>
           <View style={styles.buttonViewAll}>
             <Text style={{ color: Colors.tintColor }} >
               See all
-          </Text>
+            </Text>
             <Entypo size={18} color={Colors.tintColor} name="chevron-small-right" />
           </View>
         </TouchableOpacity>
       }
-    </View>
+    </View >
   );
 };
 

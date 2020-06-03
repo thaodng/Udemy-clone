@@ -7,6 +7,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import SearchScreen from '../components/Search/SearchScreen';
 import SearchResult from '../components/Search/SearchResult';
 import FilterScreen from '../components/Search/FilterScreen';
+import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen';
+
+import ScreenKey from '../constants/ScreenKey';
 
 const SearchStack = createStackNavigator();
 
@@ -17,21 +20,21 @@ const SearchStackNavigator = () => {
     <SearchStack.Navigator>
 
       <SearchStack.Screen
-        name="SearchScreen"
+        name={ScreenKey.SearchScreen}
         component={SearchScreen}
         options={{
           headerShown: false
         }} />
 
       <SearchStack.Screen
-        name="SearchResult"
+        name={ScreenKey.SearchResultScreen}
         component={SearchResult}
         options={({ route }) => ({
           title: route.params.keyword,
           headerRight: () => (
             <TouchableOpacity
               style={{ paddingHorizontal: 10 }}
-              onPress={() => { navigation.navigate('FilterScreen') }}
+              onPress={() => { navigation.navigate(ScreenKey.SearchFilterScreen) }}
             >
               <MaterialIcons name="filter-list" size={24} color="black" />
             </TouchableOpacity>
@@ -40,7 +43,7 @@ const SearchStackNavigator = () => {
       />
 
       <SearchStack.Screen
-        name="FilterScreen"
+        name={ScreenKey.SearchFilterScreen}
         component={FilterScreen}
         options={{
           title: 'Filter',
@@ -53,6 +56,11 @@ const SearchStackNavigator = () => {
           //   </TouchableOpacity>
           // )
         }}
+      />
+
+      <SearchStack.Screen
+        name={ScreenKey.SearchCourseDetailScreen}
+        component={CourseDetailScreen}
       />
 
     </SearchStack.Navigator>

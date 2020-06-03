@@ -4,10 +4,12 @@ import HeaderList from '../Common/HeaderList';
 import ListCourses from '../ListCourses/ListCourses';
 import Banner from '../../assets/images/banner.png';
 import Layout from '../../constants/Layout';
+import ScreenKey from '../../constants/ScreenKey';
+
 
 const { width, height } = Layout.window;
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -19,12 +21,14 @@ const HomeScreen = ({ navigation }) => {
             resizeMode="stretch"
           />
         </View>
-        <HeaderList title="Software development" />
-        <ListCourses direction="row" />
-        <HeaderList title="Personal development" />
-        <ListCourses direction="row" />
-        <HeaderList title="Office Productivity" />
-        <ListCourses direction="row" />
+        <HeaderList title="Software development" listCoursesScreen={ScreenKey.ListCoursesScreen} screenDetail={ScreenKey.CourseDetailScreen} />
+        <ListCourses direction="row" screenDetail={ScreenKey.CourseDetailScreen} />
+
+        <HeaderList title="Personal development" listCoursesScreen={ScreenKey.ListCoursesScreen} screenDetail={ScreenKey.CourseDetailScreen} />
+        <ListCourses direction="row" screenDetail={ScreenKey.CourseDetailScreen} />
+
+        <HeaderList title="Office Productivity" listCoursesScreen={ScreenKey.ListCoursesScreen} screenDetail={ScreenKey.CourseDetailScreen} />
+        <ListCourses direction="row" screenDetail={ScreenKey.CourseDetailScreen} />
       </ScrollView>
     </SafeAreaView>
   )

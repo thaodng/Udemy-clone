@@ -8,13 +8,14 @@ import Rating from '../Common/Rating';
 
 const { width, height } = Layout.window;
 
-const CourseItemRow = ({ item }) => {
+const CourseItemRow = ({ item, screenDetail }) => {
   const navigation = useNavigation();
   const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
 
+  // what is list this course detail screen belong ti?
   return (
     <TouchableOpacity onPress={() => {
-      navigation.navigate('CourseDetailScreen', {
+      navigation.navigate(screenDetail, {
         courseId: id
       })
     }}

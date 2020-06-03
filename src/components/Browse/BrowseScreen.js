@@ -1,9 +1,10 @@
 import React from 'react'
-import { Text, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, Image, Dimensions, ScrollView } from 'react-native'
 import Swiper from 'react-native-swiper';
 import HeaderList from '../Common/HeaderList';
 import TopAuthors from './TopAuthors';
 import ListCourses from '../ListCourses/ListCourses';
+import ScreenKey from '../../constants/ScreenKey';
 
 const { width, height } = Dimensions.get('window')
 
@@ -49,14 +50,17 @@ const BrowseScreen = () => {
       </Swiper>
 
       <View style={{ flex: 1 }}>
-        <HeaderList title="Top authors" noIcon={true} />
+        <HeaderList title="Top authors"/>
         <TopAuthors />
-        <HeaderList title="Software development" />
-        <ListCourses direction="row" />
-        <HeaderList title="Personsal development" />
-        <ListCourses direction="row" />
-        <HeaderList title="Office Productivity" />
-        <ListCourses direction="row" />
+
+        <HeaderList title="Software development" listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen}/>
+        <ListCourses direction="row" screenDetail={ScreenKey.BrowseCourseDetailScreen}/>
+
+        <HeaderList title="Personsal development" listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen}/>
+        <ListCourses direction="row" screenDetail={ScreenKey.BrowseCourseDetailScreen}/>
+
+        <HeaderList title="Office Productivity" listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen}/>
+        <ListCourses direction="row" screenDetail={ScreenKey.BrowseCourseDetailScreen}/>
       </View>
     </ScrollView>
   )

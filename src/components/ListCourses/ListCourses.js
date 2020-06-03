@@ -4,7 +4,7 @@ import CourseItemRow from './CourseItemRow';
 import CourseItemColumn from './CourseItemColumn';
 import DATA from '../../mooks/courses.json';
 
-const ListCourses = ({ direction }) => {
+const ListCourses = ({ direction, screenDetail }) => {
   return (
     <FlatList
       horizontal={direction === 'row' ? true : false}
@@ -15,8 +15,8 @@ const ListCourses = ({ direction }) => {
       keyExtractor={(item) => `${item.id}`}
       renderItem={({ item }) => (
         direction === 'row'
-          ? <CourseItemRow item={item} />
-          : <CourseItemColumn item={item} />
+          ? <CourseItemRow item={item} screenDetail={screenDetail} />
+          : <CourseItemColumn item={item} screenDetail={screenDetail} />
       )}
     />
   )

@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
+import ScreenKey from '../../constants/ScreenKey';
 
 const theme = {
   colors: {
