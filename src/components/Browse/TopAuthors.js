@@ -18,7 +18,7 @@ const TopAuthors = () => {
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity style={styles.buttonAuthor}>
-        <Image style={styles.avatarAuthor} source={{ uri: item.image }} />
+        <Image style={styles.avatarAuthor} source={{ uri: item.avatar }} />
         <Text style={styles.nameAuthor}>
           {item.name}
         </Text>

@@ -1,107 +1,181 @@
-[
-  {
-    "id": 1,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
+[{
+    "id": "c1",
+    "title": "Reactjs",
+    "category": {
+      "id": "ct1",
+      "title": "Web development"
     },
-    "saved": true,
-    "level": "Intermediate",
+    "author": {
+      "name": "Neel Lane",
+      "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    "level": "Beginner",
+    "dateRelease": "Jun 01 - 2020",
+    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "rating": 5,
+    "reviews": 15,
+    "preview": "https://nordiccoder.com/app/uploads/2019/11/41-reactjs.png"
+  },
+  {
+    "id": "c2",
+    "title": "Javascript",
+    "category": {
+      "id": "ct1",
+      "title": "Web development"
+    },
+    "author": {
+      "name": "Neel Lane",
+      "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    "level": "All levels",
     "dateRelease": "March 15 - 2020",
+    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "rating": 4.6,
+    "reviews": 12,
+    "preview": "https://sogo.edu.vn/wp-content/uploads/2019/08/javascript-la-gi.jpg"
+  },
+  {
+    "id": "c3",
+    "title": "HTML",
+    "category": {
+      "id": "ct1",
+      "title": "Web development"
+    },
+    "author": {
+      "name": "Nikita Cherry",
+      "avatar": "https://randomuser.me/api/portraits/men/2.jpg"
+    },
+    "level": "All levels",
+    "dateRelease": "March 15 - 2020",
+    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "rating": 4.7,
+    "reviews": 32,
+    "preview": "https://www.inithtml.com/wp-content/uploads/2017/04/html.jpg"
+  },
+  {
+    "id": "c4",
+    "title": "Web assembly",
+    "category": {
+      "id": "ct1",
+      "title": "Web development"
+    },
+    "author": {
+      "name": "Jason Paterson",
+      "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
+    },
+    "level": "Expert",
+    "dateRelease": "July 01 - 2020",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.3,
     "reviews": 3212,
+    "preview": "https://topdev.vn/blog/wp-content/uploads/2019/05/webassembly.png"
+  },
+  {
+    "id": "c5",
+    "title": "React native",
+    "category": {
+      "id": "ct2",
+      "title": "Mobile development"
+    },
+    "author": {
+      "name": "Benn Vu",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    "level": "Intermediate",
+    "dateRelease": "April 06 - 2020",
+    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "rating": 5,
+    "reviews": 100,
     "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
   },
   {
-    "id": 2,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
+    "id": "c6",
+    "title": "Android development",
+    "category": {
+      "id": "ct2",
+      "title": "Mobile development"
     },
-    "saved": true,
-    "level": "Intermediate",
+    "author": {
+      "name": "Benn Vu",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
+    "rating": 4.5,
+    "reviews": 32,
+    "preview": "https://img-a.udemycdn.com/course/750x422/1697790_aecd_3.jpg"
+  }, 
+  {
+    "id": "c7",
+    "title": "iOS development",
+    "category": {
+      "id": "ct2",
+      "title": "Mobile development"
+    },
+    "author": {
+      "name": "Benn Vu",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    "level": "Beginner",
+    "dateRelease": "March 15 - 2020",
+    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "rating": 4.5,
+    "reviews": 32,
+    "preview": "https://img-a.udemycdn.com/course/750x422/2632258_0546.jpg"
+  }, 
+  {
+    "id": "c8",
+    "title": "Ethical haking",
+    "category": {
+      "id": "ct3",
+      "title": "Network & Security"
+    },
+    "author": {
+      "name": "Edward Ortega",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    "level": "All levels",
+    "dateRelease": "April 06 - 2020",
+    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "rating": 5,
+    "reviews": 100,
+    "preview": "https://devqa.io/assets/images/ethical-hacking-penetration-testing.png"
   },
   {
-    "id": 3,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
+    "id": "c9",
+    "title": "Network securiy",
+    "category": {
+      "id": "ct3",
+      "title": "Network & Security"
     },
-    "saved": true,
-    "level": "Intermediate",
+    "author": {
+      "name": "Edward Ortega",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
-  },
+    "rating": 4.5,
+    "reviews": 32,
+    "preview": "https://westernedu.vn/images/stores/2020/01/06/image.jpg"
+  }, 
   {
-    "id": 4,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
+    "id": "c10",
+    "title": "Security testing",
+    "category": {
+      "id": "ct3",
+      "title": "Network & Security"
     },
-    "saved": true,
-    "level": "Intermediate",
+    "author": {
+      "name": "Edward Ortega",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
+    },
+    "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
-  },
-  {
-    "id": 5,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
-    },
-    "saved": true,
-    "level": "Intermediate",
-    "dateRelease": "March 15 - 2020",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
-  },
-  {
-    "id": 6,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
-    },
-    "saved": true,
-    "level": "Intermediate",
-    "dateRelease": "March 15 - 2020",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
-  },
-  {
-    "id": 7,
-    "title": "React native",
-    "author": {
-      "name": "Author name",
-      "avatar": "https://randomuser.me/api/portraits/men/13.jpg"
-    },
-    "saved": true,
-    "level": "Intermediate",
-    "dateRelease": "March 15 - 2020",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
-  }
+    "rating": 4.5,
+    "reviews": 32,
+    "preview": "https://vncs.vn/wp-content/uploads/2019/07/Security-Testing.jpg"
+  }, 
 ]

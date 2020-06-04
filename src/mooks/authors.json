@@ -1,62 +1,51 @@
-[
-  {
+[{
     "id": "1",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Neel Lane",
+    "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
   },
   {
     "id": "2",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Nikita Cherry",
+    "avatar": "https://randomuser.me/api/portraits/men/2.jpg"
   },
   {
     "id": "3",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Jason Paterson",
+    "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
   },
   {
     "id": "4",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Benn Vu",
+    "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
   },
   {
     "id": "5",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Edward Ortega",
+    "avatar": "https://randomuser.me/api/portraits/men/5.jpg"
   },
   {
     "id": "6",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Nadir Dominguez",
+    "avatar": "https://randomuser.me/api/portraits/men/6.jpg"
   },
   {
     "id": "7",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Reef Downes",
+    "avatar": "https://randomuser.me/api/portraits/men/7.jpg"
   },
   {
     "id": "8",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Kieron Brandt",
+    "avatar": "https://randomuser.me/api/portraits/men/8.jpg"
   },
   {
     "id": "9",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Dani Meadows",
+    "avatar": "https://randomuser.me/api/portraits/men/9.jpg"
   },
   {
     "id": "10",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
-  },
-  {
-    "id": "11",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
-  },
-  {
-    "id": "12",
-    "name": "Author name",
-    "image": "https://png.pngtree.com/png-clipart/20190924/original/pngtree-user-vector-avatar-png-image_4830521.jpg"
+    "name": "Ritik Velasquez",
+    "avatar": "https://randomuser.me/api/portraits/men/10.jpg"
   },
 ]

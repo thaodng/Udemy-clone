@@ -17,12 +17,14 @@ const SearchScreen = ({ navigation }) => {
   };
 
   const onSearch = (term) => {
-    navigation.navigate(ScreenKey.SearchResultScreen,
-      {
-        screenDetail: ScreenKey.SearchCourseDetailScreen,
-        keyword: term,
-        withMap
-      });
+    if (term) {
+      navigation.navigate(ScreenKey.SearchResultScreen,
+        {
+          screenDetail: ScreenKey.SearchCourseDetailScreen,
+          keyword: term,
+          withMap
+        });
+    }
   };
 
   const renderItem = ({ title, icon, rightIcon }) => {
@@ -54,7 +56,10 @@ const SearchScreen = ({ navigation }) => {
           <>
             <View style={styles.recentBar}>
               <Text style={{ fontWeight: 'bold', fontSize: 18 }} >Recent searches</Text>
-              <TouchableOpacity onPress={() => setRecentSearch([])}>
+              <TouchableOpacity onPress={() => {
+                setRecentSearch([]);
+                setTerm('');
+              }}>
                 <Text style={{ color: Colors.tintColor }}>CLEAR ALL</Text>
               </TouchableOpacity>
             </View>

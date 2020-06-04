@@ -1,0 +1,14 @@
+[
+  {
+    "id": "ct1",
+    "title": "Web development"
+  },
+  {
+    "id": "ct2",
+    "title": "Mobile development"
+  },
+  {
+    "id": "ct3",
+    "title": "Network & Security"
+  }
+]

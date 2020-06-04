@@ -5,20 +5,13 @@ import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 
+import myLocation from '../../mooks/location.json';
 
 const { width, height } = Layout.window;
 
 const SearchResult = ({ route }) => {
-  const { screenDetail, keyword, withMap } = route.params;
+  const { screenDetail, withMap } = route.params;
   const [activeTab, setActiveTab] = useState('ALL');
-
-  const myLocation = {
-    latitude: 10.763140,
-    longitude: 106.682150,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01
-  };
-
 
   const Tab = ({ title }) => {
     return (
@@ -74,7 +67,7 @@ const SearchResult = ({ route }) => {
   );
 }
 
-export default SearchResult
+export default SearchResult;
 
 const styles = StyleSheet.create({
   container: {

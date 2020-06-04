@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+/* userInfo: {id, name, email, phone, address, avatar} */
 const UserContext = React.createContext();
 
 const UserProvider = ({ children }) => {
