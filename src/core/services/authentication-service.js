@@ -44,7 +44,6 @@ const forgetPassword = ({ email }) => {
 };
 
 
-//note: send this request with reset password token
 const newPassword = ({ password, password2 }) => {
   if (password && password2) {
     return {

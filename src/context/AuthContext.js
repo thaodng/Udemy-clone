@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+
+/*authentication: {token: string, isAnthenticated: boolean} */
 const AuthContext = React.createContext();
 
 const AuthenticationProvider = ({ children }) => {

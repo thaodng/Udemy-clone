@@ -6,6 +6,7 @@ import { StatusBar, StyleSheet, View } from 'react-native';
 import { MenuProvider } from 'react-native-popup-menu';
 import { AuthenticationProvider } from './src/context/AuthContext';
 import { UserProvider } from './src/context/UserContext';
+import { SettingProvider } from './src/context/SettingContext';
 
 import useCachedResources from './src/hooks/useCachedResources';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
@@ -26,17 +27,16 @@ export default function App(props) {
         <View style={styles.container}>
           <AuthenticationProvider>
             <UserProvider>
-              <MenuProvider >
-                <NavigationContainer linking={LinkingConfiguration}>
-                  {/* 
-                    <Stack.Navigator headerMode="none">
-                      <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
-                    </Stack.Navigator> 
-                    */
-                  }
-                  <AuthStackNavigator />
-                </NavigationContainer>
-              </MenuProvider>
+              <SettingProvider>
+                <MenuProvider >
+                  <NavigationContainer linking={LinkingConfiguration}>
+                    <AuthStackNavigator />
+                    {/* <Stack.Navigator headerMode="none">
+                          <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
+                        </Stack.Navigator> */}
+                  </NavigationContainer>
+                </MenuProvider>
+              </SettingProvider>
             </UserProvider>
           </AuthenticationProvider>
         </View>
