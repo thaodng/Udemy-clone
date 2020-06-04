@@ -1,0 +1,21 @@
+[{
+    "id": "1",
+    "icon": "bookmark-outline",
+    "title": "Most bookmarked"
+  },
+  {
+    "id": "2",
+    "icon": "eye-outline",
+    "title": "Most viewed"
+  },
+  {
+    "id": "3",
+    "icon": "heart-outline",
+    "title": "Most loved"
+  },
+  {
+    "id": "4",
+    "icon": "star-outline",
+    "title": "Most stars"
+  }
+]

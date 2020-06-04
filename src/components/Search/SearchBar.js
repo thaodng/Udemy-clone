@@ -4,23 +4,37 @@ import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
-
-const SearchBar = () => {
+const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onSearch }) => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.searchBarContainer}>
-      <TouchableOpacity style={styles.buttonMap} onPress={() => { alert('Click button map') }}>
+      <TouchableOpacity
+        style={{
+          ...styles.buttonMap,
+          backgroundColor: withMap ? Colors.tintColor : Colors.background,
+        }}
+        onPress={() => { setWithMap(!withMap) }}>
         <Feather name="map-pin" size={20} />
       </TouchableOpacity>
+
       <View style={styles.searchInputContainer}>
         <TextInput
-          style={styles.textInput}
+          value={term}
           placeholder="Search course"
-          onEndEditing={() => navigation.navigate('SearchResult',
-            { keyword: 'Search keyboard' })} />
-        <Feather name="search" size={20} />
+          onChangeText={text => setTerm(text)}
+          style={styles.textInput}
+          onEndEditing={() => {
+            onSearch(term);
+            updateRecentSearch(term);
+          }} />
+        <TouchableOpacity onPress={() => {
+          onSearch(term);
+        }}>
+          <Feather name="search" size={20} />
+        </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -37,10 +51,9 @@ const styles = StyleSheet.create({
   buttonMap: {
     padding: 10,
     margin: 4,
-    backgroundColor: Colors.background,
-    // borderRadius: 4,
+    borderRadius: 4,
+    shadowRadius: 4,
     shadowOpacity: 0.14,
-    // shadowRadius: 4,
     shadowColor: '#000',
     shadowOffset: { height: 0, width: 0 },
   },
@@ -51,9 +64,9 @@ const styles = StyleSheet.create({
     margin: 4,
     paddingHorizontal: 10,
     backgroundColor: Colors.background,
-    // borderRadius: 4,
+    borderRadius: 4,
+    shadowRadius: 4,
     shadowOpacity: 0.14,
-    // shadowRadius: 4,
     shadowColor: '#000',
     shadowOffset: { height: 0, width: 0 },
   },

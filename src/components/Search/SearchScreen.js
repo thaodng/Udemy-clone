@@ -1,99 +1,72 @@
-import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from 'react-native';
+import React, { useState } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
+import categories from '../../mooks/top-categories.json';
+
 const SearchScreen = ({ navigation }) => {
-  const recentList = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'React native',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Amazon web service',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Javascript',
-    },
-  ];
+  const [term, setTerm] = useState('');
+  const [withMap, setWithMap] = useState(false);
+  const [recentSearch, setRecentSearch] = useState([]);
 
-  const categories = [
-    {
-      id: '1',
-      icon: 'bookmark-outline',
-      title: 'Most bookmarked'
-    },
-    {
-      id: '2',
-      icon: 'eye-outline',
-      title: 'Most viewed'
-    },
-    {
-      id: '3',
-      icon: 'heart-outline',
-      title: 'Most loved'
-    },
-    {
-      id: '4',
-      icon: 'star-outline',
-      title: 'Most stars'
-    },
-  ]
-
-  const renderItem = ({ title }) => {
-    return (
-      <RowItem
-        icon="replay"
-        title={title}
-        rightIcon={false}
-        onPress={() => {
-          navigation.navigate(
-            ScreenKey.SearchResultScreen, {
-            screenDetail: ScreenKey.SearchCourseDetailScreen,
-            keyword: title
-          })
-        }}
-      />
-    );
+  const updateRecentSearch = (searchTerm) => {
+    setRecentSearch([...recentSearch, { id: Date().now, title: searchTerm }]);
   };
 
+  const onSearch = (term) => {
+    navigation.navigate(ScreenKey.SearchResultScreen,
+      {
+        screenDetail: ScreenKey.SearchCourseDetailScreen,
+        keyword: term,
+        withMap
+      });
+  };
 
-  const renderCategories = ({ icon, title }) => {
+  const renderItem = ({ title, icon, rightIcon }) => {
     return (
       <RowItem
         icon={icon}
         title={title}
-        rightIcon={true}
-        onPress={() => {
-          navigation.navigate(
-            ScreenKey.SearchResultScreen, {
-            screenDetail: ScreenKey.SearchCourseDetailScreen,
-            keyword: title
-          })
-        }}
+        rightIcon={rightIcon}
+        onPress={() => onSearch(title)}
       />
     );
   };
 
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar />
+      <SearchBar
+        term={term}
+        setTerm={setTerm}
+        withMap={withMap}
+        setWithMap={setWithMap}
+        updateRecentSearch={updateRecentSearch}
+        onSearch={onSearch}
+      />
       <View style={styles.shadow}>
-        <View style={styles.recentBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }} >Recent searches</Text>
-          <Text style={{ color: Colors.tintColor }}>CLEAR ALL</Text>
-        </View>
+        {
+          (recentSearch.length > 0) &&
+          <>
+            <View style={styles.recentBar}>
+              <Text style={{ fontWeight: 'bold', fontSize: 18 }} >Recent searches</Text>
+              <TouchableOpacity onPress={() => setRecentSearch([])}>
+                <Text style={{ color: Colors.tintColor }}>CLEAR ALL</Text>
+              </TouchableOpacity>
+            </View>
 
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={recentList}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => renderItem(item)}
-        />
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={recentSearch}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => renderItem({ title: item.title, icon: 'replay', rightIcon: false })}
+            />
+          </>
+        }
 
         <View style={styles.recentBar}>
           <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Top categories</Text>
@@ -103,16 +76,17 @@ const SearchScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
           data={categories}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => renderCategories(item)}
+          renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
         />
 
       </View>
 
     </SafeAreaView>
   )
-}
+};
 
-export default SearchScreen
+
+export default SearchScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -136,3 +110,4 @@ const styles = StyleSheet.create({
     marginVertical: 10
   }
 })
+

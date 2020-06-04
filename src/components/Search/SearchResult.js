@@ -9,8 +9,8 @@ import Layout from '../../constants/Layout';
 const { width, height } = Layout.window;
 
 const SearchResult = ({ route }) => {
-  const { screenDetail } = route.params;
-  console.log(screenDetail);
+  const { screenDetail, keyword, withMap } = route.params;
+  const [activeTab, setActiveTab] = useState('ALL');
 
   const myLocation = {
     latitude: 10.763140,
@@ -19,7 +19,6 @@ const SearchResult = ({ route }) => {
     longitudeDelta: 0.01
   };
 
-  const [activeTab, setActiveTab] = useState('ALL');
 
   const Tab = ({ title }) => {
     return (
@@ -67,7 +66,7 @@ const SearchResult = ({ route }) => {
   return (
     <View style={styles.container}>
       {renderTabs()}
-      {renderMap()}
+      {withMap && renderMap()}
       <View style={{ flex: 1 }}>
         <ListCourses direction="column" screenDetail={screenDetail} />
       </View>
