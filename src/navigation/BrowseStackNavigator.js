@@ -20,7 +20,11 @@ const BrowseStackNavigator = () => {
       <BrowseStack.Screen
         name={ScreenKey.BrowseCoursesScreen}
         component={ListCoursesScreen}
-        options={{ headerShown: false }}
+        options={({ route }) => (
+          {
+            title: route.params.subject
+          }
+        )}
       />
 
       <BrowseStack.Screen

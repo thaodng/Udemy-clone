@@ -17,4 +17,12 @@ const getCourses = () => {
   }
 };
 
-export { getCourses };
+const getCoursesByAuthor = (authorId) => {
+  return dataCourses.filter(course => course.authorIds.includes(authorId));
+};
+
+const getCoursesByCategory = (categoryId) => {
+  return dataCourses.filter(course => course.categoryId === categoryId);
+};
+
+export { getCourses, getCoursesByAuthor, getCoursesByCategory };

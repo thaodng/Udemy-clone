@@ -1,25 +1,23 @@
 import React from 'react';
 import {
-  View,
   Text,
   FlatList,
-  Image,
   TouchableOpacity,
   StyleSheet,
   Dimensions,
 } from 'react-native';
 
+import Colors from '../../constants/Colors';
+
 const W = Dimensions.get('window').width / 4;
 
 
-const TopAuthors = ({ authors, onPress }) => {
-
+const TopCategories = ({ categories, onPress }) => {
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.buttonAuthor} onPress={() => onPress(item.id)}>
-        <Image style={styles.avatarAuthor} source={{ uri: item.avatar }} />
-        <Text style={styles.nameAuthor}>
-          {item.name}
+      <TouchableOpacity style={styles.button} onPress={() => onPress(item.id)}>
+        <Text style={styles.title}>
+          {item.title}
         </Text>
       </TouchableOpacity>
     );
@@ -31,7 +29,7 @@ const TopAuthors = ({ authors, onPress }) => {
       <FlatList
         horizontal
         keyExtractor={item => item.id}
-        data={authors}
+        data={categories}
         showsHorizontalScrollIndicator={false}
         renderItem={renderItem}
       />
@@ -39,20 +37,17 @@ const TopAuthors = ({ authors, onPress }) => {
   );
 };
 
-export default TopAuthors;
+export default TopCategories;
 
 const styles = StyleSheet.create({
-  buttonAuthor: {
+  button: {
     padding: 5
   },
-  avatarAuthor: {
-    width: W,
-    height: W,
-    borderRadius: W / 2,
-  },
-  nameAuthor: {
-    width: W,
+  title: {
     padding: 8,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: Colors.tintColor,
+    borderRadius: 8
   }
 });

@@ -15,7 +15,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={ScreenKey.HomeTabStackNavigator}>
+    <BottomTab.Navigator initialRouteName={ScreenKey.BrowseTabStackNavigator}>
 
       <BottomTab.Screen
         name={ScreenKey.HomeTabStackNavigator}

@@ -4,9 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../../constants/Colors'
 
-const trimText = (text = "", limit) =>
-  text.length > limit ? `${text.slice(0, limit)}...` : text;
-
 const Slide = ({ item, screenDetail }) => {
   const { id, thumbnail, title, rating, description } = item;
   const navigation = useNavigation();
@@ -20,12 +17,12 @@ const Slide = ({ item, screenDetail }) => {
       <View style={styles.content}>
         <Image style={styles.poster} resizeMode="stretch" source={{ uri: thumbnail }} />
         <View style={styles.data}>
-          <Text style={styles.title}>{trimText(title, 30)}</Text>
+          <Text numberOfLines={1} style={styles.title}>{title}</Text>
           <View style={styles.ratingContainer}>
             <FontAwesome name="star" size={18} color={Colors.tintColor} />
             <Text style={styles.rating} >{`${rating}/5`}</Text>
           </View>
-          <Text style={styles.overview}>{trimText(description, 110)}</Text>
+          <Text numberOfLines={5} style={styles.overview}>{description}</Text>
           <TouchableOpacity onPress={goToDetail}>
             <View style={styles.button}>
               <Text style={styles.buttonText}>View details</Text>
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
   background: {
     width: '100%',
     height: '100%',
-    opacity: 0.4,
+    opacity: 0.5,
     position: 'absolute'
   },
   content: {
@@ -68,7 +65,7 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 19,
+    fontSize: 18,
     marginBottom: 7
   },
   ratingContainer: {
