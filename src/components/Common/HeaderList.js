@@ -4,7 +4,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 
-const HeaderList = ({ title, listCoursesScreen, screenDetail }) => {
+const HeaderList = ({ title, data, listCoursesScreen, screenDetail }) => {
   const navigation = useNavigation();
 
   return (
@@ -17,7 +17,8 @@ const HeaderList = ({ title, listCoursesScreen, screenDetail }) => {
           navigation.navigate(
             listCoursesScreen, {
             screenDetail: screenDetail,
-            subject: title
+            subject: title,
+            data: data
           })
         }>
           <View style={styles.buttonViewAll}>

@@ -4,6 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar, StyleSheet, View } from 'react-native';
 
 import { MenuProvider } from 'react-native-popup-menu';
+import { AuthorsProvider } from './src/context/AuthorsContext';
+import { CategoriesProvider } from './src/context/CategoriesContext';
+import { CoursesProvider } from './src/context/CoursesContext';
 import { AuthenticationProvider } from './src/context/AuthContext';
 import { UserProvider } from './src/context/UserContext';
 import { SettingProvider } from './src/context/SettingContext';
@@ -25,20 +28,26 @@ export default function App(props) {
       <>
         <StatusBar />
         <View style={styles.container}>
-          <AuthenticationProvider>
-            <UserProvider>
-              <SettingProvider>
-                <MenuProvider >
-                  <NavigationContainer linking={LinkingConfiguration}>
-                    <AuthStackNavigator />
-                    {/* <Stack.Navigator headerMode="none">
+          <AuthorsProvider>
+            <CategoriesProvider>
+              <CoursesProvider>
+                <AuthenticationProvider>
+                  <UserProvider>
+                    <SettingProvider>
+                      <MenuProvider >
+                        <NavigationContainer linking={LinkingConfiguration}>
+                          <AuthStackNavigator />
+                          {/* <Stack.Navigator headerMode="none">
                           <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
                         </Stack.Navigator> */}
-                  </NavigationContainer>
-                </MenuProvider>
-              </SettingProvider>
-            </UserProvider>
-          </AuthenticationProvider>
+                        </NavigationContainer>
+                      </MenuProvider>
+                    </SettingProvider>
+                  </UserProvider>
+                </AuthenticationProvider>
+              </CoursesProvider>
+            </CategoriesProvider>
+          </AuthorsProvider>
         </View>
       </>
     );

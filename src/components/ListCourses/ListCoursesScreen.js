@@ -5,7 +5,7 @@ import ListCourses from './ListCourses';
 const ListCoursesScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <ListCourses direction="column" screenDetail={route.params.screenDetail} />
+      <ListCourses direction="column" data={route.params.data} screenDetail={route.params.screenDetail} />
     </SafeAreaView>
   )
 };

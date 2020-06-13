@@ -1,10 +1,13 @@
+import User from '../../models/User';
 import user from '../../mocks/user.json';
+
+const dataUser = new User(user);
 
 const getUserInfo = ({ token }) => {
   if (token) {
     return {
       status: 200,
-      user
+      user: dataUser
     };
   } else {
     return {

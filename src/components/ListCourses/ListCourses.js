@@ -2,15 +2,14 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import CourseItemRow from './CourseItemRow';
 import CourseItemColumn from './CourseItemColumn';
-import DATA from '../../mocks/courses.json';
 
-const ListCourses = ({ direction, screenDetail }) => {
+const ListCourses = ({ direction, data, screenDetail }) => {
   return (
     <FlatList
       horizontal={direction === 'row' ? true : false}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
-      data={DATA}
+      data={data}
       style={[styles.shadow]}
       keyExtractor={(item) => `${item.id}`}
       renderItem={({ item }) => (

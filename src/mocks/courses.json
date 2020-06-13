@@ -1,181 +1,131 @@
 [{
     "id": "c1",
+    "categoryId": "ct1",
+    "authorIds": ["a1", "a10"],
     "title": "Reactjs",
-    "category": {
-      "id": "ct1",
-      "title": "Web development"
-    },
-    "author": {
-      "name": "Neel Lane",
-      "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
-    },
+    "thumbnail": "https://nordiccoder.com/app/uploads/2019/11/41-reactjs.png",
     "level": "Beginner",
     "dateRelease": "Jun 01 - 2020",
+    "duration": "15 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 5,
-    "reviews": 15,
-    "preview": "https://nordiccoder.com/app/uploads/2019/11/41-reactjs.png"
+    "reviews": 15
   },
   {
     "id": "c2",
+    "categoryId": "ct1",
+    "authorIds": ["a1", "a9"],
     "title": "Javascript",
-    "category": {
-      "id": "ct1",
-      "title": "Web development"
-    },
-    "author": {
-      "name": "Neel Lane",
-      "avatar": "https://randomuser.me/api/portraits/men/1.jpg"
-    },
+    "thumbnail": "https://sogo.edu.vn/wp-content/uploads/2019/08/javascript-la-gi.jpg",
     "level": "All levels",
     "dateRelease": "March 15 - 2020",
+    "duration": "35 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.6,
-    "reviews": 12,
-    "preview": "https://sogo.edu.vn/wp-content/uploads/2019/08/javascript-la-gi.jpg"
+    "reviews": 12
   },
   {
     "id": "c3",
+    "categoryId": "ct1",
+    "authorIds": ["a2"],
     "title": "HTML",
-    "category": {
-      "id": "ct1",
-      "title": "Web development"
-    },
-    "author": {
-      "name": "Nikita Cherry",
-      "avatar": "https://randomuser.me/api/portraits/men/2.jpg"
-    },
+    "thumbnail": "https://www.inithtml.com/wp-content/uploads/2017/04/html.jpg",
     "level": "All levels",
     "dateRelease": "March 15 - 2020",
+    "duration": "7 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.7,
-    "reviews": 32,
-    "preview": "https://www.inithtml.com/wp-content/uploads/2017/04/html.jpg"
+    "reviews": 32
   },
   {
     "id": "c4",
+    "categoryId": "ct1",
+    "authorIds": ["a3", "a7"],
     "title": "Web assembly",
-    "category": {
-      "id": "ct1",
-      "title": "Web development"
-    },
-    "author": {
-      "name": "Jason Paterson",
-      "avatar": "https://randomuser.me/api/portraits/men/3.jpg"
-    },
+    "thumbnail": "https://topdev.vn/blog/wp-content/uploads/2019/05/webassembly.png",
     "level": "Expert",
     "dateRelease": "July 01 - 2020",
+    "duration": "12 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
-    "rating": 4.3,
-    "reviews": 3212,
-    "preview": "https://topdev.vn/blog/wp-content/uploads/2019/05/webassembly.png"
+    "rating": 4.9,
+    "reviews": 27
   },
   {
     "id": "c5",
+    "categoryId": "ct2",
+    "authorIds": ["a4", "a5"],
     "title": "React native",
-    "category": {
-      "id": "ct2",
-      "title": "Mobile development"
-    },
-    "author": {
-      "name": "Benn Vu",
-      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
-    },
+    "thumbnail": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg",
     "level": "Intermediate",
     "dateRelease": "April 06 - 2020",
+    "duration": "8 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 5,
-    "reviews": 100,
-    "preview": "https://i.ytimg.com/vi/Hf4MJH0jDb4/maxresdefault.jpg"
+    "reviews": 100
   },
   {
     "id": "c6",
+    "categoryId": "ct2",
+    "authorIds": ["a4", "a6"],
     "title": "Android development",
-    "category": {
-      "id": "ct2",
-      "title": "Mobile development"
-    },
-    "author": {
-      "name": "Benn Vu",
-      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
-    },
+    "thumbnail": "https://img-a.udemycdn.com/course/750x422/1697790_aecd_3.jpg",
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
+    "duration": "12 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.5,
-    "reviews": 32,
-    "preview": "https://img-a.udemycdn.com/course/750x422/1697790_aecd_3.jpg"
-  }, 
+    "reviews": 32
+  },
   {
     "id": "c7",
+    "categoryId": "ct2",
+    "authorIds": ["a4", "a6"],
     "title": "iOS development",
-    "category": {
-      "id": "ct2",
-      "title": "Mobile development"
-    },
-    "author": {
-      "name": "Benn Vu",
-      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
-    },
+    "thumbnail": "https://img-a.udemycdn.com/course/750x422/2632258_0546.jpg",
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
+    "duration": "12 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.5,
-    "reviews": 32,
-    "preview": "https://img-a.udemycdn.com/course/750x422/2632258_0546.jpg"
-  }, 
+    "reviews": 32
+  },
   {
     "id": "c8",
+    "categoryId": "ct3",
+    "authorIds": ["a8"],
     "title": "Ethical haking",
-    "category": {
-      "id": "ct3",
-      "title": "Network & Security"
-    },
-    "author": {
-      "name": "Edward Ortega",
-      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
-    },
+    "thumbnail": "https://devqa.io/assets/images/ethical-hacking-penetration-testing.png",
     "level": "All levels",
     "dateRelease": "April 06 - 2020",
+    "duration": "14 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 5,
-    "reviews": 100,
-    "preview": "https://devqa.io/assets/images/ethical-hacking-penetration-testing.png"
+    "reviews": 100
   },
   {
     "id": "c9",
+    "categoryId": "ct3",
+    "authorIds": ["a8"],
     "title": "Network securiy",
-    "category": {
-      "id": "ct3",
-      "title": "Network & Security"
-    },
-    "author": {
-      "name": "Edward Ortega",
-      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
-    },
+    "thumbnail": "https://westernedu.vn/images/stores/2020/01/06/image.jpg",
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
+    "duration": "14 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.5,
-    "reviews": 32,
-    "preview": "https://westernedu.vn/images/stores/2020/01/06/image.jpg"
-  }, 
+    "reviews": 32
+  },
   {
     "id": "c10",
+    "categoryId": "ct3",
+    "authorIds": ["a8"],
     "title": "Security testing",
-    "category": {
-      "id": "ct3",
-      "title": "Network & Security"
-    },
-    "author": {
-      "name": "Edward Ortega",
-      "avatar": "https://randomuser.me/api/portraits/men/4.jpg"
-    },
+    "thumbnail": "https://vncs.vn/wp-content/uploads/2019/07/Security-Testing.jpg",
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
+    "duration": "14 hours",
     "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
     "rating": 4.5,
-    "reviews": 32,
-    "preview": "https://vncs.vn/wp-content/uploads/2019/07/Security-Testing.jpg"
-  }, 
+    "reviews": 32
+  }
 ]

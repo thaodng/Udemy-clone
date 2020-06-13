@@ -1,18 +1,23 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity, Image, Text, View, Dimensions, Alert } from 'react-native';
+import React, { useContext } from 'react'
+import { StyleSheet, TouchableOpacity, Image, Text, View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 import Rating from '../Common/Rating';
 
+import { AuthorsContext } from '../../context/AuthorsContext';
+
 const { width, height } = Layout.window;
 
 const CourseItemRow = ({ item, screenDetail }) => {
   const navigation = useNavigation();
-  const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
+  const { authors } = useContext(AuthorsContext);
 
-  // what is list this course detail screen belong ti?
+  const { id, categoryId, authorIds, title, thumbnail, level, dateRelease, duration, description, rating, reviews } = item;
+  const authorsName = authorIds.map(aId => authors.find(a => a.id === aId)).map(author => author.name).join(', ');
+  
+  // what is list this course detail screen belong to?
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate(screenDetail, {
@@ -21,12 +26,12 @@ const CourseItemRow = ({ item, screenDetail }) => {
     }}
       style={[styles.container, styles.shadow]}>
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: preview }} />
+        <Image style={styles.image} source={{ uri: thumbnail }} />
         <PopupMenu style={styles.imageOption} item={item} colorDot='white' />
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={{ color: 'black' }}>{author.name}</Text>
+        <Text numberOfLines={1} style={styles.title}>{title}</Text>
+        <Text numberOfLines={1} style={{ color: 'black' }}>{authorsName}</Text>
         <Text numberOfLines={1} style={{ color: 'gray', width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
         <View style={styles.rating}>
           <Rating rating={rating} />
