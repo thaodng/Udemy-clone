@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { UserContext } from '../../context/UserContext';
 import { CoursesContext } from '../../context/CoursesContext';
 
-
 import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';

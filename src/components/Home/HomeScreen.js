@@ -1,38 +1,46 @@
 import React, { useEffect, useContext } from 'react'
-import { StyleSheet, View, Image, SafeAreaView, ScrollView } from 'react-native'
-import SliderContainer from '../Common/SliderContainer';
-import Slide from '../Common/Slide';
+import { StyleSheet, View, Image, SafeAreaView, ScrollView } from 'react-native';
+import Banner from '../../assets/images/banner.png';
 import HeaderList from '../Common/HeaderList';
 import ListCourses from '../ListCourses/ListCourses';
 import Layout from '../../constants/Layout';
 import ScreenKey from '../../constants/ScreenKey';
 
+import { UserContext } from '../../context/UserContext';
 import { CategoriesContext } from '../../context/CategoriesContext';
 import { CoursesContext } from '../../context/CoursesContext';
 
 const { width, height } = Layout.window;
 
 const HomeScreen = () => {
+  const { userInfo } = useContext(UserContext);
   const { categories } = useContext(CategoriesContext);
   const { courses } = useContext(CoursesContext);
+
+  const bookmarkedCourses = courses.filter(course => userInfo.bookmarkedCourses.includes(course.id));
+  
+  let bookmarkCategories = [];
+  for (let i = 0; i < bookmarkedCourses.length; i++) {
+    if (!bookmarkCategories.includes(bookmarkedCourses[i].categoryId)) {
+      bookmarkCategories.push(bookmarkedCourses[i].categoryId);
+    }
+  }
+
+  bookmarkCategories = bookmarkCategories.map(ctId => categories.find(ct => ct.id === ctId));
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView>
-        <SliderContainer title="News course">
-          {
-            courses.map(course => (
-              <Slide
-                key={course.id}
-                item={course}
-                screenDetail={ScreenKey.CourseDetailScreen}
-              />
-            ))
-          }
-        </SliderContainer>
+        <View style={styles.imageBanner}>
+          <Image
+            style={{ width: '100%', height: '100%' }}
+            source={Banner}
+            resizeMode="stretch"
+          />
+        </View>
         {
-          categories.map(ct => {
-            const data = courses.filter(course => course.categoryId === ct.id);
+          bookmarkCategories.map(ct => {
+            const data = bookmarkedCourses.filter(course => course.categoryId === ct.id);
             return (
               <View key={`${ct.id}`}>
                 <HeaderList title={ct.title} data={data} listCoursesScreen={ScreenKey.ListCoursesScreen} screenDetail={ScreenKey.CourseDetailScreen} />
