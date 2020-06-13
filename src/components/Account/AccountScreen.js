@@ -13,7 +13,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 
 const AccountScreen = ({ navigation }) => {
-  const { authentication: { isAuthenicated }, setAuthentication } = useContext(AuthContext);
+  const { authentication: { isAuthenticated }, setAuthentication } = useContext(AuthContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const { name, avatar } = userInfo;
 
@@ -23,7 +23,7 @@ const AccountScreen = ({ navigation }) => {
     navigation.navigate(ScreenKey.LoginScreen);
   }
 
-  const Intro = ({ isAuthenicated }) => {
+  const Intro = () => {
 
     return (
       <View style={styles.userContainer}>
@@ -87,9 +87,9 @@ const AccountScreen = ({ navigation }) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        <Intro isAuthenicated={isAuthenicated} />
+        <Intro />
 
-        {isAuthenicated && (
+        {isAuthenticated && (
           <>
             <View style={styles.divider} />
             {renderUserInfo()}
@@ -101,7 +101,7 @@ const AccountScreen = ({ navigation }) => {
       </ScrollView>
 
       {
-        isAuthenicated &&
+        isAuthenticated &&
         <Button
           mode="outlined"
           theme={{

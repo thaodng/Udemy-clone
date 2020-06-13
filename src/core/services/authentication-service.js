@@ -2,7 +2,7 @@ const login = ({ email, password }) => {
   if (email && password) {
     return {
       status: 200,
-      isAuthenicated: true,
+      isAuthenticated: true,
       token: 'ThisIsToken'
     }
   } else {

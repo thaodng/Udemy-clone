@@ -1,22 +1,33 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+
+import { UserContext } from '../../context/UserContext';
+import { CoursesContext } from '../../context/CoursesContext';
+
 
 import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import DATA from '../../mocks/courses.json';
 
 const DownloadScreen = () => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { courses } = useContext(CoursesContext);
+  const downloadedCourses = courses.filter(course => userInfo.favoriteCourses.includes(course.id));
+
+  const onRemove = () => {
+    setUserInfo({ ...userInfo, favoriteCourses: [] });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerDownloadContainer}>
-        <Text style={styles.total}>7 courses (960MB)</Text>
-        <TouchableOpacity>
+        <Text style={styles.total}>{`${downloadedCourses.length} courses`}</Text>
+        <TouchableOpacity onPress={onRemove}>
           <Text style={styles.remove}>REMOVE ALL</Text>
         </TouchableOpacity>
       </View>
-      <ListCourses direction="column" screenDetail={ScreenKey.DownloadedCourseDetailScreen} />
+      <ListCourses direction="column" data={downloadedCourses} screenDetail={ScreenKey.DownloadedCourseDetailScreen} />
     </View>
   )
 }

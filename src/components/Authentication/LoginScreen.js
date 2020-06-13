@@ -23,9 +23,9 @@ const LoginScreen = ({ navigation }) => {
   const { setUserInfo } = useContext(UserContext);
 
   const onSubmit = () => {
-    const { status, token, isAuthenicated, errorString } = login({ email, password });
+    const { status, token, isAuthenticated, errorString } = login({ email, password });
     if (status === 200) {
-      setAuthentication({ token, isAuthenicated });
+      setAuthentication({ token, isAuthenticated });
 
       const { user } = getUserInfo({ token });
       setUserInfo(user);
