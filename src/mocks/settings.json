@@ -16,11 +16,6 @@
   },
   {
     "id": 4,
-    "label": "Recommended content push notifications",
-    "value": false
-  },
-  {
-    "id": 5,
     "label": "Dark theme",
     "value": false
   }

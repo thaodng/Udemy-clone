@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import CourseItemRow from './CourseItemRow';
 import CourseItemColumn from './CourseItemColumn';
-import DATA from '../../mooks/courses.json';
+import DATA from '../../mocks/courses.json';
 
 const ListCourses = ({ direction, screenDetail }) => {
   return (

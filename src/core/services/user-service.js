@@ -1,4 +1,4 @@
-import user from '../../mooks/user.json';
+import user from '../../mocks/user.json';
 
 const getUserInfo = ({ token }) => {
   if (token) {

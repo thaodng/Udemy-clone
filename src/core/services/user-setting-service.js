@@ -1,4 +1,4 @@
-import settings from '../../mooks/settings.json';
+import settings from '../../mocks/settings.json';
 
 const getUserSettings = ({ token }) => {
   if (token) {

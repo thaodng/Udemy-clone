@@ -5,7 +5,7 @@ import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import categories from '../../mooks/top-categories.json';
+import categories from '../../mocks/top-categories.json';
 
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');

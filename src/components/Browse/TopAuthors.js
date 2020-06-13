@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-import authors from '../../mooks/authors.json'
+import authors from '../../mocks/authors.json'
 
 const W = Dimensions.get('window').width / 4;
 

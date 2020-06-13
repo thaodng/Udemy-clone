@@ -5,7 +5,7 @@ import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import DATA from '../../mooks/courses.json';
+import DATA from '../../mocks/courses.json';
 
 const DownloadScreen = () => {
   return (

@@ -5,7 +5,7 @@ import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 
-import myLocation from '../../mooks/location.json';
+import myLocation from '../../mocks/location.json';
 
 const { width, height } = Layout.window;
 

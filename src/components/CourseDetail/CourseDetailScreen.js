@@ -4,7 +4,7 @@ import { Video } from 'expo-av'
 
 import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
-import DATA from '../../mooks/detail.json'
+import DATA from '../../mocks/detail.json'
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { courseId } = route.params;

@@ -1,3 +1,6 @@
+/* Note: In case don't want display tab navigator in detail screen, 
+move detail of all screen to AuthStack*/
+
 const ScreenKey = {
   AuthStackNavigator: 'AuthStackNavigator',
   SwiperScreen: 'SwiperScreen',
@@ -5,7 +8,6 @@ const ScreenKey = {
   SignupScreen: 'SignupScreen',
   ForgetScreen: 'ForgetScreen',
   NewPassword: 'NewPassword',
-
   BrowseTabNavigator: 'BrowseTabNavigator',
 
   HomeTabStackNavigator: 'HomeTabStackNavigator',
