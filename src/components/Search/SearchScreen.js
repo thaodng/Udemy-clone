@@ -5,7 +5,10 @@ import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import categories from '../../mocks/top-categories.json';
+import { getCoursesByTitle } from '../../core/services/courses-service';
+import { getAuthorsByName } from '../../core/services/authors-service';
+
+import topCategories from '../../mocks/top-categories.json';
 
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
@@ -13,15 +16,20 @@ const SearchScreen = ({ navigation }) => {
   const [recentSearch, setRecentSearch] = useState([]);
 
   const updateRecentSearch = (searchTerm) => {
-    setRecentSearch([...recentSearch, { id: Date().now, title: searchTerm }]);
+    setRecentSearch([...recentSearch, { id: searchTerm, title: searchTerm }]);
   };
 
   const onSearch = (term) => {
     if (term) {
+      const dataCourses = getCoursesByTitle(term);
+      const dataAuthors = getAuthorsByName(term);
+
       navigation.navigate(ScreenKey.SearchResultScreen,
         {
           screenDetail: ScreenKey.SearchCourseDetailScreen,
           keyword: term,
+          dataCourses,
+          dataAuthors,
           withMap
         });
     }
@@ -79,7 +87,7 @@ const SearchScreen = ({ navigation }) => {
 
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={categories}
+          data={topCategories}
           keyExtractor={item => item.id}
           renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
         />

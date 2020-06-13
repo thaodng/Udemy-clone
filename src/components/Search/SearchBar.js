@@ -1,12 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
 const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onSearch }) => {
-  const navigation = useNavigation();
-
   return (
     <View style={styles.searchBarContainer}>
       <TouchableOpacity
@@ -27,6 +24,7 @@ const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onS
           onEndEditing={() => {
             onSearch(term);
             updateRecentSearch(term);
+            setTerm('');
           }} />
         <TouchableOpacity onPress={() => {
           onSearch(term);

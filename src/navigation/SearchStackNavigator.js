@@ -7,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import SearchScreen from '../components/Search/SearchScreen';
 import SearchResult from '../components/Search/SearchResult';
 import FilterScreen from '../components/Search/FilterScreen';
+import ListCoursesScreen from '../components/ListCourses/ListCoursesScreen';
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen';
 
 import ScreenKey from '../constants/ScreenKey';
@@ -56,6 +57,16 @@ const SearchStackNavigator = () => {
           //   </TouchableOpacity>
           // )
         }}
+      />
+
+      <SearchStack.Screen
+        name={ScreenKey.SearchCoursesScreen}
+        component={ListCoursesScreen}
+        options={({ route }) => (
+          {
+            title: route.params.subject
+          }
+        )}
       />
 
       <SearchStack.Screen

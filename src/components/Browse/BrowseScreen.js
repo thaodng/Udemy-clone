@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import SliderContainer from '../Common/SliderContainer';
 import Slide from '../Common/Slide';
 import HeaderList from '../Common/HeaderList';
-import TopAuthors from './TopAuthors';
+import Authors from '../Common/Authors';
 import TopCategories from './TopCategories';
 import ListCourses from '../ListCourses/ListCourses';
 import ScreenKey from '../../constants/ScreenKey';
@@ -107,7 +107,7 @@ const BrowseScreen = () => {
           })
         }
         <HeaderList title="Top authors" />
-        <TopAuthors authors={authors} onPress={onPressAuthor} />
+        <Authors authors={authors} onPress={onPressAuthor} />
       </View>
     </ScrollView>
   )

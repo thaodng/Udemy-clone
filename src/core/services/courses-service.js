@@ -25,4 +25,8 @@ const getCoursesByCategory = (categoryId) => {
   return dataCourses.filter(course => course.categoryId === categoryId);
 };
 
-export { getCourses, getCoursesByAuthor, getCoursesByCategory };
+const getCoursesByTitle = (title) => {
+  return dataCourses.filter(course => course.title.toLowerCase().includes(title.toLowerCase()));
+};
+
+export { getCourses, getCoursesByAuthor, getCoursesByCategory, getCoursesByTitle };

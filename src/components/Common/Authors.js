@@ -12,7 +12,7 @@ import {
 const W = Dimensions.get('window').width / 4;
 
 
-const TopAuthors = ({ authors, onPress }) => {
+const Authors = ({ authors, onPress }) => {
 
   const renderItem = ({ item }) => {
     return (
@@ -39,7 +39,7 @@ const TopAuthors = ({ authors, onPress }) => {
   );
 };
 
-export default TopAuthors;
+export default Authors;
 
 const styles = StyleSheet.create({
   buttonAuthor: {

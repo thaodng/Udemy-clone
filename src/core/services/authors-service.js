@@ -18,5 +18,10 @@ const getAuthors = () => {
 };
 
 
+const getAuthorsByName = (name) => {
+  return dataAuthors.filter(a => a.name.toLowerCase().includes(name.toLowerCase()));
+};
 
-export { getAuthors };
+
+
+export { getAuthors, getAuthorsByName };

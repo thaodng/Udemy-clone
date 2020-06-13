@@ -28,6 +28,7 @@ const ScreenKey = {
   SearchScreen: 'SearchScreen',
   SearchResultScreen: 'SearchResultScreen',
   SearchFilterScreen: 'SearchFilterScreen',
+  SearchCoursesScreen: 'SearchCoursesScreen',
   SearchCourseDetailScreen: 'SearchCourseDetailScreen',
 
   AccountTabStackNavigator: 'AccountTabStackNavigator',
