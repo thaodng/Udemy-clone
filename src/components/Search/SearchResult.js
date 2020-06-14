@@ -3,46 +3,22 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import MapView, { Marker } from "react-native-maps";
 import HeaderList from '../Common/HeaderList';
 import Authors from '../Common/Authors';
+import TopTab from '../Common/TopTab';
 import ListCourses from '../ListCourses/ListCourses';
-import { AuthorsContext } from '../../context/AuthorsContext';
-import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 import ScreenKey from '../../constants/ScreenKey';
 
+import { AuthorsContext } from '../../context/AuthorsContext';
 import { getCoursesByAuthor } from '../../core/services/courses-service';
-
 import myLocation from '../../mocks/location.json';
 
 const { width, height } = Layout.window;
 
 const SearchResult = ({ navigation, route }) => {
   const { screenDetail, withMap, dataCourses, dataAuthors } = route.params;
-  const [activeTab, setActiveTab] = useState('ALL');
+  const tabs = ["ALL", "COURSES", "AUTHORS"]
+  const [activeTab, setActiveTab] = useState(tabs[0]);
   const { authors } = useContext(AuthorsContext);
-
-  const Tab = ({ title }) => {
-    return (
-      <View style={[styles.tab, activeTab === title ? styles.activeTab : null]}>
-        <Text
-          style={[styles.tabTitle, activeTab === title ? styles.activeTabTitle : null]}
-          onPress={() => setActiveTab(title)}
-        >
-          {title}
-        </Text>
-      </View>
-    )
-  };
-
-  const renderTabs = () => {
-    return (
-      <View style={styles.tabs}>
-        <Tab title="ALL" />
-        <Tab title="COURSES" />
-        {/* <Tab title="PATHS" /> */}
-        <Tab title="AUTHORS" />
-      </View>
-    );
-  }
 
   const renderMap = () => {
     return (
@@ -76,7 +52,7 @@ const SearchResult = ({ navigation, route }) => {
 
   return (
     <View style={styles.container} >
-      {renderTabs()}
+      <TopTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
       <ScrollView showsVerticalScrollIndicator={false}>
         {withMap && renderMap()}
         <View style={{ flex: 1 }}>
@@ -107,33 +83,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingVertical: 10,
-  },
-  // tabs
-  tabs: {
-    // flex: 1,
-    top: 0,
-    width: width,
-    marginVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'flex-end'
-  },
-  tab: {
-    paddingHorizontal: 14,
-    marginHorizontal: 10,
-    borderBottomWidth: 3,
-    borderBottomColor: 'transparent'
-  },
-  tabTitle: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    marginBottom: 10
-  },
-  activeTab: {
-    borderBottomColor: Colors.tintColor
-  },
-  activeTabTitle: {
-    color: Colors.tintColor
   },
   map: {
     flex: 1

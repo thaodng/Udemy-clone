@@ -17,6 +17,11 @@ const getCourses = () => {
   }
 };
 
+
+const getCourseById = (courseId) => {
+  return dataCourses.find(course => course.id === courseId);
+}
+
 const getCoursesByAuthor = (authorId) => {
   return dataCourses.filter(course => course.authorIds.includes(authorId));
 };
@@ -29,4 +34,4 @@ const getCoursesByTitle = (title) => {
   return dataCourses.filter(course => course.title.toLowerCase().includes(title.toLowerCase()));
 };
 
-export { getCourses, getCoursesByAuthor, getCoursesByCategory, getCoursesByTitle };
+export { getCourses, getCourseById, getCoursesByAuthor, getCoursesByCategory, getCoursesByTitle };
