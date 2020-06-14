@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-/*userSettings: [{id: string, label: string, value: boolean}]*/
+/*userSettings: {label: value}*/
 const SettingContext = React.createContext();
 
 const SettingProvider = ({ children }) => {
-  const [userSettings, setUserSettings] = useState([]);
+  const [userSettings, setUserSettings] = useState({});
 
   return (
     <SettingContext.Provider value={{ userSettings, setUserSettings }}>

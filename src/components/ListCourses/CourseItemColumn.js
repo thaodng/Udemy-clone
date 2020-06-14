@@ -12,7 +12,7 @@ import { AuthorsContext } from '../../context/AuthorsContext';
 
 const { width, height } = Layout.window;
 
-const CourseItemColumn = ({ item, screenDetail }) => {
+const CourseItemColumn = ({ item, txColor, bgColor, screenDetail }) => {
   const navigation = useNavigation();
   const { authors } = useContext(AuthorsContext);
 
@@ -32,10 +32,10 @@ const CourseItemColumn = ({ item, screenDetail }) => {
         <Image style={styles.image} source={{ uri: thumbnail }} resizeMode="cover" />
       </View>
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={{ color: 'black' }}>{authorsName}</Text>
-        <Text style={{ color: 'gray', width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{level} - {dateRelease}</Text>
+      <View style={{...styles.contentContainer, backgroundColor: bgColor}}>
+        <Text style={{...styles.title, color: txColor}}>{title}</Text>
+        <Text style={{ color: txColor }}>{authorsName}</Text>
+        <Text style={{ color: Colors.lightGray, width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{level} - {dateRelease}</Text>
         <View style={styles.rating}>
           <Rating rating={rating} />
           <Text style={{ color: Colors.tintColor }}>
@@ -47,7 +47,7 @@ const CourseItemColumn = ({ item, screenDetail }) => {
       <PopupMenu
         style={{ alignSelf: 'flex-start', padding: 10 }}
         item={item}
-        colorDot='black'
+        colorDot={txColor}
       />
 
     </TouchableOpacity>
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: 'white',
     borderBottomColor: Colors.lightgray,
     borderBottomWidth: 0.5,
     marginHorizontal: 4,

@@ -12,12 +12,17 @@ import ScreenKey from '../../constants/ScreenKey';
 
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
+import { SettingContext } from '../../context/SettingContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
 import { getCourseById, getCoursesByAuthor } from '../../core/services/courses-service';
 import { getCourseDetail } from '../../core/services/course-detail-service';
 
 
 const CourseDetailScreen = ({ route, navigation }) => {
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
   const { authentication: { isAuthenticated } } = useContext(AuthContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const { authors } = useContext(AuthorsContext);
@@ -111,18 +116,19 @@ const CourseDetailScreen = ({ route, navigation }) => {
   };
 
   const renderItem = ({ id, title, duration, videoUrl }) => {
+    
     return (
       <TouchableOpacity
         style={styles.item}
         onPress={() => setCurrentItem({ id, videoUrl })}
       >
-        <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : 'gray' }}>{'.'}</Text>
+        <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : 'gray' }}>{duration} mins</Text>
-          <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : 'black' }}>{title}</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{duration} mins</Text>
+          <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{title}</Text>
         </View>
 
-        <PopupMenu style={styles.itemOption} item={{ id, title, duration, videoUrl }} colorDot='black' />
+        <PopupMenu style={styles.itemOption} item={{ id, title, duration, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
       </TouchableOpacity >
     )
   };
@@ -148,14 +154,14 @@ const CourseDetailScreen = ({ route, navigation }) => {
             {
               isAuthenticated &&
               <View style={styles.activityContainer}>
-                <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isBookmarked ? Colors.tintColor : '#fff' }} onPress={onHandleBookmark}>
-                  <Text style={{ color: isBookmarked ? '#fff' : Colors.tintColor }}>{isBookmarked ? 'Unbookmark' : 'Bookmark'}</Text>
+                <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isBookmarked ? Colors.tintColor : bgColor }} onPress={onHandleBookmark}>
+                  <Text style={{ color: isBookmarked ? txColor : Colors.tintColor }}>{isBookmarked ? 'Unbookmark' : 'Bookmark'}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : '#fff' }} onPress={onHandleFavorite}>
-                  <Text style={{ color: isFavorite ? '#fff' : Colors.tintColor }}>{isFavorite ? 'Unfavorite' : 'Favorite'}</Text>
+                <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
+                  <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Unfavorite' : 'Favorite'}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
-                  <Text style={styles.buttonText}>Share</Text>
+                  <Text style={{ color: Colors.tintColor }}>Share</Text>
                 </TouchableOpacity>
               </View>
             }
@@ -169,16 +175,16 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 renderReadMoreFooter('Read less', handlePress)
               }
             >
-              <Text style={styles.infoValue}>{course.description}</Text>
+              <Text style={{ ...styles.infoValue, color: txColor }}>{course.description}</Text>
             </ReadMore>
             <Text style={styles.infoLabel}>Level</Text>
-            <Text style={styles.infoValue}>{course.level}</Text>
+            <Text style={{ ...styles.infoValue, color: txColor }}>{course.level}</Text>
             <Text style={styles.infoLabel}>Data release</Text>
-            <Text style={styles.infoValue}>{course.dateRelease}</Text>
+            <Text style={{ ...styles.infoValue, color: txColor }}>{course.dateRelease}</Text>
             <Text style={styles.infoLabel}>Duration</Text>
-            <Text style={styles.infoValue}>{course.duration}</Text>
+            <Text style={{ ...styles.infoValue, color: txColor }}>{course.duration}</Text>
             <Text style={styles.infoLabel}>Authors</Text>
-            <Authors authors={courseAuthors} onPress={onPressAuthor} />
+            <Authors authors={courseAuthors} txColor={txColor} onPress={onPressAuthor} />
           </ScrollView>
         }
         {
@@ -190,9 +196,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
             keyExtractor={(item, index) => item.id + index}
             renderItem={({ item }) => renderItem(item)}
             renderSectionHeader={({ section: { sectionTitle } }) => (
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: '#D3D3D3' }}>
-                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{sectionTitle}</Text>
-                <PopupMenu style={styles.itemOption} item={{ title: sectionTitle }} colorDot='black' />
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: Colors.lightGray }}>{sectionTitle}</Text>
+                <PopupMenu style={styles.itemOption} item={{ title: sectionTitle }} colorDot={Colors.lightGray} />
               </View>
             )}
           />
@@ -245,7 +251,6 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   infoValue: {
-    color: 'black',
     opacity: 0.8,
     fontSize: 16,
     fontWeight: "500"

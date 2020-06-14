@@ -4,50 +4,56 @@ import { AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
 import Colors from '../../constants/Colors';
 
-import { getUserSettings, updateUserSettings } from '../../core/services/user-setting-service';
+import { getUserSettings } from '../../core/services/user-setting-service';
 
 const SettingsScreen = () => {
   const { authentication: { token } } = useContext(AuthContext);
   const { userSettings, setUserSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
   useEffect(() => {
     const { settings } = getUserSettings({ token });
     setUserSettings(settings); // update context
   }, [])
 
-
-  const toggleSwitch = (id, value) => {
-    const index = userSettings.findIndex(s => s.id === id);
-    const copySettings = [...userSettings];
-    copySettings[index].value = value;
-    setUserSettings(copySettings);
+  const toggleSwitch = (label, value) => {
+    userSettings[label] = value;
+    setUserSettings({
+      ...userSettings,
+    });
   };
 
+  const Setting = ({ label, value, toggleSwitch }) => {
+    return (
+      <View style={{ ...styles.itemContainer, backgroundColor: bgColor }}>
+        <Text style={{ ...styles.itemText, color: txColor }}>{label}</Text>
+        <Switch
+          trackColor={{ false: txColor, true: Colors.tintColor }}
+          thumbColor={value ? Colors.tintColor : txColor}
+          onValueChange={toggleSwitch}
+          value={value}
+        />
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       {
-        userSettings && userSettings.map(({ id, label, value }) =>
-          <Setting key={`${id}-${label}`} label={label} value={value} toggleSwitch={(value) => toggleSwitch(id, value)} />
+        Object.keys(userSettings).length > 0 && Object.keys(userSettings).map((label) =>
+          <Setting
+            key={`${label}`}
+            label={label}
+            value={userSettings[label]}
+            toggleSwitch={value => toggleSwitch(label, value)} />
         )
       }
     </View>
   );
 };
 
-const Setting = ({ label, value, toggleSwitch }) => {
-  return (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{label}</Text>
-      <Switch
-        trackColor={{ false: Colors.lightgray, true: Colors.tintColor }}
-        thumbColor={value ? Colors.tintColor : 'white'}
-        onValueChange={toggleSwitch}
-        value={value}
-      />
-    </View>
-  );
-};
+
 
 export default SettingsScreen;
 
@@ -60,12 +66,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     paddingVertical: 15,
-    backgroundColor: '#fff',
   },
   itemText: {
     flex: 1,
     fontSize: 16,
-    color: Colors.dark,
   },
 });
 

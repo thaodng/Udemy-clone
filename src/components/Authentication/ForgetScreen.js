@@ -40,7 +40,7 @@ const ForgetScreen = ({ navigation }) => {
           icon="email"
           placeholder="Email"
           value={email}
-          color={focus === 'Email' ? Colors.tintColor : 'gray'}
+          color={focus === 'Email' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={false}
           onFocus={() => setFocus('Email')}
           onChangeText={text => setEmail(text)}
@@ -67,7 +67,7 @@ export default ForgetScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: Colors.lightBackground,
     justifyContent: 'center',
     paddingHorizontal: 30,
     paddingVertical: 100

@@ -34,7 +34,7 @@ const ScreenKey = {
   AccountTabStackNavigator: 'AccountTabStackNavigator',
   AccountScreen: 'AccountScreen',
   ProfileScreen: 'ProfileScreen',
-  SettingScreen: 'SettingScreen'
+  SettingScreen: 'SettingScreen',
 };
 
 export default ScreenKey;

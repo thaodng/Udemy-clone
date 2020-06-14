@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,15 +10,25 @@ import FilterScreen from '../components/Search/FilterScreen';
 import ListCoursesScreen from '../components/ListCourses/ListCoursesScreen';
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen';
 
+import { SettingContext } from '../context/SettingContext';
+
+import Colors from '../constants/Colors';
 import ScreenKey from '../constants/ScreenKey';
 
 const SearchStack = createStackNavigator();
 
 const SearchStackNavigator = () => {
   const navigation = useNavigation();
+  const { userSettings } = useContext(SettingContext);
+  const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 
   return (
-    <SearchStack.Navigator>
+    <SearchStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: bg },
+        cardStyle: { backgroundColor: bg },
+      }}
+    >
 
       <SearchStack.Screen
         name={ScreenKey.SearchScreen}

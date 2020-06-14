@@ -3,7 +3,7 @@ import { StyleSheet, FlatList } from 'react-native'
 import CourseItemRow from './CourseItemRow';
 import CourseItemColumn from './CourseItemColumn';
 
-const ListCourses = ({ direction, data, screenDetail }) => {
+const ListCourses = ({ direction, txColor, bgColor, data, screenDetail }) => {
   return (
     <FlatList
       horizontal={direction === 'row' ? true : false}
@@ -14,8 +14,8 @@ const ListCourses = ({ direction, data, screenDetail }) => {
       keyExtractor={(item) => `${item.id}`}
       renderItem={({ item }) => (
         direction === 'row'
-          ? <CourseItemRow item={item} screenDetail={screenDetail} />
-          : <CourseItemColumn item={item} screenDetail={screenDetail} />
+          ? <CourseItemRow txColor={txColor} bgColor={bgColor} item={item} screenDetail={screenDetail} />
+          : <CourseItemColumn txColor={txColor} bgColor={bgColor} item={item} screenDetail={screenDetail} />
       )}
     />
   )

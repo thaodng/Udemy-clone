@@ -10,7 +10,7 @@ import { AuthorsContext } from '../../context/AuthorsContext';
 
 const { width, height } = Layout.window;
 
-const CourseItemRow = ({ item, screenDetail }) => {
+const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
   const navigation = useNavigation();
   const { authors } = useContext(AuthorsContext);
 
@@ -29,10 +29,10 @@ const CourseItemRow = ({ item, screenDetail }) => {
         <Image style={styles.image} source={{ uri: thumbnail }} />
         <PopupMenu style={styles.imageOption} item={item} colorDot='white' />
       </View>
-      <View style={styles.contentContainer}>
-        <Text numberOfLines={1} style={styles.title}>{title}</Text>
-        <Text numberOfLines={1} style={{ color: 'black' }}>{authorsName}</Text>
-        <Text numberOfLines={1} style={{ color: 'gray', width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
+      <View style={{...styles.contentContainer, backgroundColor: bgColor}}>
+        <Text numberOfLines={1} style={{...styles.title, color: txColor}}>{title}</Text>
+        <Text numberOfLines={1} style={{ color: txColor }}>{authorsName}</Text>
+        <Text numberOfLines={1} style={{ color: Colors.lightGray, width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
         <View style={styles.rating}>
           <Rating rating={rating} />
           <Text style={{ color: Colors.tintColor }}>

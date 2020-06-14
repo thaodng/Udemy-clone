@@ -9,6 +9,7 @@ import RowItem from '../Common/RowItem';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
+import { SettingContext } from '../../context/SettingContext';
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 
@@ -17,6 +18,10 @@ const AccountScreen = ({ navigation }) => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const { name, avatar } = userInfo;
 
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
   const onSignOut = () => {
     setAuthentication({});
     setUserInfo({});
@@ -24,14 +29,13 @@ const AccountScreen = ({ navigation }) => {
   }
 
   const Intro = () => {
-
     return (
       <View style={styles.userContainer}>
         <View style={styles.avatarContainer}>
           {
             avatar
               ? <Image style={{ width: '100%', height: '100%' }} source={{ uri: avatar }} resizeMode="stretch" />
-              : <MaterialIcons name="person" size={26} color="#fff" />
+              : <MaterialIcons name="person" size={26} color={Colors.lightText} />
           }
         </View>
         <View style={styles.textContainer}>
@@ -64,6 +68,8 @@ const AccountScreen = ({ navigation }) => {
         <RowItem
           icon="account-circle"
           title="User profile"
+          txColor={txColor}
+          bgColor={bgColor}
           onPress={() => {
             navigation.navigate(ScreenKey.ProfileScreen, {
               user: userInfo,
@@ -74,6 +80,8 @@ const AccountScreen = ({ navigation }) => {
         <RowItem
           icon="settings"
           title="Settings"
+          txColor={txColor}
+          bgColor={bgColor}
           onPress={() => {
             navigation.navigate(ScreenKey.SettingScreen), {
               userInfo
@@ -89,15 +97,17 @@ const AccountScreen = ({ navigation }) => {
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         <Intro />
 
-        {isAuthenticated && (
-          <>
+        {isAuthenticated
+          ? <>
             <View style={styles.divider} />
             {renderUserInfo()}
           </>
-        )}
+          : <>
+            <View style={styles.divider} />
+            {renderSupport()}
+          </>
 
-        <View style={styles.divider} />
-        {renderSupport()}
+        }
       </ScrollView>
 
       {
@@ -170,9 +180,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     // paddingTop: 10,
   },
-
   userContainer: {
-    backgroundColor: 'white',
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -193,7 +201,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   welcomeText: {
-    color: Colors.lightgray,
+    color: Colors.lightGray,
   },
   authText: {
     color: Colors.tintColor,

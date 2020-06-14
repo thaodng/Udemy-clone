@@ -8,8 +8,10 @@ import Authors from '../Common/Authors';
 import TopCategories from './TopCategories';
 import ListCourses from '../ListCourses/ListCourses';
 import ScreenKey from '../../constants/ScreenKey';
+import Colors from '../../constants/Colors';
 
 import { AuthorsContext } from '../../context/AuthorsContext';
+import { SettingContext } from '../../context/SettingContext';
 import { CategoriesContext } from '../../context/CategoriesContext';
 import { CoursesContext } from '../../context/CoursesContext';
 
@@ -22,6 +24,10 @@ const BrowseScreen = () => {
   const { authors, setAuthors } = useContext(AuthorsContext);
   const { categories, setCategories } = useContext(CategoriesContext);
   const { courses, setCourses } = useContext(CoursesContext);
+
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
   useEffect(() => {
     const loadAuthors = () => {
@@ -79,8 +85,8 @@ const BrowseScreen = () => {
   };
 
   return (
-    <ScrollView>
-      <SliderContainer title="News course">
+    <ScrollView >
+      <SliderContainer>
         {
           courses.map(course => (
             <Slide
@@ -100,14 +106,14 @@ const BrowseScreen = () => {
             const data = courses.filter(course => course.categoryId === ct.id);
             return (
               <View key={`${ct.id}`}>
-                <HeaderList title={ct.title} data={data} listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
-                <ListCourses direction="row" data={data} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+                <HeaderList title={ct.title} txColor={txColor} bgColor={bgColor} data={data} listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+                <ListCourses direction="row" txColor={txColor} bgColor={bgColor} data={data} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
               </View>
             );
           })
         }
         <HeaderList title="Top authors" />
-        <Authors authors={authors} onPress={onPressAuthor} />
+        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
       </View>
     </ScrollView>
   )

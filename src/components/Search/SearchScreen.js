@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
+
+import { SettingContext } from '../../context/SettingContext';
 
 import { getCoursesByTitle } from '../../core/services/courses-service';
 import { getAuthorsByName } from '../../core/services/authors-service';
@@ -14,6 +16,10 @@ const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
   const [withMap, setWithMap] = useState(false);
   const [recentSearch, setRecentSearch] = useState([]);
+
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
   const updateRecentSearch = (searchTerm) => {
     setRecentSearch([...recentSearch, { id: searchTerm, title: searchTerm }]);
@@ -42,6 +48,8 @@ const SearchScreen = ({ navigation }) => {
         title={title}
         rightIcon={rightIcon}
         onPress={() => onSearch(title)}
+        txColor={txColor}
+        bgColor={bgColor}
       />
     );
   };
@@ -57,13 +65,15 @@ const SearchScreen = ({ navigation }) => {
         setWithMap={setWithMap}
         updateRecentSearch={updateRecentSearch}
         onSearch={onSearch}
+        txColor={txColor}
+        bgColor={bgColor}
       />
       <View style={styles.shadow}>
         {
           (recentSearch.length > 0) &&
           <>
             <View style={styles.recentBar}>
-              <Text style={{ fontWeight: 'bold', fontSize: 18 }} >Recent searches</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >Recent searches</Text>
               <TouchableOpacity onPress={() => {
                 setRecentSearch([]);
                 setTerm('');
@@ -82,7 +92,7 @@ const SearchScreen = ({ navigation }) => {
         }
 
         <View style={styles.recentBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Top categories</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }}>Top categories</Text>
         </View>
 
         <FlatList

@@ -8,7 +8,9 @@ import AccountStackNavigator from './AccountStackNavigator';
 import TabBarIcon from '../components/Common/TabBarIcon';
 
 import { AuthContext } from '../context/AuthContext';
+import { SettingContext } from '../context/SettingContext';
 
+import Colors from '../constants/Colors';
 import ScreenKey from '../constants/ScreenKey';
 
 const BottomTab = createBottomTabNavigator();
@@ -17,9 +19,18 @@ const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   const { authentication: { isAuthenticated } } = useContext(AuthContext);
+  const { userSettings } = useContext(SettingContext);
+  const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 
   return (
-    <BottomTab.Navigator initialRouteName={ScreenKey.BrowseTabStackNavigator}>
+    <BottomTab.Navigator
+      initialRouteName={ScreenKey.BrowseTabStackNavigator}
+      tabBarOptions={{
+        style: {
+          backgroundColor: bg
+        }
+      }}
+    >
       {
         isAuthenticated &&
         <>
@@ -42,7 +53,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
           />
         </>
       }
-      
+
       <BottomTab.Screen
         name={ScreenKey.BrowseTabStackNavigator}
         component={BrowseStackNavigator}

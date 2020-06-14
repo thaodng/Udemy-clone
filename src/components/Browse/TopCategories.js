@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
     padding: 5
   },
   title: {
+    color: Colors.lightText,
     padding: 8,
     textAlign: 'center',
-    color: 'white',
     backgroundColor: Colors.tintColor,
     borderRadius: 8
   }

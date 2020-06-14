@@ -10,7 +10,7 @@ const TopTab = ({ tabs, activeTab, setActiveTab }) => {
     return (
       <View style={[styles.tab, activeTab === title ? styles.activeTab : null]}>
         <Text
-          style={[styles.tabTitle, activeTab === title ? styles.activeTabTitle : null]}
+          style={[styles.tabTitle, activeTab === title ? styles.activeTabTitle : {color: Colors.lightGray}]}
           onPress={() => setActiveTab(title)}
         >
           {title}

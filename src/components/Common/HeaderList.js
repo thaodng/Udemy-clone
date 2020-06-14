@@ -4,12 +4,12 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 
-const HeaderList = ({ title, data, listCoursesScreen, screenDetail }) => {
+const HeaderList = ({ title, txColor, data, listCoursesScreen, screenDetail }) => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.text}>
+      <Text style={{ ...styles.text, color: txColor }}>
         {title}
       </Text>
       {listCoursesScreen &&

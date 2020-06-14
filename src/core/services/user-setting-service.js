@@ -15,16 +15,16 @@ const getUserSettings = ({ token }) => {
 };
 
 
-const updateUserSettings = ({ newSettings, token }) => {
-  if (token) {
-    return {
-      status: 200,
-      user: {
-        ...settings,
-        ...newSettings
-      }
-    };
-  }
-};
+// const updateUserSettings = ({ newSettings, token }) => {
+//   if (token) {
+//     return {
+//       status: 200,
+//       user: {
+//         ...settings,
+//         ...newSettings
+//       }
+//     };
+//   }
+// };
 
-export { getUserSettings, updateUserSettings };
+export { getUserSettings };

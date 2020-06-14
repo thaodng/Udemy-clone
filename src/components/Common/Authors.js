@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  View,
   Text,
   FlatList,
   Image,
@@ -12,13 +11,13 @@ import {
 const W = Dimensions.get('window').width / 4;
 
 
-const Authors = ({ authors, onPress }) => {
+const Authors = ({ authors, txColor, onPress }) => {
 
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity style={styles.buttonAuthor} onPress={() => onPress(item.id)}>
         <Image style={styles.avatarAuthor} source={{ uri: item.avatar }} />
-        <Text style={styles.nameAuthor}>
+        <Text style={{...styles.nameAuthor, color: txColor}}>
           {item.name}
         </Text>
       </TouchableOpacity>

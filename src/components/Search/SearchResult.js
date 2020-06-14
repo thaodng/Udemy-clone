@@ -6,8 +6,10 @@ import Authors from '../Common/Authors';
 import TopTab from '../Common/TopTab';
 import ListCourses from '../ListCourses/ListCourses';
 import Layout from '../../constants/Layout';
+import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
+import { SettingContext } from '../../context/SettingContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
 import { getCoursesByAuthor } from '../../core/services/courses-service';
 import myLocation from '../../mocks/location.json';
@@ -19,6 +21,10 @@ const SearchResult = ({ navigation, route }) => {
   const tabs = ["ALL", "COURSES", "AUTHORS"]
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const { authors } = useContext(AuthorsContext);
+
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
   const renderMap = () => {
     return (
@@ -60,14 +66,14 @@ const SearchResult = ({ navigation, route }) => {
             dataCourses.length > 0 && (activeTab === 'ALL' || activeTab === 'COURSES') &&
             <>
               <HeaderList title="Courses" />
-              <ListCourses direction="row" data={dataCourses} screenDetail={screenDetail} />
+              <ListCourses direction="row" txColor={txColor} bgColor={bgColor} data={dataCourses} screenDetail={screenDetail} />
             </>
           }
           {
             dataAuthors.length > 0 && (activeTab === 'ALL' || activeTab === 'AUTHORS') &&
             <>
               <HeaderList title="Authors" />
-              <Authors authors={dataAuthors} onPress={onPressAuthor} />
+              <Authors authors={dataAuthors} txColor={txColor} onPress={onPressAuthor} />
             </>
           }
         </View>
@@ -81,7 +87,6 @@ export default SearchResult;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingVertical: 10,
   },
   map: {

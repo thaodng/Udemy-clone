@@ -40,7 +40,7 @@ const NewPassword = ({ navigation }) => {
           icon="lock-outline"
           placeholder="New password"
           value={password}
-          color={focus === 'Password' ? Colors.tintColor : 'gray'}
+          color={focus === 'Password' ? Colors.tintColor : Colors.lightBackground}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
           onChangeText={text => setPassword(text)}
@@ -50,7 +50,7 @@ const NewPassword = ({ navigation }) => {
           icon="check"
           placeholder="Confirm new password"
           value={password2}
-          color={focus === 'ConfirmPassword' ? Colors.tintColor : 'gray'}
+          color={focus === 'ConfirmPassword' ? Colors.tintColor : Colors.lightBackground}
           secureTextEntry={true}
           onFocus={() => setFocus('ConfirmPassword')}
           onChangeText={text => setPassword2(text)}

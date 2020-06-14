@@ -3,24 +3,24 @@ import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
-const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onSearch }) => {
+const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onSearch, txColor, bgColor }) => {
   return (
     <View style={styles.searchBarContainer}>
       <TouchableOpacity
         style={{
           ...styles.buttonMap,
-          backgroundColor: withMap ? Colors.tintColor : Colors.background,
+          backgroundColor: withMap ? Colors.tintColor : bgColor,
         }}
         onPress={() => { setWithMap(!withMap) }}>
-        <Feather name="map-pin" size={20} />
+        <Feather name="map-pin" size={20} color={txColor}/>
       </TouchableOpacity>
 
-      <View style={styles.searchInputContainer}>
+      <View style={{...styles.searchInputContainer, backgroundColor: bgColor}}>
         <TextInput
           value={term}
           placeholder="Search course"
           onChangeText={text => setTerm(text)}
-          style={styles.textInput}
+          style={{...styles.textInput, backgroundColor: Colors.lightBackground}}
           onEndEditing={() => {
             onSearch(term);
             updateRecentSearch(term);
@@ -29,7 +29,7 @@ const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onS
         <TouchableOpacity onPress={() => {
           onSearch(term);
         }}>
-          <Feather name="search" size={20} />
+          <Feather name="search" size={20} color={txColor}/>
         </TouchableOpacity>
       </View>
 
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', // default is strech
     margin: 4,
     paddingHorizontal: 10,
-    backgroundColor: Colors.background,
     borderRadius: 4,
     shadowRadius: 4,
     shadowOpacity: 0.14,

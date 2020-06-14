@@ -10,8 +10,11 @@ import ScreenKey from '../../constants/ScreenKey';
 
 import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
+import { SettingContext } from '../../context/SettingContext';
+
 import { login } from '../../core/services/authentication-service';
 import { getUserInfo } from '../../core/services/user-service';
+import { getUserSettings } from '../../core/services/user-setting-service';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -21,6 +24,7 @@ const LoginScreen = ({ navigation }) => {
 
   const { setAuthentication } = useContext(AuthContext);
   const { setUserInfo } = useContext(UserContext);
+  const { setUserSettings } = useContext(SettingContext);
 
   const onSubmit = () => {
     const { status, token, isAuthenticated, errorString } = login({ email, password });
@@ -29,6 +33,9 @@ const LoginScreen = ({ navigation }) => {
 
       const { user } = getUserInfo({ token });
       setUserInfo(user);
+
+      const { settings } = getUserSettings({ token });
+      setUserSettings(settings);
 
       navigation.navigate(ScreenKey.BrowseTabNavigator);
     } else {
@@ -49,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
           icon="email"
           placeholder="Email"
           value={email}
-          color={focus === 'Email' ? Colors.tintColor : 'gray'}
+          color={focus === 'Email' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={false}
           onFocus={() => setFocus('Email')}
           onChangeText={text => setEmail(text)}
@@ -59,7 +66,7 @@ const LoginScreen = ({ navigation }) => {
           icon="lock-outline"
           placeholder="Password"
           value={password}
-          color={focus === 'Password' ? Colors.tintColor : 'gray'}
+          color={focus === 'Password' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
           onChangeText={text => setPassword(text)}
@@ -92,7 +99,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: Colors.lightBackground,
     justifyContent: 'center',
     paddingHorizontal: 30,
     paddingVertical: 100

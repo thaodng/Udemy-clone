@@ -49,7 +49,7 @@ const SignupScreen = ({ navigation }) => {
           icon="email"
           placeholder="Email"
           value={email}
-          color={focus === 'Email' ? Colors.tintColor : 'gray'}
+          color={focus === 'Email' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={false}
           onFocus={() => setFocus('Email')}
           onChangeText={text => setEmail(text)}
@@ -59,7 +59,7 @@ const SignupScreen = ({ navigation }) => {
           icon="lock-outline"
           placeholder="Password"
           value={password}
-          color={focus === 'Password' ? Colors.tintColor : 'gray'}
+          color={focus === 'Password' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
           onChangeText={text => setPassword(text)}
@@ -69,7 +69,7 @@ const SignupScreen = ({ navigation }) => {
           icon="check"
           placeholder="Confirm password"
           value={password2}
-          color={focus === 'ConfirmPassword' ? Colors.tintColor : 'gray'}
+          color={focus === 'ConfirmPassword' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={true}
           onFocus={() => setFocus('ConfirmPassword')}
           onChangeText={text => setPassword2(text)}
@@ -102,7 +102,7 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: Colors.lightBackground,
     justifyContent: 'center',
     paddingHorizontal: 30,
     paddingVertical: 100

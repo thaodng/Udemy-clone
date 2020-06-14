@@ -17,7 +17,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
         duration={1500}
         useNativeDriver>
         <TouchableOpacity
-          style={{ ...styles.button, borderColor: Colors.tintColor, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
+          style={styles.button}
           onPress={() => { navigation.navigate(ScreenKey.BrowseTabNavigator) }}
         >
           <Text style={{ color: Colors.tintColor }}> Browse </Text>
@@ -30,9 +30,9 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
         duration={1500}
         useNativeDriver>
         <TouchableOpacity
-          style={{ ...styles.button, backgroundColor: Colors.tintColor, marginLeft: 20, borderWidth: 1, borderRadius: 50, marginTop: 15 }}
+          style={{ ...styles.button, backgroundColor: Colors.tintColor, marginLeft: 20 }}
           onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
-          <Text style={{ color: 'white' }}> Login </Text>
+          <Text style={{ color: Colors.lightText }}> Login </Text>
         </TouchableOpacity>
       </Animable.View>
     </View>
@@ -126,7 +126,7 @@ const width_button = width * 0.3;
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: Colors.lightBackground
   },
   header: {
     flex: 3,
@@ -150,12 +150,13 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   text: {
-    color: 'gray',
+    color: Colors.lightGray,
     textAlign: 'center',
     marginTop: 20
   },
   dot: {
-    backgroundColor: `rgba(52,101,217,.4)`,
+    backgroundColor: Colors.tintColor,
+    opacity: 0.4,
     width: 8,
     height: 8,
     borderRadius: 4,
@@ -174,7 +175,11 @@ const styles = StyleSheet.create({
     width: width_button,
     height: 40,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderColor: Colors.tintColor,
+    borderWidth: 1,
+    borderRadius: 50,
+    marginTop: 15
   }
 });
 
