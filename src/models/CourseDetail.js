@@ -1,18 +1,14 @@
 class CourseDetail {
   constructor({
     id,
-    idCourse,
-    idSection,
-    title,
-    duration,
-    videoUrl
+    courseId,
+    sectionTitle,
+    data, // [{id, title, duration, videoUrl}]
   }) {
     this.id = id;
-    this.idCourse = idCourse;
-    this.idSection = idSection;
-    this.title = title;
-    this.duration = duration;
-    this.url = url;
+    this.courseId = courseId;
+    this.sectionTitle = sectionTitle
+    this.data = data;
   }
 }
 

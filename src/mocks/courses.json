@@ -7,7 +7,7 @@
     "level": "Beginner",
     "dateRelease": "Jun 01 - 2020",
     "duration": "15 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "React (also known as React.js or ReactJS) is an open-source JavaScript library for building user interfaces. It is maintained by Facebook and a community of individual developers and companies. React can be used as a base in the development of single - page or mobile applications.However, React is only concerned with rendering data to the DOM, and so creating React applications usually requires the use of additional libraries for state management and routing.",
     "rating": 5,
     "reviews": 15
   },
@@ -20,7 +20,7 @@
     "level": "All levels",
     "dateRelease": "March 15 - 2020",
     "duration": "35 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "JavaScript often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions. Alongside HTML and CSS, JavaScript is one of the core technologies of the World Wide Web. JavaScript enables interactive web pages and is an essential part of web applications.",
     "rating": 4.6,
     "reviews": 12
   },
@@ -33,7 +33,7 @@
     "level": "All levels",
     "dateRelease": "March 15 - 2020",
     "duration": "7 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "Hypertext Markup Language (HTML) is the standard markup language for documents designed to be displayed in a web browser. It can be assisted by technologies such as Cascading Style Sheets (CSS) and scripting languages such as JavaScript. Web browsers receive HTML documents from a web server or from local storage and render the documents into multimedia web pages. HTML describes the structure of a web page semantically and originally included cues for the appearance of the document.",
     "rating": 4.7,
     "reviews": 32
   },
@@ -46,7 +46,7 @@
     "level": "Expert",
     "dateRelease": "July 01 - 2020",
     "duration": "12 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "WebAssembly (often shortened to Wasm) is an open standard that defines a portable binary-code format for executable programs, and a corresponding textual assembly language, as well as interfaces for facilitating interactions between such programs and their host environment. The main goal of WebAssembly is to enable high-performance applications on web pages, but the format is designed to be executed and integrated in other environments as well. WebAssembly became a World Wide Web Consortium recommendation on 5 December 2019 and, alongside HTML, CSS, and JavaScript, is the fourth language to run natively in browser",
     "rating": 4.9,
     "reviews": 27
   },
@@ -59,7 +59,7 @@
     "level": "Intermediate",
     "dateRelease": "April 06 - 2020",
     "duration": "8 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "React Native is an open-source mobile application framework created by Facebook. It is used to develop applications for Android, iOS, Web and UWP by enabling developers to use React along with native platform capabilities.",
     "rating": 5,
     "reviews": 100
   },
@@ -72,7 +72,7 @@
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "duration": "12 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "Android is a mobile operating system based on a modified version of the Linux kernel and other open source software, designed primarily for touchscreen mobile devices such as smartphones and tablets. Android is developed by a consortium of developers known as the Open Handset Alliance and commercially sponsored by Google. It was unveiled in 2007, with the first commercial Android device launched in September 2008.",
     "rating": 4.5,
     "reviews": 32
   },
@@ -85,7 +85,7 @@
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "duration": "12 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "iOS (formerly iPhone OS) is a mobile operating system created and developed by Apple Inc. exclusively for its hardware. It is the operating system that presently powers many of the company's mobile devices, including the iPhone, and iPod Touch; it also powered the iPad prior to the introduction of iPadOS in 2019. It is the second most popular mobile operating system globally after Android. It is the basis for other operating systems made by Apple Inc, like iPadOS, tvOS, and watchOS.",
     "rating": 4.5,
     "reviews": 32
   },
@@ -98,7 +98,7 @@
     "level": "All levels",
     "dateRelease": "April 06 - 2020",
     "duration": "14 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "Ethical Hacking sometimes called as Penetration Testing is an act of intruding/penetrating into system or networks to find out threats, vulnerabilities in those systems which a malicious attacker may find and exploit causing loss of data, financial loss or other major damages.  The purpose of ethical hacking is to improve the security of the network or systems by fixing the vulnerabilities found during testing.",
     "rating": 5,
     "reviews": 100
   },
@@ -111,7 +111,7 @@
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "duration": "14 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "Network security consists of the policies and practices adopted to prevent and monitor unauthorized access, misuse, modification, or denial of a computer network and network-accessible resources. Network security involves the authorization of access to data in a network, which is controlled by the network administrator. Users choose or are assigned an ID and password or other authenticating information that allows them access to information and programs within their authority. Network security covers a variety of computer networks, both public and private, that are used in everyday jobs",
     "rating": 4.5,
     "reviews": 32
   },
@@ -124,7 +124,7 @@
     "level": "Beginner",
     "dateRelease": "March 15 - 2020",
     "duration": "14 hours",
-    "description": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.",
+    "description": "Security testing is a process intended to reveal flaws in the security mechanisms of an information system that protect data and maintain functionality as intended. Due to the logical limitations of security testing, passing security testing is not an indication that no flaws exist or that the system adequately satisfies the security requirements.",
     "rating": 4.5,
     "reviews": 32
   }

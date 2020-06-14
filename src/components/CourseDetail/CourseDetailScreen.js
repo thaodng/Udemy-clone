@@ -1,7 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity, SectionList, Share } from 'react-native'
-import ReadMore from 'react-native-read-more-text';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
+import ReadMore from 'react-native-read-more-text';
 
 import TopTab from '../Common/TopTab';
 import Authors from '../Common/Authors';
@@ -13,10 +14,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
 import { getCourseById, getCoursesByAuthor } from '../../core/services/courses-service';
+import { getCourseDetail } from '../../core/services/course-detail-service';
 
-
-import DATA from '../../mocks/detail.json'
-import { ScrollView } from 'react-native-gesture-handler';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { authentication: { isAuthenticated } } = useContext(AuthContext);
@@ -25,11 +24,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   const tabs = ['INFORMATION', 'LECTURES'];
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [videoUrl, setVideoUrl] = useState('https://www.radiantmediaplayer.com/media/bbb-360p.mp4');
+  const [details, setDetails] = useState([]);
+
+  const [currentItem, setCurrentItem] = useState({});
 
   const { courseId } = route.params;
   const course = getCourseById(courseId);
   const courseAuthors = course.authorIds.map(id => authors.find(a => a.id === id));
+
+  useEffect(() => {
+    const { status, data } = getCourseDetail(courseId);
+    if (status === 200) {
+      setDetails(data);
+    }
+  }, []);
 
   let isBookmarked, isFavorite;
   if (isAuthenticated) {
@@ -102,36 +110,33 @@ const CourseDetailScreen = ({ route, navigation }) => {
     });
   };
 
-  const renderItem = ({ id, time, title }) => {
+  const renderItem = ({ id, title, duration, videoUrl }) => {
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => alert(`Detail Id: ${id}`)}
+        onPress={() => setCurrentItem({ id, videoUrl })}
       >
-        <Text style={styles.numHead}>{'.'}</Text>
+        <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : 'gray' }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={styles.itemTime}>{time} mins</Text>
-          <Text style={styles.itemTitle}>{title}</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : 'gray' }}>{duration} mins</Text>
+          <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : 'black' }}>{title}</Text>
         </View>
 
-        <PopupMenu style={styles.itemOption} item={{ id, time, title }} colorDot='black' />
-
-
-      </TouchableOpacity>
+        <PopupMenu style={styles.itemOption} item={{ id, title, duration, videoUrl }} colorDot='black' />
+      </TouchableOpacity >
     )
   };
-
 
   return (
     <View style={styles.courseContainer}>
       <Video
-        source={{ uri: videoUrl }}
+        source={{ uri: currentItem.videoUrl }}
         rate={1.0}
         volume={1.0}
         isMuted={false}
         resizeMode="cover"
-        shouldPlay={false}
-        isLooping={false}
+        shouldPlay
+        isLooping
         useNativeControls
         style={styles.video}
       />
@@ -177,17 +182,17 @@ const CourseDetailScreen = ({ route, navigation }) => {
           </ScrollView>
         }
         {
-          (DATA.length > 0) && (activeTab === tabs[1]) &&
+          (details.length > 0) && (activeTab === tabs[1]) &&
           <SectionList
             style={styles.list}
             showsVerticalScrollIndicator={false}
-            sections={DATA}
+            sections={details}
             keyExtractor={(item, index) => item.id + index}
             renderItem={({ item }) => renderItem(item)}
-            renderSectionHeader={({ section: { title } }) => (
+            renderSectionHeader={({ section: { sectionTitle } }) => (
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: '#D3D3D3' }}>
-                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{title}</Text>
-                <PopupMenu style={styles.itemOption} item={{ title }} colorDot='black' />
+                <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{sectionTitle}</Text>
+                <PopupMenu style={styles.itemOption} item={{ title: sectionTitle }} colorDot='black' />
               </View>
             )}
           />
