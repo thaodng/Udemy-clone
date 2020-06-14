@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  View,
   Text,
   FlatList,
   Image,
@@ -9,17 +8,16 @@ import {
   Dimensions,
 } from 'react-native';
 
-import authors from '../../mooks/authors.json'
-
 const W = Dimensions.get('window').width / 4;
 
 
-const TopAuthors = () => {
+const Authors = ({ authors, txColor, onPress }) => {
+
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.buttonAuthor}>
-        <Image style={styles.avatarAuthor} source={{ uri: item.image }} />
-        <Text style={styles.nameAuthor}>
+      <TouchableOpacity style={styles.buttonAuthor} onPress={() => onPress(item.id)}>
+        <Image style={styles.avatarAuthor} source={{ uri: item.avatar }} />
+        <Text style={{...styles.nameAuthor, color: txColor}}>
           {item.name}
         </Text>
       </TouchableOpacity>
@@ -40,7 +38,7 @@ const TopAuthors = () => {
   );
 };
 
-export default TopAuthors;
+export default Authors;
 
 const styles = StyleSheet.create({
   buttonAuthor: {

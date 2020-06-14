@@ -1,0 +1,28 @@
+{
+  "Notifications": false,
+  "Require Wi-Fi for downloading": false,
+  "Show quiz at the end of video": false,
+  "Dark theme": false
+}
+// [
+//   {
+//     "id": 1,
+//     "label": "Notifications",
+//     "value": false
+//   },
+//   {
+//     "id": 2,
+//     "label": "Require Wi-Fi for downloading",
+//     "value": false
+//   },
+//   {
+//     "id": 3,
+//     "label": "Show quiz at the end of video",
+//     "value": false
+//   },
+//   {
+//     "id": 4,
+//     "label": "Dark theme",
+//     "value": false
+//   }
+// ]

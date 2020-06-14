@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeStackNavigator from './HomeStackNavigator';
 import DownloadStackNavigator from './DownloadStackNavigator';
@@ -7,36 +7,55 @@ import SearchStackNavigator from './SearchStackNavigator';
 import AccountStackNavigator from './AccountStackNavigator';
 import TabBarIcon from '../components/Common/TabBarIcon';
 
+import { AuthContext } from '../context/AuthContext';
+import { SettingContext } from '../context/SettingContext';
 
+import Colors from '../constants/Colors';
+import ScreenKey from '../constants/ScreenKey';
 
 const BottomTab = createBottomTabNavigator();
-const INITIAL_ROUTE_NAME = 'Home';
 
-export default function BottomTabNavigator({ navigation, route }) {
+const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
+  const { authentication: { isAuthenticated } } = useContext(AuthContext);
+  const { userSettings } = useContext(SettingContext);
+  const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator
+      initialRouteName={ScreenKey.BrowseTabStackNavigator}
+      tabBarOptions={{
+        style: {
+          backgroundColor: bg
+        }
+      }}
+    >
+      {
+        isAuthenticated &&
+        <>
+          <BottomTab.Screen
+            name={ScreenKey.HomeTabStackNavigator}
+            component={HomeStackNavigator}
+            options={{
+              title: 'Home',
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
+            }}
+          />
+          <BottomTab.Screen
+            name={ScreenKey.DownloadTabStackNavigator}
+            component={DownloadStackNavigator}
+            options={{
+              // title: 'Download',
+              title: 'Favorite',
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-download" />,
+            }}
+          />
+        </>
+      }
 
       <BottomTab.Screen
-        name="HomeStackNavigator"
-        component={HomeStackNavigator}
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
-        }}
-      />
-
-      <BottomTab.Screen
-        name="DownloadStackNavigator"
-        component={DownloadStackNavigator}
-        options={{
-          title: 'Download',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-download" />,
-        }}
-      />
-      <BottomTab.Screen
-        name="BrowseStackNavigator"
+        name={ScreenKey.BrowseTabStackNavigator}
         component={BrowseStackNavigator}
         options={{
           title: 'Browse',
@@ -44,7 +63,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="SearchStackNavigator"
+        name={ScreenKey.SearchTabStackNavigator}
         component={SearchStackNavigator}
         options={{
           title: 'Search',
@@ -53,7 +72,7 @@ export default function BottomTabNavigator({ navigation, route }) {
       />
 
       <BottomTab.Screen
-        name="AccountStackNavigator"
+        name={ScreenKey.AccountTabStackNavigator}
         component={AccountStackNavigator}
         options={{
           title: 'Account',
@@ -64,3 +83,5 @@ export default function BottomTabNavigator({ navigation, route }) {
     </BottomTab.Navigator>
   );
 }
+
+export default BottomTabNavigator;

@@ -1,20 +1,37 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+
+import { UserContext } from '../../context/UserContext';
+import { CoursesContext } from '../../context/CoursesContext';
+import { SettingContext } from '../../context/SettingContext';
 
 import ListCourses from '../ListCourses/ListCourses';
 import Colors from '../../constants/Colors';
-import DATA from '../../mooks/courses.json';
+import ScreenKey from '../../constants/ScreenKey';
+
 
 const DownloadScreen = () => {
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { courses } = useContext(CoursesContext);
+  const downloadedCourses = courses.filter(course => userInfo.favoriteCourses.includes(course.id));
+
+  const onRemove = () => {
+    setUserInfo({ ...userInfo, favoriteCourses: [] });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerDownloadContainer}>
-        <Text style={styles.total}>7 courses (960MB)</Text>
-        <TouchableOpacity>
+        <Text style={styles.total}>{`${downloadedCourses.length} courses`}</Text>
+        <TouchableOpacity onPress={onRemove}>
           <Text style={styles.remove}>REMOVE ALL</Text>
         </TouchableOpacity>
       </View>
-      <ListCourses direction="column"/>
+      <ListCourses direction="column" txColor={txColor} bgColor={bgColor} data={downloadedCourses} screenDetail={ScreenKey.DownloadedCourseDetailScreen} />
     </View>
   )
 }

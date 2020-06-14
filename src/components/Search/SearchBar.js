@@ -1,26 +1,38 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 
-
-const SearchBar = () => {
-  const navigation = useNavigation();
-
+const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onSearch, txColor, bgColor }) => {
   return (
     <View style={styles.searchBarContainer}>
-      <TouchableOpacity style={styles.buttonMap} onPress={() => { alert('Click button map') }}>
-        <Feather name="map-pin" size={20} />
+      <TouchableOpacity
+        style={{
+          ...styles.buttonMap,
+          backgroundColor: withMap ? Colors.tintColor : bgColor,
+        }}
+        onPress={() => { setWithMap(!withMap) }}>
+        <Feather name="map-pin" size={20} color={txColor}/>
       </TouchableOpacity>
-      <View style={styles.searchInputContainer}>
+
+      <View style={{...styles.searchInputContainer, backgroundColor: bgColor}}>
         <TextInput
-          style={styles.textInput}
+          value={term}
           placeholder="Search course"
-          onEndEditing={() => navigation.navigate('SearchResult',
-            { keyword: 'Search keyboard' })} />
-        <Feather name="search" size={20} />
+          onChangeText={text => setTerm(text)}
+          style={{...styles.textInput, backgroundColor: Colors.lightBackground}}
+          onEndEditing={() => {
+            onSearch(term);
+            updateRecentSearch(term);
+            setTerm('');
+          }} />
+        <TouchableOpacity onPress={() => {
+          onSearch(term);
+        }}>
+          <Feather name="search" size={20} color={txColor}/>
+        </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -37,10 +49,9 @@ const styles = StyleSheet.create({
   buttonMap: {
     padding: 10,
     margin: 4,
-    backgroundColor: Colors.background,
-    // borderRadius: 4,
+    borderRadius: 4,
+    shadowRadius: 4,
     shadowOpacity: 0.14,
-    // shadowRadius: 4,
     shadowColor: '#000',
     shadowOffset: { height: 0, width: 0 },
   },
@@ -50,10 +61,9 @@ const styles = StyleSheet.create({
     alignItems: 'center', // default is strech
     margin: 4,
     paddingHorizontal: 10,
-    backgroundColor: Colors.background,
-    // borderRadius: 4,
+    borderRadius: 4,
+    shadowRadius: 4,
     shadowOpacity: 0.14,
-    // shadowRadius: 4,
     shadowColor: '#000',
     shadowOffset: { height: 0, width: 0 },
   },

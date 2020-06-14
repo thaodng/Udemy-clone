@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   textConfirm: {
-    color: 'white',
+    color: Colors.lightText,
     fontSize: 15,
     fontWeight: 'bold',
   },

@@ -1,14 +1,22 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar, StyleSheet, View } from 'react-native';
+
 import { MenuProvider } from 'react-native-popup-menu';
+import { AuthorsProvider } from './src/context/AuthorsContext';
+import { CategoriesProvider } from './src/context/CategoriesContext';
+import { CoursesProvider } from './src/context/CoursesContext';
+import { AuthenticationProvider } from './src/context/AuthContext';
+import { UserProvider } from './src/context/UserContext';
+import { SettingProvider } from './src/context/SettingContext';
+
 import useCachedResources from './src/hooks/useCachedResources';
 import AuthStackNavigator from './src/navigation/AuthStackNavigator';
-import BrowseTabNavigator from './src/navigation/BrowseTabNavigator';
 import LinkingConfiguration from './src/navigation/LinkingConfiguration';
 
-const Stack = createStackNavigator();
+// import ScreenKey from './src/constants/ScreenKey';
+// const Stack = createStackNavigator();
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
@@ -20,16 +28,26 @@ export default function App(props) {
       <>
         <StatusBar />
         <View style={styles.container}>
-          <MenuProvider >
-            <NavigationContainer linking={LinkingConfiguration}>
-              <Stack.Navigator headerMode="none">
-                {/* Not login */}
-                <Stack.Screen name="AuthStackNavigator" component={AuthStackNavigator} />
-                {/* Already login  */}
-                <Stack.Screen name="BrowseTabNavigator" component={BrowseTabNavigator} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </MenuProvider>
+          <AuthorsProvider>
+            <CategoriesProvider>
+              <CoursesProvider>
+                <AuthenticationProvider>
+                  <UserProvider>
+                    <SettingProvider>
+                      <MenuProvider >
+                        <NavigationContainer linking={LinkingConfiguration}>
+                          <AuthStackNavigator />
+                          {/* <Stack.Navigator headerMode="none">
+                          <Stack.Screen name={ScreenKey.AuthStackNavigator} component={AuthStackNavigator} />
+                        </Stack.Navigator> */}
+                        </NavigationContainer>
+                      </MenuProvider>
+                    </SettingProvider>
+                  </UserProvider>
+                </AuthenticationProvider>
+              </CoursesProvider>
+            </CategoriesProvider>
+          </AuthorsProvider>
         </View>
       </>
     );
@@ -39,6 +57,5 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fafafa',
   },
 });

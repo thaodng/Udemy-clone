@@ -1,24 +1,38 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from '../components/Home/HomeScreen';
-import ListCoursesScreen from '../components/Home/ListCoursesScreen';
+import ListCoursesScreen from '../components/ListCourses/ListCoursesScreen';
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen'
+
+import { SettingContext } from '../context/SettingContext';
+
+import Colors from '../constants/Colors';
+import ScreenKey from '../constants/ScreenKey';
 
 const HomeStack = createStackNavigator();
 
 const HomeStackScreens = () => {
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
   return (
-    <HomeStack.Navigator >
+    <HomeStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: bgColor },
+        cardStyle: { backgroundColor: bgColor },
+      }}
+    >
       <HomeStack.Screen
-        name="HomeScreen"
+        name={ScreenKey.HomeScreen}
         component={HomeScreen}
         options={{
           headerShown: false
         }}
       />
       <HomeStack.Screen
-        name="ListCoursesScreen"
+        name={ScreenKey.ListCoursesScreen}
         component={ListCoursesScreen}
         options={({ route }) => (
           {
@@ -27,7 +41,7 @@ const HomeStackScreens = () => {
         )}
       />
       <HomeStack.Screen
-        name="CourseDetailScreen"
+        name={ScreenKey.CourseDetailScreen}
         component={CourseDetailScreen}
         options={{
           headerShown: false

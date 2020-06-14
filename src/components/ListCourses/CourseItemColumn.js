@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,30 +7,35 @@ import Rating from '../Common/Rating';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 
+import { AuthorsContext } from '../../context/AuthorsContext';
+
+
 const { width, height } = Layout.window;
 
-const CourseItemColumn = ({ item }) => {
-
-  const { id, title, preview, author, level, dateRelease, rating, reviews } = item;
+const CourseItemColumn = ({ item, txColor, bgColor, screenDetail }) => {
   const navigation = useNavigation();
+  const { authors } = useContext(AuthorsContext);
+
+  const { id, categoryId, authorIds, title, thumbnail, level, dateRelease, duration, description, rating, reviews } = item;
+  const authorsName = authorIds.map(aId => authors.find(a => a.id === aId)).map(author => author.name).join(', ');
 
   return (
     <TouchableOpacity
       style={[styles.container, styles.shadow]}
       onPress={() => {
-        navigation.navigate('CourseDetailScreen', {
+        navigation.navigate(screenDetail, {
           courseId: id
         })
       }}>
 
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: preview }} resizeMode="cover" />
+        <Image style={styles.image} source={{ uri: thumbnail }} resizeMode="cover" />
       </View>
 
-      <View style={styles.contentContainer}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={{ color: 'black' }}>{author.name}</Text>
-        <Text style={{ color: 'gray', width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{level} - {dateRelease}</Text>
+      <View style={{...styles.contentContainer, backgroundColor: bgColor}}>
+        <Text style={{...styles.title, color: txColor}}>{title}</Text>
+        <Text style={{ color: txColor }}>{authorsName}</Text>
+        <Text style={{ color: Colors.lightGray, width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{level} - {dateRelease}</Text>
         <View style={styles.rating}>
           <Rating rating={rating} />
           <Text style={{ color: Colors.tintColor }}>
@@ -42,7 +47,7 @@ const CourseItemColumn = ({ item }) => {
       <PopupMenu
         style={{ alignSelf: 'flex-start', padding: 10 }}
         item={item}
-        colorDot='black'
+        colorDot={txColor}
       />
 
     </TouchableOpacity>
@@ -55,7 +60,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: 'white',
     borderBottomColor: Colors.lightgray,
     borderBottomWidth: 0.5,
     marginHorizontal: 4,

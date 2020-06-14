@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
@@ -7,31 +7,45 @@ import { MaterialIcons } from '@expo/vector-icons';
 import SearchScreen from '../components/Search/SearchScreen';
 import SearchResult from '../components/Search/SearchResult';
 import FilterScreen from '../components/Search/FilterScreen';
+import ListCoursesScreen from '../components/ListCourses/ListCoursesScreen';
+import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen';
+
+import { SettingContext } from '../context/SettingContext';
+
+import Colors from '../constants/Colors';
+import ScreenKey from '../constants/ScreenKey';
 
 const SearchStack = createStackNavigator();
 
 const SearchStackNavigator = () => {
   const navigation = useNavigation();
+  const { userSettings } = useContext(SettingContext);
+  const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 
   return (
-    <SearchStack.Navigator>
+    <SearchStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: bg },
+        cardStyle: { backgroundColor: bg },
+      }}
+    >
 
       <SearchStack.Screen
-        name="SearchScreen"
+        name={ScreenKey.SearchScreen}
         component={SearchScreen}
         options={{
           headerShown: false
         }} />
 
       <SearchStack.Screen
-        name="SearchResult"
+        name={ScreenKey.SearchResultScreen}
         component={SearchResult}
         options={({ route }) => ({
           title: route.params.keyword,
           headerRight: () => (
             <TouchableOpacity
               style={{ paddingHorizontal: 10 }}
-              onPress={() => { navigation.navigate('FilterScreen') }}
+              onPress={() => { navigation.navigate(ScreenKey.SearchFilterScreen) }}
             >
               <MaterialIcons name="filter-list" size={24} color="black" />
             </TouchableOpacity>
@@ -40,7 +54,7 @@ const SearchStackNavigator = () => {
       />
 
       <SearchStack.Screen
-        name="FilterScreen"
+        name={ScreenKey.SearchFilterScreen}
         component={FilterScreen}
         options={{
           title: 'Filter',
@@ -53,6 +67,22 @@ const SearchStackNavigator = () => {
           //   </TouchableOpacity>
           // )
         }}
+      />
+
+      <SearchStack.Screen
+        name={ScreenKey.SearchCoursesScreen}
+        component={ListCoursesScreen}
+        options={({ route }) => (
+          {
+            title: route.params.subject
+          }
+        )}
+      />
+
+      <SearchStack.Screen
+        name={ScreenKey.SearchCourseDetailScreen}
+        component={CourseDetailScreen}
+        options={{ headerShown: false }}
       />
 
     </SearchStack.Navigator>

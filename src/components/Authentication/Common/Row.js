@@ -2,15 +2,17 @@ import React from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons';
 
-const Row = ({ icon, placeholder, color, secureTextEntry, onFocus }) => {
+const Row = ({ icon, placeholder, value, color, secureTextEntry, onFocus, onChangeText }) => {
   return (
     <View style={{ ...styles.section, borderColor: color }}>
       <MaterialIcons name={icon} size={30} color={color} />
       <TextInput
         placeholder={placeholder}
+        value={value}
         style={{ ...styles.textInput, color: color }}
         secureTextEntry={secureTextEntry}
         onFocus={onFocus}
+        onChangeText={onChangeText}
       />
     </View>
   )

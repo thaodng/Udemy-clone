@@ -1,36 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Switch, StyleSheet } from "react-native";
-
+import { AuthContext } from '../../context/AuthContext';
+import { SettingContext } from '../../context/SettingContext';
 import Colors from '../../constants/Colors';
 
-const Setting = ({ title }) => {
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-
-  return (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{title}</Text>
-      <Switch
-        trackColor={{ false: Colors.lightgray, true: Colors.tintColor }}
-        thumbColor={isEnabled ? Colors.tintColor : 'white'}
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-    </View>
-  );
-};
+import { getUserSettings } from '../../core/services/user-setting-service';
 
 const SettingsScreen = () => {
+  const { authentication: { token } } = useContext(AuthContext);
+  const { userSettings, setUserSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
+  useEffect(() => {
+    const { settings } = getUserSettings({ token });
+    setUserSettings(settings); // update context
+  }, [])
+
+  const toggleSwitch = (label, value) => {
+    userSettings[label] = value;
+    setUserSettings({
+      ...userSettings,
+    });
+  };
+
+  const Setting = ({ label, value, toggleSwitch }) => {
+    return (
+      <View style={{ ...styles.itemContainer, backgroundColor: bgColor }}>
+        <Text style={{ ...styles.itemText, color: txColor }}>{label}</Text>
+        <Switch
+          trackColor={{ false: txColor, true: Colors.tintColor }}
+          thumbColor={value ? Colors.tintColor : txColor}
+          onValueChange={toggleSwitch}
+          value={value}
+        />
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <Setting title="Notifications" />
-      <Setting title="Require Wi-Fi for downloading" />
-      <Setting title="Show quiz at the end of video" />
-      <Setting title="Recommended content push notifications" />
+      {
+        Object.keys(userSettings).length > 0 && Object.keys(userSettings).map((label) =>
+          <Setting
+            key={`${label}`}
+            label={label}
+            value={userSettings[label]}
+            toggleSwitch={value => toggleSwitch(label, value)} />
+        )
+      }
     </View>
   );
 };
+
+
 
 export default SettingsScreen;
 
@@ -43,12 +66,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     paddingVertical: 15,
-    backgroundColor: '#fff',
   },
   itemText: {
     flex: 1,
     fontSize: 16,
-    color: Colors.dark,
   },
 });
 

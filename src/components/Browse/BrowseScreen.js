@@ -1,111 +1,122 @@
-import React from 'react'
-import { Text, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native'
-import Swiper from 'react-native-swiper';
+import React, { useState, useEffect, useContext } from 'react'
+import { View, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import SliderContainer from '../Common/SliderContainer';
+import Slide from '../Common/Slide';
 import HeaderList from '../Common/HeaderList';
-import TopAuthors from './TopAuthors';
+import Authors from '../Common/Authors';
+import TopCategories from './TopCategories';
 import ListCourses from '../ListCourses/ListCourses';
+import ScreenKey from '../../constants/ScreenKey';
+import Colors from '../../constants/Colors';
 
-const { width, height } = Dimensions.get('window')
+import { AuthorsContext } from '../../context/AuthorsContext';
+import { SettingContext } from '../../context/SettingContext';
+import { CategoriesContext } from '../../context/CategoriesContext';
+import { CoursesContext } from '../../context/CoursesContext';
+
+import { getAuthors } from '../../core/services/authors-service';
+import { getCategories } from '../../core/services/categories-service';
+import { getCourses, getCoursesByAuthor, getCoursesByCategory } from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
-  const Slide = ({ uri, title }) => {
-    return (
-      <>
-        <Image
-          style={styles.image}
-          source={{ uri: uri }}
-          resizeMode="stretch" />
-        <Text style={styles.text} numberOfLines={1}>{title}</Text>
-      </>
-    )
-  }
+  const navigation = useNavigation();
+  const { authors, setAuthors } = useContext(AuthorsContext);
+  const { categories, setCategories } = useContext(CategoriesContext);
+  const { courses, setCourses } = useContext(CoursesContext);
+
+  const { userSettings } = useContext(SettingContext);
+  const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
+  const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
+  useEffect(() => {
+    const loadAuthors = () => {
+      const { status, authors, errorString } = getAuthors();
+      if (status === 200) {
+        setAuthors(authors);
+      } else {
+        Alert.alert(errorString);
+      }
+    }
+
+    const loadCategories = () => {
+      const { status, categories, errorString } = getCategories();
+      if (status === 200) {
+        setCategories(categories);
+      } else {
+        Alert.alert(errorString);
+      }
+    }
+
+    const loadCourses = () => {
+      const { status, courses, errorString } = getCourses();
+      if (status === 200) {
+        setCourses(courses);
+      } else {
+        Alert.alert(errorString);
+      }
+    };
+
+    loadAuthors();
+    loadCategories();
+    loadCourses();
+  }, []);
+
+  const onPressAuthor = (authorId) => {
+    const author = authors.find(a => a.id === authorId);
+    const data = getCoursesByAuthor(authorId);
+
+    navigation.navigate(ScreenKey.BrowseCoursesScreen, {
+      screenDetail: ScreenKey.BrowseCourseDetailScreen,
+      subject: `${author.name}'s courses`,
+      data: data
+    });
+  };
+
+  const onPressCategory = (categoryId) => {
+    const category = categories.find(c => c.id === categoryId);
+    const data = getCoursesByCategory(categoryId);
+
+    navigation.navigate(ScreenKey.BrowseCoursesScreen, {
+      screenDetail: ScreenKey.BrowseCourseDetailScreen,
+      subject: `${category.title}`,
+      data: data
+    })
+  };
 
   return (
-    <ScrollView>
-      <Swiper
-        style={styles.wrapper}
-        loop={false}
-        dot={<View style={styles.dot} />}
-        activeDot={<View style={styles.activeDot} />}
-      >
-        <View style={styles.slide}>
-          <Slide
-            uri="https://deno.land/v1_wide.jpg"
-            title="Deno" />
-        </View>
-
-        <View style={styles.slide}>
-          <Slide
-            uri="https://wp.technologyreview.com/wp-content/uploads/2019/07/quantumexplainer3.2-01-10.jpg"
-            title="Cryptography" />
-        </View>
-
-        <View style={styles.slide}>
-          <Slide
-            uri="https://techtalk.vn/wp-content/uploads/2017/05/react-native-logo-696x360.jpg"
-            title="React native" />
-        </View>
-
-      </Swiper>
+    <ScrollView >
+      <SliderContainer>
+        {
+          courses.map(course => (
+            <Slide
+              key={course.id}
+              item={course}
+              screenDetail={ScreenKey.BrowseCourseDetailScreen}
+            />
+          ))
+        }
+      </SliderContainer>
 
       <View style={{ flex: 1 }}>
-        <HeaderList title="Top authors" noIcon={true} />
-        <TopAuthors />
-        <HeaderList title="Software development" />
-        <ListCourses direction="row" />
-        <HeaderList title="Personsal development" />
-        <ListCourses direction="row" />
-        <HeaderList title="Office Productivity" />
-        <ListCourses direction="row" />
+        <HeaderList title="Top categories" />
+        <TopCategories categories={categories} onPress={onPressCategory} />
+        {
+          categories.map(ct => {
+            const data = courses.filter(course => course.categoryId === ct.id);
+            return (
+              <View key={`${ct.id}`}>
+                <HeaderList title={ct.title} txColor={txColor} bgColor={bgColor} data={data} listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+                <ListCourses direction="row" txColor={txColor} bgColor={bgColor} data={data} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+              </View>
+            );
+          })
+        }
+        <HeaderList title="Top authors" />
+        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
       </View>
     </ScrollView>
   )
 }
 
 export default BrowseScreen;
-
-
-const styles = {
-  wrapper: {
-    height: height / 3
-  },
-  slide: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'transparent'
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold'
-  },
-  image: {
-    flex: 1,
-    width,
-  },
-  text: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold'
-  },
-  dot: {
-    backgroundColor: `gray`,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 5,
-    marginVertical: 3
-  },
-  activeDot: {
-    backgroundColor: 'white',
-    width: 20,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 5,
-    marginVertical: 3
-  },
-}
-

@@ -28,7 +28,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 10
   },
-  text: {
-    color: 'gray'
-  },
 })
