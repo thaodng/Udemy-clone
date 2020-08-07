@@ -8,11 +8,14 @@ const loginUrl = `${DOMAIN}/user/login`;
 const forgetPasswordUrl = `${DOMAIN}/user/forget-pass/send-email`;
 const resetPasswordUrl = `${DOMAIN}/user/reset-password`;
 
+const updateUserInfoUrl = `${DOMAIN}/user/update-profile`;
+
 const getAllCategoriesUrl = `${DOMAIN}/category/all`;
 const getCategoryByIdUrl = (id) => `${DOMAIN}/category/id`;
 
 const getNewCoursessUrl = `${DOMAIN}/course/top-new`;
 const getTopRateCoursessUrl = `${DOMAIN}/course/top-rate`;
+
 
 
 export {
@@ -25,9 +28,11 @@ export {
   forgetPasswordUrl,
   resetPasswordUrl,
 
+  updateUserInfoUrl,
+
   getAllCategoriesUrl,
   getCategoryByIdUrl,
 
   getNewCoursessUrl,
-  getTopRateCoursessUrl
+  getTopRateCoursessUrl,
 };

@@ -11,11 +11,11 @@ import ScreenKey from '../../constants/ScreenKey';
 
 import { SettingContext } from '../../context/SettingContext';
 import { Context as AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserContext';
+
 
 const AccountScreen = ({ navigation }) => {
-  const { state: { isAuthenticated }, setAuthentication } = useContext(AuthContext);
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
+
   const { name, avatar } = userInfo;
 
   const { userSettings } = useContext(SettingContext);
@@ -24,7 +24,7 @@ const AccountScreen = ({ navigation }) => {
 
   const onSignOut = () => {
     setAuthentication({});
-    setUserInfo({});
+    updateUserInfo({});
     navigation.navigate(ScreenKey.LoginScreen);
   }
 

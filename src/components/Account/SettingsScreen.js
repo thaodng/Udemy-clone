@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Switch, StyleSheet } from "react-native";
-import { AuthContext } from '../../context/AuthContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
 import Colors from '../../constants/Colors';
 
 import { getUserSettings } from '../../core/services/user-setting-service';
 
 const SettingsScreen = () => {
-  const { authentication: { token } } = useContext(AuthContext);
+  const { state: { token } } = useContext(AuthContext);
   const { userSettings, setUserSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;

@@ -5,22 +5,53 @@ import {
   sendActiveEmail,
   login,
   forgetPassword,
-  resetPassword
+  resetPassword,
+  updateUser
 } from '../core/services/authentication-service';
 
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'signin':
-      return { token: action.payload, isAuthenticated: true, message: '', errorMessage: '' }; // login success, no error message (if exists)
+      return {
+        token: action.payload,
+        isAuthenticated: true,
+        userInfo: action.userInfo,
+        message: '',
+        errorMessage: ''
+      }; // login success, no error message (if exists)
     case 'signout':
-      return { token: null, message: '', isAuthenticated: false, message: '', errorMessage: '' };
+      return {
+        token: null,
+        isAuthenticated: false,
+        userInfo: {},
+        message: '',
+        errorMessage: ''
+      };
+
+    case 'update_info': return {
+      ...state,
+      userInfo: action.payload
+    };
+
     case 'add_message':
-      return { ...state, message: action.payload, errorMessage: '' };
+      return {
+        ...state,
+        message: action.payload,
+        errorMessage: ''
+      };
     case 'add_error': // return new object with new message
-      return { ...state, message: '', errorMessage: action.payload }; // this update state will make SignUpScreen or SignInScreen re-render
+      return {
+        ...state,
+        message: '',
+        errorMessage: action.payload
+      }; // this update state will make SignUpScreen or SignInScreen re-render
     case 'clear_error_message':
-      return { ...state, message: '', errorMessage: '' };
+      return {
+        ...state,
+        message: '',
+        errorMessage: ''
+      };
     default:
       return state;
   }
@@ -63,13 +94,13 @@ const sendActivateEmail = dispatch => async ({ email }) => {
 
 const signin = dispatch => async ({ email, password }) => {
   try {
-    const status = 200;
-    // const { data: { status } } = await login({ email, password }); // make api request to sign up
+    // const status = 200;
+    const { status, data: { token, userInfo } } = await login({ email, password }); // make api request to sign up
     if (status === 200) {
-      await AsyncStorage.setItem('token', 'response.data.token');
-      dispatch({ type: 'signin', payload: 'response.data.token' });
-      // await AsyncStorage.setItem('token', response.data.token);
-      // dispatch({ type: 'signin', payload: response.data.token });
+      //await AsyncStorage.setItem('token', 'response.data.token');
+      // dispatch({ type: 'signin', payload: 'response.data.token' });
+      await AsyncStorage.setItem('token', token);
+      dispatch({ type: 'signin', payload: token, userInfo });
     }
   } catch (err) {
     if (err.response) {
@@ -112,12 +143,44 @@ const resetPass = dispatch => async ({ id, password }) => {
   }
 };
 
+const updateUserInfo = dispatch => async ({ token, newInfo }) => {
+  try {
+    // const { status, data: { payload } } = await updateUser({ token, newInfo });
+
+    const { payload } = await updateUser({ token, newInfo });
+    dispatch({ type: 'update_info', payload });
+    console.log(payload);
+    
+  } catch (err) {
+    if (err.response) {
+      dispatch({ type: 'add_error', payload: err.response.data.message });
+    } else {
+      dispatch({ type: 'add_error', payload: err.message });
+    }
+  }
+};
+
 const clearErrorMessage = dispatch => () => {
   dispatch({ type: 'clear_error_message' });
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signup, sendActivateEmail, signin, forgetPass, resetPass, clearErrorMessage },
-  { token: null, isAuthenticated: false, message: '', errorMessage: '' }
+  {
+    signup,
+    sendActivateEmail,
+    signin,
+    forgetPass,
+    resetPass,
+    updateUserInfo,
+    clearErrorMessage
+  },
+  {
+    token: null,
+    isAuthenticated: false,
+    userInfo: {},
+    message: '',
+    errorMessage: '',
+    isRequest: false
+  }
 );
