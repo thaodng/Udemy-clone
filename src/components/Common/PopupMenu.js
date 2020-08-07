@@ -13,10 +13,10 @@ const PopupMenu = ({ style, item, colorDot }) => {
   const { id } = item;
   let valueFavorite, valueBookmark;
 
-  if (isAuthenticated) {
-    valueFavorite = userInfo.favoriteCourses.includes(id) ? "UnFavorite" : "Favorite";
-    valueBookmark = userInfo.bookmarkedCourses.includes(id) ? "UnBookmark" : "Bookmark";
-  }
+  // if (isAuthenticated) {
+  //   valueFavorite = userInfo.favoriteCourses.includes(id) ? "UnFavorite" : "Favorite";
+  //   valueBookmark = userInfo.bookmarkedCourses.includes(id) ? "UnBookmark" : "Bookmark";
+  // }
 
 
   const onShare = async () => {

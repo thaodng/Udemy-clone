@@ -21,13 +21,12 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [focus, setFocus] = useState(null);
 
-  const { state: { token, errorMessage }, signin, clearErrorMessage } = useContext(AuthContext);
+  const { state: { token, isAuthenticated, errorMessage }, signin, clearErrorMessage } = useContext(AuthContext);
   // const { setUserInfo } = useContext(UserContext);
   // const { setUserSettings } = useContext(SettingContext);
 
   useEffect(() => {
-    if (token) {
-      console.log('login');
+    if (token && isAuthenticated) {
       navigation.navigate(ScreenKey.BrowseTabNavigator);
       // setAuthentication({ token, isAuthenticated });
 

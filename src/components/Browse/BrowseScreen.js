@@ -39,12 +39,14 @@ const BrowseScreen = () => {
       }
     }
 
-    const loadCategories = () => {
-      const { status, categories, errorString } = getCategories();
-      if (status === 200) {
-        setCategories(categories);
-      } else {
-        Alert.alert(errorString);
+    const loadCategories = async () => {
+      if (!categories) {
+        const { message, payload } = await getCategories();
+        if (message === 'OK') {
+          setCategories(payload);
+        } else {
+          Alert.alert('Lỗi khi load danh sách danh mục');
+        }
       }
     }
 
@@ -99,9 +101,9 @@ const BrowseScreen = () => {
       </SliderContainer>
 
       <View style={{ flex: 1 }}>
-        <HeaderList title="Top categories" />
+        <HeaderList title="Danh sách danh mục" />
         <TopCategories categories={categories} onPress={onPressCategory} />
-        {
+        {/* {
           categories.map(ct => {
             const data = courses.filter(course => course.categoryId === ct.id);
             return (
@@ -113,7 +115,7 @@ const BrowseScreen = () => {
           })
         }
         <HeaderList title="Top authors" />
-        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
+        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} /> */}
       </View>
     </ScrollView>
   )
