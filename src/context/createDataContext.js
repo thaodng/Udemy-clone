@@ -3,11 +3,10 @@ import React, { useReducer } from 'react';
 
 export default (reducer, actions, defaultValue) => {
   const Context = React.createContext();
-  let cloneState, cloneDispatch;
+
   const Provider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, defaultValue);
-    cloneState = state;
-    cloneDispatch = cloneDispatch;
+
     const boundActions = {};
     for (let key in actions) {
       boundActions[key] = actions[key](dispatch);
@@ -20,13 +19,9 @@ export default (reducer, actions, defaultValue) => {
     );
   };
 
-
   /* 
     Provider is component make all essential data available to everything else in our application
     Context is object we are going to access to that information from nested child components
    */
-  return {
-    cloneState, cloneDispatch, Context,
-    Provider
-  };
+  return { Context, Provider };
 };

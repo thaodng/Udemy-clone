@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { StyleSheet, View, Alert } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
+import { StyleSheet, View, Alert, Text } from 'react-native'
 import Header from './Common/Header';
 import Row from './Common/Row';
 import LinkScreen from './Common/LinkScreen';
@@ -18,23 +18,33 @@ const SignupScreen = ({ navigation }) => {
   const [password2, setPassword2] = useState('');
   const [focus, setFocus] = useState(null);
 
-  const { state: { message }, signup } = useContext(AuthContext);
+  const { state: { message, errorMessage }, signup, clearErrorMessage } = useContext(AuthContext);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      clearErrorMessage();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+
+  if (message !== '') {
+    Alert.alert(
+      'Message',
+      message,
+      [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.ActiveScreen) }]
+    );
+    clearErrorMessage();
+
+  }
+
 
   const onSubmit = () => {
 
     if (password === password2) {
-      signup({ username, email, phone, password });
-
-      Alert.alert(
-        'Message',
-        message,
-        [
-          {
-            text: 'OK',
-            // onPress: () => navigation.navigate(ScreenKey.LoginScreen) 
-          }
-        ]
-      );
+      signup({ username: 'mrtester1234', email: 'mrtester1234@gmail.com', phone: '0909991234', password: '123456' })
+      // signup({ username, email, phone, password });
 
       setUsername('');
       setPhone('');
@@ -126,6 +136,8 @@ const SignupScreen = ({ navigation }) => {
         onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}
         content="Login"
       />
+
+      <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>
 
     </View>
   );

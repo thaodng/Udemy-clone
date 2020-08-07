@@ -8,6 +8,7 @@ const ScreenKey = {
   SignupScreen: 'SignupScreen',
   ForgetScreen: 'ForgetScreen',
   NewPassword: 'NewPassword',
+  ActiveScreen: 'ActiveScreen',
   BrowseTabNavigator: 'BrowseTabNavigator',
 
   HomeTabStackNavigator: 'HomeTabStackNavigator',
