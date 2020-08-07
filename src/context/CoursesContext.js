@@ -3,10 +3,11 @@ import React, { useState } from 'react'
 const CoursesContext = React.createContext();
 
 const CoursesProvider = ({ children }) => {
-  const [courses, setCourses] = useState([]);
+  const [newCourses, setNewCourses] = useState([]);
+  const [topRateCourses, setTopRateCourses] = useState([]);
 
   return (
-    <CoursesContext.Provider value={{ courses, setCourses }}>
+    <CoursesContext.Provider value={{ newCourses, setNewCourses, topRateCourses, setTopRateCourses }}>
       {children}
     </CoursesContext.Provider>
   )

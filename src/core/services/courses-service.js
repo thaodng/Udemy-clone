@@ -1,7 +1,17 @@
-import Course from '../../models/Course';
-import courses from '../../mocks/courses.json';
+import { postApi } from '../api'
+import {
+  getNewCoursessUrl,
+  getTopRateCoursessUrl
+} from '../api/domain';
 
-const dataCourses = courses.map(course => new Course(course));
+// my courses
+
+// New courses
+const getNewCourses = ({ limit, page }) => postApi(getNewCoursessUrl, { limit, page });
+
+// Top rating courses
+const getTopRateCourses = ({ limit, page }) => postApi(getTopRateCoursessUrl, { limit, page });
+
 
 const getCourses = () => {
   if (dataCourses) {
@@ -34,4 +44,12 @@ const getCoursesByTitle = (title) => {
   return dataCourses.filter(course => course.title.toLowerCase().includes(title.toLowerCase()));
 };
 
-export { getCourses, getCourseById, getCoursesByAuthor, getCoursesByCategory, getCoursesByTitle };
+export {
+  getNewCourses,
+  getTopRateCourses,
+  getCourses,
+  getCourseById,
+  getCoursesByAuthor,
+  getCoursesByCategory,
+  getCoursesByTitle
+};

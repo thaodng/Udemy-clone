@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SliderContainer from '../Common/SliderContainer';
 import Slide from '../Common/Slide';
@@ -17,19 +17,48 @@ import { CoursesContext } from '../../context/CoursesContext';
 
 import { getAuthors } from '../../core/services/authors-service';
 import { getCategories } from '../../core/services/categories-service';
-import { getCourses, getCoursesByAuthor, getCoursesByCategory } from '../../core/services/courses-service';
+import { getNewCourses, getTopRateCourses, getCourses, getCoursesByAuthor, getCoursesByCategory } from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
   const navigation = useNavigation();
-  const { authors, setAuthors } = useContext(AuthorsContext);
   const { categories, setCategories } = useContext(CategoriesContext);
-  const { courses, setCourses } = useContext(CoursesContext);
+  const { newCourses, setNewCourses, topRateCourses, setTopRateCourses } = useContext(CoursesContext);
+  const { authors, setAuthors } = useContext(AuthorsContext);
 
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
   useEffect(() => {
+    const loadCategories = async () => {
+      if (categories.length === 0) {
+        const { message, payload } = await getCategories();
+        if (message === 'OK') {
+          setCategories(payload);
+        } else {
+          Alert.alert('Lỗi khi load danh sách danh mục!');
+        }
+      }
+    }
+
+    const loadNewCourses = async () => {
+      const { data: { message, payload } } = await getNewCourses({ limit: 10, page: 1 });
+      if (message === 'OK') {
+        setNewCourses(payload);
+      } else {
+        Alert.alert('Lỗi khi load danh sách khoá học mới!');
+      }
+    };
+
+    const loadTopRateCourses = async () => {
+      const { data: { message, payload } } = await getTopRateCourses({ limit: 10, page: 1 });
+      if (message === 'OK') {
+        setTopRateCourses(payload);
+      } else {
+        Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
+      }
+    };
+
     const loadAuthors = () => {
       const { status, authors, errorString } = getAuthors();
       if (status === 200) {
@@ -39,29 +68,10 @@ const BrowseScreen = () => {
       }
     }
 
-    const loadCategories = async () => {
-      if (!categories) {
-        const { message, payload } = await getCategories();
-        if (message === 'OK') {
-          setCategories(payload);
-        } else {
-          Alert.alert('Lỗi khi load danh sách danh mục');
-        }
-      }
-    }
-
-    const loadCourses = () => {
-      const { status, courses, errorString } = getCourses();
-      if (status === 200) {
-        setCourses(courses);
-      } else {
-        Alert.alert(errorString);
-      }
-    };
-
-    loadAuthors();
     loadCategories();
-    loadCourses();
+    loadNewCourses();
+    loadTopRateCourses();
+    loadAuthors();
   }, []);
 
   const onPressAuthor = (authorId) => {
@@ -90,7 +100,7 @@ const BrowseScreen = () => {
     <ScrollView >
       <SliderContainer>
         {
-          courses.map(course => (
+          newCourses.map(course => (
             <Slide
               key={course.id}
               item={course}
@@ -103,19 +113,39 @@ const BrowseScreen = () => {
       <View style={{ flex: 1 }}>
         <HeaderList title="Danh sách danh mục" />
         <TopCategories categories={categories} onPress={onPressCategory} />
-        {/* {
-          categories.map(ct => {
-            const data = courses.filter(course => course.categoryId === ct.id);
-            return (
-              <View key={`${ct.id}`}>
-                <HeaderList title={ct.title} txColor={txColor} bgColor={bgColor} data={data} listCoursesScreen={ScreenKey.BrowseCoursesScreen} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
-                <ListCourses direction="row" txColor={txColor} bgColor={bgColor} data={data} screenDetail={ScreenKey.BrowseCourseDetailScreen} />
-              </View>
-            );
-          })
-        }
+
+        <HeaderList
+          title="Khoá học mới"
+          txColor={txColor}
+          bgColor={bgColor}
+          data={newCourses}
+          listCoursesScreen={ScreenKey.BrowseCoursesScreen}
+          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+
+        <ListCourses
+          direction="row"
+          txColor={txColor}
+          bgColor={bgColor}
+          data={newCourses}
+          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+
+        <HeaderList
+          title="Khoá học nổi bật"
+          txColor={txColor}
+          bgColor={bgColor}
+          data={newCourses}
+          listCoursesScreen={ScreenKey.BrowseCoursesScreen}
+          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+
+        <ListCourses
+          direction="row"
+          txColor={txColor}
+          bgColor={bgColor}
+          data={newCourses}
+          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+
         <HeaderList title="Top authors" />
-        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} /> */}
+        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
       </View>
     </ScrollView>
   )

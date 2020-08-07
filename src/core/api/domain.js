@@ -11,6 +11,10 @@ const resetPasswordUrl = `${DOMAIN}/user/reset-password`;
 const getAllCategoriesUrl = `${DOMAIN}/category/all`;
 const getCategoryByIdUrl = (id) => `${DOMAIN}/category/id`;
 
+const getNewCoursessUrl = `${DOMAIN}/course/top-new`;
+const getTopRateCoursessUrl = `${DOMAIN}/course/top-rate`;
+
+
 export {
   DOMAIN,
   registerUrl,
@@ -20,6 +24,10 @@ export {
   //loginGoogleUrl,
   forgetPasswordUrl,
   resetPasswordUrl,
+
   getAllCategoriesUrl,
-  getCategoryByIdUrl
+  getCategoryByIdUrl,
+
+  getNewCoursessUrl,
+  getTopRateCoursessUrl
 };

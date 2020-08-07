@@ -23,7 +23,7 @@ const HeaderList = ({ title, txColor, data, listCoursesScreen, screenDetail }) =
         }>
           <View style={styles.buttonViewAll}>
             <Text style={{ color: Colors.tintColor }} >
-              See all
+              Xem thêm
             </Text>
             <Entypo size={18} color={Colors.tintColor} name="chevron-small-right" />
           </View>
