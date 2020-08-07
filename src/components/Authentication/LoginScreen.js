@@ -8,13 +8,13 @@ import Footer from './Common/Footer';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import { AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserContext';
-import { SettingContext } from '../../context/SettingContext';
+// import { Context as AuthContext } from '../../context/AuthContext';
+// import { UserContext } from '../../context/UserContext';
+// import { SettingContext } from '../../context/SettingContext';
 
-import { login } from '../../core/services/authentication-service';
-import { getUserInfo } from '../../core/services/user-service';
-import { getUserSettings } from '../../core/services/user-setting-service';
+// import { login } from '../../core/services/authentication-service';
+// import { getUserInfo } from '../../core/services/user-service';
+// import { getUserSettings } from '../../core/services/user-setting-service';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -22,28 +22,28 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [focus, setFocus] = useState(null);
 
-  const { setAuthentication } = useContext(AuthContext);
-  const { setUserInfo } = useContext(UserContext);
-  const { setUserSettings } = useContext(SettingContext);
+  // const { setAuthentication } = useContext(AuthContext);
+  // const { setUserInfo } = useContext(UserContext);
+  // const { setUserSettings } = useContext(SettingContext);
 
   const onSubmit = () => {
-    const { status, token, isAuthenticated, errorString } = login({ email, password });
-    if (status === 200) {
-      setAuthentication({ token, isAuthenticated });
+    // const { status, token, isAuthenticated, errorString } = login({ email, password });
+    // if (status === 200) {
+    //   setAuthentication({ token, isAuthenticated });
 
-      const { user } = getUserInfo({ token });
-      setUserInfo(user);
+    //   const { user } = getUserInfo({ token });
+    //   setUserInfo(user);
 
-      const { settings } = getUserSettings({ token });
-      setUserSettings(settings);
+    //   const { settings } = getUserSettings({ token });
+    //   setUserSettings(settings);
 
-      navigation.navigate(ScreenKey.BrowseTabNavigator);
-    } else {
-      Alert.alert(errorString);
-    }
+    //   navigation.navigate(ScreenKey.BrowseTabNavigator);
+    // } else {
+    //   Alert.alert(errorString);
+    // }
 
-    setEmail('');
-    setPassword('');
+    // setEmail('');
+    // setPassword('');
   };
 
   return (

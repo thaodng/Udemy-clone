@@ -7,7 +7,7 @@ import { MenuProvider } from 'react-native-popup-menu';
 import { AuthorsProvider } from './src/context/AuthorsContext';
 import { CategoriesProvider } from './src/context/CategoriesContext';
 import { CoursesProvider } from './src/context/CoursesContext';
-import { AuthenticationProvider } from './src/context/AuthContext';
+import { Provider as AuthenticationProvider } from './src/context/AuthContext';
 import { UserProvider } from './src/context/UserContext';
 import { SettingProvider } from './src/context/SettingContext';
 
