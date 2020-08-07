@@ -34,12 +34,7 @@ const ProfileScreen = ({ route }) => {
     // update in database
     updateUserInfo({ token, newInfo: { name, avatar, phone } });
 
-    // const result = 
-    // if (result.status === 200) {
-    //   // update in user context
-    //   setUserInfo(result.user);
     Alert.alert('Update success!');
-    // }
   }
 
   const pickImage = async (type) => {
@@ -72,8 +67,8 @@ const ProfileScreen = ({ route }) => {
   const handleUpload = (image) => {
     const data = new FormData()
     data.append('file', image)
-    // save to database
-
+    // hosting file
+    
     // update image
     setAvatar(image.uri);
   };
@@ -152,10 +147,10 @@ const ProfileScreen = ({ route }) => {
         <View style={styles.modalView}>
           <View style={styles.modalButtonView}>
             <Button mode="contained" icon="camera" theme={theme} onPress={() => pickImage('Gallery')}>
-              Camera
+              Gallery
               </Button>
             <Button mode="contained" icon="image-area" theme={theme} onPress={() => pickImage('Camera')}>
-              Gallery
+              Camera
               </Button>
           </View>
           <Button theme={theme} onPress={() => setModal(false)}>
