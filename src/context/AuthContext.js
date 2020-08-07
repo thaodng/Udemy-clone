@@ -1,6 +1,7 @@
+import { AsyncStorage } from 'react-native';
 import createDataContext from './createDataContext';
-import { register, sendActiveEmail } from '../core/services/authentication-service';
-import axios from 'axios';
+import { register, sendActiveEmail, login } from '../core/services/authentication-service';
+
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -26,23 +27,43 @@ const authReducer = (state, action) => {
 const signup = dispatch => async ({ username, email, phone, password }) => {
   try {
     //const { data: { status } } = await axios.post('https://api.itedu.me/user/register', { username, email, phone, password });
-    const { data: { status } } = await register({ username, email, phone, password }); // make api request to sign up
-    if (status === 200) {
-      dispatch({ type: 'add_message', payload: 'Đăng ký thành công, vui lòng kích hoạt tài khoản!' });
-    }
+    //const { data: { status } } = await register({ username, email, phone, password }); // make api request to sign up
+    //if (status === 200) {
+    dispatch({ type: 'add_message', payload: 'Đăng ký thành công, vui lòng kích hoạt tài khoản!' });
+    //}
   } catch (err) {
     if (err.response) {
       dispatch({ type: 'add_error', payload: err.response.data.message });
     } else {
       dispatch({ type: 'add_error', payload: err.message });
     }
-  }};
+  }
+};
 
 const sendActivateEmail = dispatch => async ({ email }) => {
   try {
-    const { data: { status }, message } = await sendActiveEmail({ email }); // make api request to sign up
-    if (status === 200) {
+    //const { data: { status } } = await sendActiveEmail({ email }); // make api request to sign up
+    //if (status === 200) {
     dispatch({ type: 'add_message', payload: 'Chúng tôi đã gửi email kích hoạt!' });
+    //}
+  } catch (err) {
+    if (err.response) {
+      dispatch({ type: 'add_error', payload: err.response.data.message });
+    } else {
+      dispatch({ type: 'add_error', payload: err.message });
+    }
+  }
+};
+
+const signin = dispatch => async ({ email, password }) => {
+  try {
+    const status = 200;
+    // const { data: { status } } = await login({ email, password }); // make api request to sign up
+    if (status === 200) {
+      await AsyncStorage.setItem('token', 'response.data.token');
+      dispatch({ type: 'signin', payload: 'response.data.token' });
+      // await AsyncStorage.setItem('token', response.data.token);
+      // dispatch({ type: 'signin', payload: response.data.token });
     }
   } catch (err) {
     if (err.response) {
@@ -59,6 +80,6 @@ const clearErrorMessage = dispatch => () => {
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signup, sendActivateEmail, clearErrorMessage },
+  { signup, sendActivateEmail, signin, clearErrorMessage },
   { token: null, message: '', errorMessage: '' }
 );

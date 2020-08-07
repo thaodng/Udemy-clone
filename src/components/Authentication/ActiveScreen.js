@@ -14,22 +14,21 @@ const ActiveScreen = ({ navigation }) => {
   const { state, state: { message, errorMessage }, sendActivateEmail, clearErrorMessage } = useContext(AuthContext);
 
   useEffect(() => {
+    if (message !== '') {
+      Alert.alert(
+        'Message',
+        message,
+        [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.LoginScreen) }]
+      );
+    }
+
     const unsubscribe = navigation.addListener('focus', () => {
       clearErrorMessage();
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [navigation, message]);
 
-  console.log(state);
-
-  if (message !== '') {
-    Alert.alert(
-      'Message',
-      message,
-      [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.LoginScreen) }]
-    );
-  }
 
   const onSubmit = () => {
     sendActivateEmail({ email });

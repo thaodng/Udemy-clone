@@ -21,23 +21,21 @@ const SignupScreen = ({ navigation }) => {
   const { state: { message, errorMessage }, signup, clearErrorMessage } = useContext(AuthContext);
 
   useEffect(() => {
+    if (message !== '') {
+      Alert.alert(
+        'Message',
+        message,
+        [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.ActiveScreen) }]
+      );
+      clearErrorMessage();
+    }
+
     const unsubscribe = navigation.addListener('focus', () => {
       clearErrorMessage();
     });
 
     return unsubscribe;
-  }, [navigation]);
-
-
-  if (message !== '') {
-    Alert.alert(
-      'Message',
-      message,
-      [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.ActiveScreen) }]
-    );
-    clearErrorMessage();
-
-  }
+  }, [navigation, message]);
 
 
   const onSubmit = () => {
