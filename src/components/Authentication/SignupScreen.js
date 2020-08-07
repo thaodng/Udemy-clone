@@ -10,8 +10,6 @@ import ScreenKey from '../../constants/ScreenKey';
 
 import { Context as AuthContext } from '../../context/AuthContext';
 
-import axios from 'axios';
-
 const SignupScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -20,40 +18,40 @@ const SignupScreen = ({ navigation }) => {
   const [password2, setPassword2] = useState('');
   const [focus, setFocus] = useState(null);
 
-  const { signup } = useContext(AuthContext);
+  const { state: { message }, signup } = useContext(AuthContext);
 
   const onSubmit = () => {
-    
-    signup({
-      username: 'testerasdssss',
-      email: 'testerasdssss12@email.com',
-      phone: '0909991157',
-      password: '123456'
-    })
 
-    // if (password === password2) {
-    //   const result = signup({ username, email, phone, password });
-    //   console.log(result.data);
+    if (password === password2) {
+      signup({ username, email, phone, password });
 
-    // const { status, message, errorString } = signup({ username, email, phone, password });
+      Alert.alert(
+        'Message',
+        message,
+        [
+          {
+            text: 'OK',
+            // onPress: () => navigation.navigate(ScreenKey.LoginScreen) 
+          }
+        ]
+      );
 
-    // if (status === 200) {
-    //   Alert.alert(
-    //     'Message',
-    //     message,
-    //     [
-    //       { text: 'OK', onPress: () => navigation.navigate(ScreenKey.LoginScreen) }
-    //     ]
-    //   );
-    // } else {
-    //   Alert.alert(errorString);
-    // }
+      setUsername('');
+      setPhone('');
+      setEmail('');
+      setPassword('');
+      setPassword2('');
 
-
-    // setEmail('');
-    // setPassword('');
-    // setPassword2('');
-  };
+    } else {
+      Alert.alert(
+        'Message',
+        "Password doesn't match!!",
+        [{ text: 'OK' }]
+      );
+      setPassword('');
+      setPassword2('');
+    };
+  }
 
   return (
     <View style={styles.container}>
