@@ -11,14 +11,19 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 const ActiveScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const { state, state: { message, errorMessage }, sendActivateEmail, clearErrorMessage } = useContext(AuthContext);
+  const {  state: { message, errorMessage }, sendActivateEmail, clearErrorMessage } = useContext(AuthContext);
 
   useEffect(() => {
-    if (message !== '') {
+    if (message === 'active') {
       Alert.alert(
         'Message',
-        message,
-        [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.LoginScreen) }]
+        'Chúng tôi đã gửi email kích hoạt!',
+        [{
+          text: 'OK', onPress: () => {
+            clearErrorMessage();
+            navigation.navigate(ScreenKey.LoginScreen)
+          }
+        }]
       );
     }
 

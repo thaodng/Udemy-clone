@@ -10,11 +10,11 @@ import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
 import { SettingContext } from '../../context/SettingContext';
-import { AuthContext } from '../../context/AuthContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 
 const AccountScreen = ({ navigation }) => {
-  const { authentication: { isAuthenticated }, setAuthentication } = useContext(AuthContext);
+  const { state: { isAuthenticated }, setAuthentication } = useContext(AuthContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const { name, avatar } = userInfo;
 

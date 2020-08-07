@@ -7,7 +7,7 @@ import SearchStackNavigator from './SearchStackNavigator';
 import AccountStackNavigator from './AccountStackNavigator';
 import TabBarIcon from '../components/Common/TabBarIcon';
 
-import { AuthContext } from '../context/AuthContext';
+import { Context as AuthContext } from '../context/AuthContext';
 import { SettingContext } from '../context/SettingContext';
 
 import Colors from '../constants/Colors';
@@ -18,7 +18,7 @@ const BottomTab = createBottomTabNavigator();
 const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
-  const { authentication: { isAuthenticated } } = useContext(AuthContext);
+  const { state: { isAuthenticated } } = useContext(AuthContext);
   const { userSettings } = useContext(SettingContext);
   const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 

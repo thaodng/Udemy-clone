@@ -2,12 +2,12 @@ import React, { useContext } from 'react'
 import { StyleSheet, Alert, Share } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
-import { AuthContext } from '../../context/AuthContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { UserContext } from '../../context/UserContext';
 
 
 const PopupMenu = ({ style, item, colorDot }) => {
-  const { authentication: { isAuthenticated } } = useContext(AuthContext);
+  const { state: { isAuthenticated } } = useContext(AuthContext);
   const { userInfo, setUserInfo } = useContext(UserContext);
 
   const { id } = item;

@@ -27,6 +27,7 @@ const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (token) {
+      console.log('login');
       navigation.navigate(ScreenKey.BrowseTabNavigator);
       // setAuthentication({ token, isAuthenticated });
 

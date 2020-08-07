@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Alert } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react'
+import { StyleSheet, View, Alert, Text } from 'react-native'
 import Header from './Common/Header';
 import Row from './Common/Row';
 import ButtonConfirm from './Common/ButtonConfirm';
@@ -7,24 +7,39 @@ import Footer from './Common/Footer';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import { forgetPassword } from '../../core/services/authentication-service';
+import { Context as AuthContext } from '../../context/AuthContext';
+
 
 const ForgetScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [focus, setFocus] = useState(null);
 
+  const { state: { message, errorMessage }, forgetPass, clearErrorMessage } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (message === 'forget') {
+      Alert.alert(
+        'Message',
+        'Hệ thống đã gửi link reset mật khẩu!',
+        [{
+          text: 'OK', onPress: () => {
+            clearErrorMessage();
+            navigation.navigate(ScreenKey.NewPassword)
+          }
+        }]
+      );
+    }
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      clearErrorMessage();
+    });
+
+    return unsubscribe;
+  }, [navigation, message]);
+
   const onSubmit = () => {
     if (email) {
-      const { status, message, errorString } = forgetPassword({ email });
-      if (status === 200) {
-        Alert.alert('Message', message,
-          [
-            { text: 'OK', onPress: () => navigation.navigate(ScreenKey.NewPassword) }
-          ]
-        );
-      } else {
-        Alert.alert('Error', errorString);
-      }
+      forgetPass({ email });
     } else {
       Alert.alert('Please fill in your email!')
     }
@@ -57,6 +72,8 @@ const ForgetScreen = ({ navigation }) => {
         onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}
         content="Login"
       />
+
+      <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>
 
     </View>
   );

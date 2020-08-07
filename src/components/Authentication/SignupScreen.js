@@ -21,13 +21,17 @@ const SignupScreen = ({ navigation }) => {
   const { state: { message, errorMessage }, signup, clearErrorMessage } = useContext(AuthContext);
 
   useEffect(() => {
-    if (message !== '') {
+    if (message === 'signup') {
       Alert.alert(
         'Message',
-        message,
-        [{ text: 'OK', onPress: () => navigation.navigate(ScreenKey.ActiveScreen) }]
+        'Đăng ký thành công, vui lòng kích hoạt tài khoản!',
+        [{
+          text: 'OK', onPress: () => {
+            clearErrorMessage();
+            navigation.navigate(ScreenKey.ActiveScreen)
+          }
+        }]
       );
-      clearErrorMessage();
     }
 
     const unsubscribe = navigation.addListener('focus', () => {
