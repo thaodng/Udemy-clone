@@ -17,7 +17,7 @@ import { CoursesContext } from '../../context/CoursesContext';
 
 import { getAuthors } from '../../core/services/authors-service';
 import { getCategories } from '../../core/services/categories-service';
-import { getNewCourses, getTopRateCourses, getCourses, getCoursesByAuthor, getCoursesByCategory } from '../../core/services/courses-service';
+import { getNewCourses, getTopRateCourses, getCoursesByAuthor, getCoursesByCategory } from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
   const navigation = useNavigation();
@@ -133,7 +133,7 @@ const BrowseScreen = () => {
           title="Khoá học nổi bật"
           txColor={txColor}
           bgColor={bgColor}
-          data={newCourses}
+          data={topRateCourses}
           listCoursesScreen={ScreenKey.BrowseCoursesScreen}
           screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
@@ -141,7 +141,7 @@ const BrowseScreen = () => {
           direction="row"
           txColor={txColor}
           bgColor={bgColor}
-          data={newCourses}
+          data={topRateCourses}
           screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
         <HeaderList title="Top authors" />

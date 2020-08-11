@@ -16,7 +16,10 @@ const getCategoryByIdUrl = (id) => `${DOMAIN}/category/id`;
 const getNewCoursessUrl = `${DOMAIN}/course/top-new`;
 const getTopRateCoursessUrl = `${DOMAIN}/course/top-rate`;
 
-
+// Search
+const searchCourseAndAuthorUrl = `${DOMAIN}/course/searchV2`;
+const searchHistoryUrl = `${DOMAIN}/course/search-history`;
+const deleteSearchHistoryUrl = (id) => `${DOMAIN}/course/delete-search-history/${id}`;
 
 export {
   DOMAIN,
@@ -35,4 +38,8 @@ export {
 
   getNewCoursessUrl,
   getTopRateCoursessUrl,
+
+  searchCourseAndAuthorUrl,
+  searchHistoryUrl,
+  deleteSearchHistoryUrl
 };

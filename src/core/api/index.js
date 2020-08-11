@@ -91,6 +91,35 @@ const putApiWithToken = (url, token, data = {}, request = {}) => {
 };
 
 
+const deleteApi = (url, data = {}, request = {}) => {
+  // request.withCredentials = true;
+  return axios
+    .delete(url, data, request)
+    .then(response => {
+      return Promise.resolve(response.data);
+    })
+    .catch(error => {
+      return Promise.reject(error);
+    });
+};
+
+const deleteApiWithToken = (url, token, data = {}, request = {}) => {
+  const additional = {
+    ...request,
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+  return axios
+    .delete(url, data, additional)
+    .then(response => {
+      return Promise.resolve(response.data);
+    })
+    .catch(error => {
+      return Promise.reject(error);
+    });
+};
+
 
 export {
   getApi,
@@ -98,7 +127,9 @@ export {
   postApi,
   postApiWithToken,
   putApi,
-  putApiWithToken
+  putApiWithToken,
+  deleteApi,
+  deleteApiWithToken
 };
 
 

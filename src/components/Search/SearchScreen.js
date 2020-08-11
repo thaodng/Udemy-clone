@@ -1,14 +1,17 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import { SettingContext } from '../../context/SettingContext';
+import {
+  searchCourseAndAuthor,
+  searchHistory,
+  deleteHistory
+} from '../../core/services/search-service';
 
-import { getCoursesByTitle } from '../../core/services/courses-service';
-import { getAuthorsByName } from '../../core/services/authors-service';
+import { SettingContext } from '../../context/SettingContext';
 
 import topCategories from '../../mocks/top-categories.json';
 
@@ -25,20 +28,41 @@ const SearchScreen = ({ navigation }) => {
     setRecentSearch([...recentSearch, { id: searchTerm, title: searchTerm }]);
   };
 
-  const onSearch = (term) => {
-    if (term) {
-      const dataCourses = getCoursesByTitle(term);
-      const dataAuthors = getAuthorsByName(term);
+  useEffect(() => {
+    // const loadHistory = async () => {
+    //   if (categories.length === 0) {
+    //     const { message, payload } = await getCategories();
+    //     if (message === 'OK') {
+    //       setCategories(payload);
+    //     } else {
+    //       Alert.alert('Lỗi khi load danh sách danh mục!');
+    //     }
+    //   }
+    // };
 
-      navigation.navigate(ScreenKey.SearchResultScreen,
-        {
-          screenDetail: ScreenKey.SearchCourseDetailScreen,
-          keyword: term,
-          dataCourses,
-          dataAuthors,
-          withMap
-        });
-    }
+    // loadHistory();
+  }, []);
+
+
+  // Search object { "keyword": "h", "limit": 10, "offset": 1}
+  const onSearch = async (term) => {
+    if (term) {
+      const searchObject = { "keyword": term, "limit": 10, "offset": 1 };
+
+      const { data: { message, payload } } = await searchCourseAndAuthor({ searchObject });
+      const { courses, instructors } = payload;
+      
+      if (message === 'OK') {
+        navigation.navigate(ScreenKey.SearchResultScreen,
+          {
+            screenDetail: ScreenKey.SearchCourseDetailScreen,
+            keyword: term,
+            dataCourses: courses.data,
+            dataAuthors: instructors.data,
+            withMap
+          });
+      }
+    };
   };
 
   const renderItem = ({ title, icon, rightIcon }) => {
