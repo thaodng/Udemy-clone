@@ -47,21 +47,12 @@ const SearchScreen = ({ navigation }) => {
   // Search object { "keyword": "h", "limit": 10, "offset": 1}
   const onSearch = async (term) => {
     if (term) {
-      const searchObject = { "keyword": term, "limit": 10, "offset": 1 };
-
-      const { data: { message, payload } } = await searchCourseAndAuthor({ searchObject });
-      const { courses, instructors } = payload;
-
-      if (message === 'OK') {
-        navigation.navigate(ScreenKey.SearchResultScreen,
-          {
-            screenDetail: ScreenKey.SearchCourseDetailScreen,
-            keyword: term,
-            dataCourses: courses.data,
-            dataAuthors: instructors.data,
-            withMap
-          });
-      }
+      navigation.navigate(ScreenKey.SearchResultScreen,
+        {
+          screenDetail: ScreenKey.SearchCourseDetailScreen,
+          keyword: term,
+          withMap
+        });
     };
   };
 

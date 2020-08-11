@@ -12,7 +12,8 @@ import {
 const W = Dimensions.get('window').width / 4;
 
 
-const Authors = ({ authors, direction, txColor, onPress }) => {
+const Authors = ({ authors, direction, txColor, onPress,
+  onEndReached, onEndReachedThreshold, ListFooterComponent }) => {
 
   const renderRowItem = (item) => {
     return (
@@ -45,6 +46,7 @@ const Authors = ({ authors, direction, txColor, onPress }) => {
   };
 
 
+
   return (
     <>
       {/* <HeaderList title="Top Authors" /> */}
@@ -58,6 +60,9 @@ const Authors = ({ authors, direction, txColor, onPress }) => {
             ? renderRowItem(item)
             : renderColumnItem(item)
         )}
+        onEndReached={direction === 'column' ? onEndReached : null}
+        onEndReachedThreshold={direction === 'column' ? onEndReachedThreshold : null}
+        ListFooterComponent={direction === 'column' ? ListFooterComponent : null}
       />
     </>
   );

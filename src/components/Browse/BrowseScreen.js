@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SliderContainer from '../Common/SliderContainer';
 import Slide from '../Common/Slide';
@@ -28,6 +28,8 @@ const BrowseScreen = () => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -72,6 +74,7 @@ const BrowseScreen = () => {
     loadNewCourses();
     loadTopRateCourses();
     loadAuthors();
+    setLoading(false);
   }, []);
 
   const onPressAuthor = (authorId) => {
@@ -98,90 +101,98 @@ const BrowseScreen = () => {
 
   return (
     <ScrollView >
-      <SliderContainer>
-        {
-          newCourses.map(course => (
-            <Slide
-              key={course.id}
-              item={course}
-              screenDetail={ScreenKey.BrowseCourseDetailScreen}
-            />
-          ))
-        }
-      </SliderContainer>
+      {
+        loading
+          ? (<ActivityIndicator size="large" />)
+          : (
+            <>
+              <SliderContainer>
+                {
+                  newCourses.map(course => (
+                    <Slide
+                      key={course.id}
+                      item={course}
+                      screenDetail={ScreenKey.BrowseCourseDetailScreen}
+                    />
+                  ))
+                }
+              </SliderContainer>
 
-      <View style={{ flex: 1 }}>
-        <HeaderList
-          title="Danh sách danh mục"
-          onPress={() =>
-            navigation.navigate(
-              ScreenKey.BrowseCategoriesScreen, {
-              // onPress: onPressCategory,
-              subject: 'Danh sách danh mục',
-              data: categories
-            })
-          }
-        />
-        <TopCategories categories={categories} onPress={onPressCategory} />
+              <View style={{ flex: 1 }}>
+                <HeaderList
+                  title="Danh sách danh mục"
+                  onPress={() =>
+                    navigation.navigate(
+                      ScreenKey.BrowseCategoriesScreen, {
+                      // onPress: onPressCategory,
+                      subject: 'Danh sách danh mục',
+                      data: categories
+                    })
+                  }
+                />
+                <TopCategories categories={categories} onPress={onPressCategory} />
 
-        <HeaderList
-          title="Khoá học mới"
-          txColor={txColor}
-          bgColor={bgColor}
+                <HeaderList
+                  title="Khoá học mới"
+                  txColor={txColor}
+                  bgColor={bgColor}
 
-          onPress={() =>
-            navigation.navigate(
-              ScreenKey.BrowseCoursesScreen, {
-              screenDetail: ScreenKey.BrowseCourseDetailScreen,
-              subject: "Khoá học mới",
-              data: newCourses
-            })
-          }
+                  onPress={() =>
+                    navigation.navigate(
+                      ScreenKey.BrowseCoursesScreen, {
+                      screenDetail: ScreenKey.BrowseCourseDetailScreen,
+                      subject: "Khoá học mới",
+                      data: newCourses
+                    })
+                  }
 
-          data={newCourses}
-          listCoursesScreen={ScreenKey.BrowseCoursesScreen}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen}
-        />
+                  data={newCourses}
+                  listCoursesScreen={ScreenKey.BrowseCoursesScreen}
+                  screenDetail={ScreenKey.BrowseCourseDetailScreen}
+                />
 
-        <ListCourses
-          direction="row"
-          txColor={txColor}
-          bgColor={bgColor}
+                <ListCourses
+                  direction="row"
+                  txColor={txColor}
+                  bgColor={bgColor}
 
-          data={newCourses}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen}
-        />
+                  data={newCourses}
+                  screenDetail={ScreenKey.BrowseCourseDetailScreen}
+                />
 
-        <HeaderList
-          title="Khoá học nổi bật"
-          txColor={txColor}
-          bgColor={bgColor}
+                <HeaderList
+                  title="Khoá học nổi bật"
+                  txColor={txColor}
+                  bgColor={bgColor}
 
-          onPress={() =>
-            navigation.navigate(
-              ScreenKey.BrowseCoursesScreen, {
-              screenDetail: ScreenKey.BrowseCourseDetailScreen,
-              subject: "Khoá học nổi bật",
-              data: topRateCourses
-            })
-          }
+                  onPress={() =>
+                    navigation.navigate(
+                      ScreenKey.BrowseCoursesScreen, {
+                      screenDetail: ScreenKey.BrowseCourseDetailScreen,
+                      subject: "Khoá học nổi bật",
+                      data: topRateCourses
+                    })
+                  }
 
-          data={topRateCourses}
-          listCoursesScreen={ScreenKey.BrowseCoursesScreen}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen}
-        />
+                  data={topRateCourses}
+                  listCoursesScreen={ScreenKey.BrowseCoursesScreen}
+                  screenDetail={ScreenKey.BrowseCourseDetailScreen}
+                />
 
-        <ListCourses
-          direction="row"
-          txColor={txColor}
-          bgColor={bgColor}
+                <ListCourses
+                  direction="row"
+                  txColor={txColor}
+                  bgColor={bgColor}
 
-          data={topRateCourses}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+                  data={topRateCourses}
+                  screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
-        <HeaderList title="Top authors" />
-        <Authors authors={authors} direction="row" txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
-      </View>
+                <HeaderList title="Top authors" />
+                <Authors authors={authors} direction="row" txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
+              </View>
+            </>
+          )
+      }
     </ScrollView>
   )
 }
