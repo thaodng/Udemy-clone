@@ -79,7 +79,6 @@ const SearchScreen = ({ navigation }) => {
   };
 
 
-
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar
@@ -114,10 +113,6 @@ const SearchScreen = ({ navigation }) => {
             />
           </>
         }
-
-        <View style={styles.recentBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }}>Top categories</Text>
-        </View>
 
         <FlatList
           showsVerticalScrollIndicator={false}

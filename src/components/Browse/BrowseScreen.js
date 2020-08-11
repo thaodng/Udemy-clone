@@ -111,7 +111,17 @@ const BrowseScreen = () => {
       </SliderContainer>
 
       <View style={{ flex: 1 }}>
-        <HeaderList title="Danh sách danh mục" />
+        <HeaderList
+          title="Danh sách danh mục"
+          onPress={() => 
+            navigation.navigate(
+              ScreenKey.BrowseCategoriesScreen, {
+              // onPress: onPressCategory,
+              subject: 'Danh sách danh mục',
+              data: categories
+            })
+          }
+        />
         <TopCategories categories={categories} onPress={onPressCategory} />
 
         <HeaderList
@@ -165,7 +175,7 @@ const BrowseScreen = () => {
           direction="row"
           txColor={txColor}
           bgColor={bgColor}
-          
+
           data={topRateCourses}
           screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 

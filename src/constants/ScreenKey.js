@@ -24,6 +24,7 @@ const ScreenKey = {
   BrowseScreen: 'BrowseScreen',
   BrowseCoursesScreen: 'BrowseCoursesScreen',
   BrowseCourseDetailScreen: 'BrowseCourseDetailScreen',
+  BrowseCategoriesScreen: 'BrowseCategoriesScreen',
 
   SearchTabStackNavigator: 'SearchTabStackNavigator',
   SearchScreen: 'SearchScreen',
