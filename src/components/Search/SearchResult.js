@@ -16,9 +16,10 @@ import myLocation from '../../mocks/location.json';
 
 const { width, height } = Layout.window;
 
+
 const SearchResult = ({ navigation, route }) => {
   const { screenDetail, withMap, dataCourses, dataAuthors } = route.params;
-  const tabs = ["ALL", "COURSES", "AUTHORS"]
+  const tabs = ['TẤT CẢ', 'KHOÁ HỌC', 'TÁC GIẢ']
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const { authors } = useContext(AuthorsContext);
 
@@ -26,24 +27,24 @@ const SearchResult = ({ navigation, route }) => {
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const renderMap = () => {
-    return (
-      <View style={styles.map}>
-        <MapView
-          style={{ flex: 1, height: height * 0.4, width }}
-          showsMyLocationButton
-          initialRegion={myLocation}
-        >
-          <Marker coordinate={myLocation}>
-            <View style={styles.myMarker}>
-              <View style={styles.myMarkerDot} />
-            </View>
-          </Marker>
+  // const renderMap = () => {
+  //   return (
+  //     <View style={styles.map}>
+  //       <MapView
+  //         style={{ flex: 1, height: height * 0.4, width }}
+  //         showsMyLocationButton
+  //         initialRegion={myLocation}
+  //       >
+  //         <Marker coordinate={myLocation}>
+  //           <View style={styles.myMarker}>
+  //             <View style={styles.myMarkerDot} />
+  //           </View>
+  //         </Marker>
 
-        </MapView>
-      </View>
-    );
-  }
+  //       </MapView>
+  //     </View>
+  //   );
+  // }
 
   const onPressAuthor = (authorId) => {
     const author = authors.find(a => a.id === authorId);
@@ -56,29 +57,80 @@ const SearchResult = ({ navigation, route }) => {
     });
   };
 
+  const emptyResult = (content) => {
+    return <Text style={{ ...styles.emptyText, color: txColor }}>
+      {content}
+    </Text>
+  };
+
+  const renderTab = (activeTab) => {
+    switch (activeTab) {
+      case tabs[0]:
+        return (
+          <>
+            <HeaderList title="Khoá học" />
+            {
+              dataCourses.length > 0
+                ? <ListCourses
+                  direction="row"
+                  txColor={txColor}
+                  bgColor={bgColor}
+                  data={dataCourses}
+                  screenDetail={screenDetail}
+                />
+                : emptyResult('Không tồn tại khoá học theo yêu cầu!')
+            }
+
+            <HeaderList title="Tác giả" />
+            {
+              dataAuthors.length > 0
+                ? <Authors
+                  authors={dataAuthors}
+                  txColor={txColor}
+                  onPress={onPressAuthor}
+                />
+                : emptyResult('Không tồn tại tác giả theo yêu cầu!')
+            }
+          </>
+        )
+        break;
+
+      case tabs[1]:
+        return (
+          dataCourses.length > 0
+            ? <ListCourses direction="column" txColor={txColor} bgColor={bgColor} data={dataCourses} screenDetail={screenDetail} />
+            : emptyResult('Không tồn tại khoá học theo yêu cầu!')
+        )
+        break;
+
+      case tabs[2]:
+        return (
+          activeTab === tabs[2] && dataAuthors.length > 0
+            ? <Authors authors={dataAuthors} txColor={txColor} onPress={onPressAuthor} />
+            : emptyResult('Không tồn tại tác giả theo yêu cầu!')
+        )
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <View style={styles.container} >
       <TopTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {withMap && renderMap()}
-        <View style={{ flex: 1 }}>
-          {
-            dataCourses.length > 0 && (activeTab === 'ALL' || activeTab === 'COURSES') &&
-            <>
-              <HeaderList title="Courses" />
-              <ListCourses direction="row" txColor={txColor} bgColor={bgColor} data={dataCourses} screenDetail={screenDetail} />
-            </>
-          }
-          {
-            dataAuthors.length > 0 && (activeTab === 'ALL' || activeTab === 'AUTHORS') &&
-            <>
-              <HeaderList title="Authors" />
-              <Authors authors={dataAuthors} txColor={txColor} onPress={onPressAuthor} />
-            </>
-          }
-        </View>
-      </ScrollView>
-    </View>
+      {
+        // <ScrollView showsVerticalScrollIndicator={false}>
+        // </ScrollView>
+        // {withMap && renderMap()}
+        //
+      }
+      <View style={{ flex: 1 }}>
+        {
+          renderTab(activeTab)
+        }
+      </View>
+
+    </View >
   );
 }
 
@@ -108,4 +160,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#3353FB"
   },
+  emptyText: {
+    width: width,
+    textAlign: 'center',
+    fontSize: 14,
+    fontWeight: 'bold',
+    paddingVertical: 10
+  }
 });

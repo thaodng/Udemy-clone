@@ -1,26 +1,17 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import Colors from '../../constants/Colors';
 
-const HeaderList = ({ title, txColor, data, listCoursesScreen, screenDetail }) => {
-  const navigation = useNavigation();
-
+const HeaderList = ({ title, txColor, onPress }) => {
+  
   return (
     <View style={styles.headerContainer}>
       <Text style={{ ...styles.text, color: txColor }}>
         {title}
       </Text>
-      {listCoursesScreen &&
-        <TouchableOpacity onPress={() =>
-          navigation.navigate(
-            listCoursesScreen, {
-            screenDetail: screenDetail,
-            subject: title,
-            data: data
-          })
-        }>
+      {onPress &&
+        <TouchableOpacity onPress={onPress}>
           <View style={styles.buttonViewAll}>
             <Text style={{ color: Colors.tintColor }} >
               Xem thêm

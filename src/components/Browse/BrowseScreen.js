@@ -118,29 +118,54 @@ const BrowseScreen = () => {
           title="Khoá học mới"
           txColor={txColor}
           bgColor={bgColor}
+
+          onPress={() =>
+            navigation.navigate(
+              ScreenKey.BrowseCoursesScreen, {
+              screenDetail: ScreenKey.BrowseCourseDetailScreen,
+              subject: "Khoá học mới",
+              data: newCourses
+            })
+          }
+
           data={newCourses}
           listCoursesScreen={ScreenKey.BrowseCoursesScreen}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+          screenDetail={ScreenKey.BrowseCourseDetailScreen}
+        />
 
         <ListCourses
           direction="row"
           txColor={txColor}
           bgColor={bgColor}
+
           data={newCourses}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+          screenDetail={ScreenKey.BrowseCourseDetailScreen}
+        />
 
         <HeaderList
           title="Khoá học nổi bật"
           txColor={txColor}
           bgColor={bgColor}
+
+          onPress={() =>
+            navigation.navigate(
+              ScreenKey.BrowseCoursesScreen, {
+              screenDetail: ScreenKey.BrowseCourseDetailScreen,
+              subject: "Khoá học nổi bật",
+              data: topRateCourses
+            })
+          }
+
           data={topRateCourses}
           listCoursesScreen={ScreenKey.BrowseCoursesScreen}
-          screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+          screenDetail={ScreenKey.BrowseCourseDetailScreen}
+        />
 
         <ListCourses
           direction="row"
           txColor={txColor}
           bgColor={bgColor}
+          
           data={topRateCourses}
           screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
