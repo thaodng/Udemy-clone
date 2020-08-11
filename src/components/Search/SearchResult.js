@@ -68,7 +68,10 @@ const SearchResult = ({ navigation, route }) => {
       case tabs[0]:
         return (
           <>
-            <HeaderList title="Khoá học" />
+            <HeaderList
+              title="Khoá học"
+              onPress={() => setActiveTab(tabs[1])}
+            />
             {
               dataCourses.length > 0
                 ? <ListCourses
@@ -80,12 +83,17 @@ const SearchResult = ({ navigation, route }) => {
                 />
                 : emptyResult('Không tồn tại khoá học theo yêu cầu!')
             }
+            <View style={styles.divider} />
 
-            <HeaderList title="Tác giả" />
+            <HeaderList
+              title="Tác giả"
+              onPress={() => setActiveTab(tabs[2])}
+            />
             {
               dataAuthors.length > 0
                 ? <Authors
                   authors={dataAuthors}
+                  direction="row"
                   txColor={txColor}
                   onPress={onPressAuthor}
                 />
@@ -106,7 +114,7 @@ const SearchResult = ({ navigation, route }) => {
       case tabs[2]:
         return (
           activeTab === tabs[2] && dataAuthors.length > 0
-            ? <Authors authors={dataAuthors} txColor={txColor} onPress={onPressAuthor} />
+            ? <Authors authors={dataAuthors} direction="column"  txColor={txColor} onPress={onPressAuthor} />
             : emptyResult('Không tồn tại tác giả theo yêu cầu!')
         )
         break;
@@ -166,5 +174,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     paddingVertical: 10
+  },
+  divider: {
+    height: 10
   }
 });

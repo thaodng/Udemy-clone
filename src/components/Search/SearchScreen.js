@@ -51,7 +51,7 @@ const SearchScreen = ({ navigation }) => {
 
       const { data: { message, payload } } = await searchCourseAndAuthor({ searchObject });
       const { courses, instructors } = payload;
-      
+
       if (message === 'OK') {
         navigation.navigate(ScreenKey.SearchResultScreen,
           {
@@ -114,12 +114,16 @@ const SearchScreen = ({ navigation }) => {
           </>
         }
 
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={topCategories}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
-        />
+        {
+          /* 
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={topCategories}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
+            /> 
+          */
+        }
 
       </View>
 

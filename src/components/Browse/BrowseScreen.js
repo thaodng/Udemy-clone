@@ -113,7 +113,7 @@ const BrowseScreen = () => {
       <View style={{ flex: 1 }}>
         <HeaderList
           title="Danh sách danh mục"
-          onPress={() => 
+          onPress={() =>
             navigation.navigate(
               ScreenKey.BrowseCategoriesScreen, {
               // onPress: onPressCategory,
@@ -180,7 +180,7 @@ const BrowseScreen = () => {
           screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
         <HeaderList title="Top authors" />
-        <Authors authors={authors} txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
+        <Authors authors={authors} direction="row" txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
       </View>
     </ScrollView>
   )

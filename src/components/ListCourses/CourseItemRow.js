@@ -38,11 +38,11 @@ const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
         <Text numberOfLines={1} style={{ ...styles.title, color: txColor }}>{title}</Text>
         <Text numberOfLines={1} style={{ color: txColor }}>{item['instructor.user.name']}</Text>
         <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
-        <Text numberOfLines={1} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên</Text>
+        <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên - {ratedNumber} đánh giá </Text>
         <View style={styles.rating}>
           <Rating rating={contentPoint} />
           <Text style={{ color: Colors.tintColor }}>
-            ({ratedNumber})
+            ({contentPoint ? Number((contentPoint).toFixed(1)) : 0})
             </Text>
         </View>
       </View>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: 8,
     width: width / 2,
-    height: width / 3
+    height: width / 2.5
   },
   title: {
     fontSize: 18,
