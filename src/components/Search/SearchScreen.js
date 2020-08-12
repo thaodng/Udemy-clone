@@ -4,16 +4,8 @@ import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
-
-import {
-  searchCourseAndAuthor,
-  searchHistory,
-  deleteHistory
-} from '../../core/services/search-service';
-
 import { SettingContext } from '../../context/SettingContext';
 
-import topCategories from '../../mocks/top-categories.json';
 
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');

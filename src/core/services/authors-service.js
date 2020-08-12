@@ -1,27 +1,10 @@
-import User from '../../models/User';
-import authors from '../../mocks/authors.json'
+import { getApi } from '../api'
+import {
+  getAllAuthorsUrl,
+  getAuthorByIdUrl
+} from '../api/domain';
 
-const dataAuthors = authors.map(author => new User(author));
+const getAuthors = () => getApi(getAllAuthorsUrl);
+const getAuthorById = ({ id }) => getApi(getAuthorByIdUrl(id));
 
-const getAuthors = () => {
-  if (dataAuthors) {
-    return {
-      status: 200,
-      authors: dataAuthors
-    };
-  } else {
-    return {
-      status: 404,
-      errorString: 'Database not found!'
-    }
-  }
-};
-
-
-const getAuthorsByName = (name) => {
-  return dataAuthors.filter(a => a.name.toLowerCase().includes(name.toLowerCase()));
-};
-
-
-
-export { getAuthors, getAuthorsByName };
+export { getAuthors, getAuthorById };

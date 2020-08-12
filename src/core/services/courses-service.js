@@ -1,7 +1,10 @@
-import { postApi } from '../api'
+import { getApi, postApi } from '../api'
 import {
+  searchCourseUrl,
   getNewCoursessUrl,
-  getTopRateCoursessUrl
+  getTopRateCoursessUrl,
+  getCourseInfoUrl,
+  getCourseDetailInfoUrl,
 } from '../api/domain';
 
 // my courses
@@ -12,44 +15,20 @@ const getNewCourses = ({ limit, page }) => postApi(getNewCoursessUrl, { limit, p
 // Top rating courses
 const getTopRateCourses = ({ limit, page }) => postApi(getTopRateCoursessUrl, { limit, page });
 
+const getCourses = () => postApi(searchCourseUrl, { keyword: '' });
 
-const getCourses = () => {
-  if (dataCourses) {
-    return {
-      status: 200,
-      courses: dataCourses
-    };
-  } else {
-    return {
-      status: 404,
-      errorString: 'Database not found!'
-    }
-  }
-};
+// "opt": { "category": [ [ "4eb0c150-8212-44ef-a90b-fcd40130ac01" ]] }
+const getCoursesByCategory = ({ categoryId }) => postApi(searchCourseUrl, { keyword: '', opt: { category: [categoryId] } });
 
+const getCourseById = ({ id }) => getApi(getCourseInfoUrl(id));
 
-const getCourseById = (courseId) => {
-  return dataCourses.find(course => course.id === courseId);
-}
-
-const getCoursesByAuthor = (authorId) => {
-  return dataCourses.filter(course => course.authorIds.includes(authorId));
-};
-
-const getCoursesByCategory = (categoryId) => {
-  return dataCourses.filter(course => course.categoryId === categoryId);
-};
-
-const getCoursesByTitle = (title) => {
-  return dataCourses.filter(course => course.title.toLowerCase().includes(title.toLowerCase()));
-};
+const getCourseDetailById = ({ id }) => getApi(getCourseDetailInfoUrl(id));
 
 export {
   getNewCourses,
   getTopRateCourses,
   getCourses,
-  getCourseById,
-  getCoursesByAuthor,
   getCoursesByCategory,
-  getCoursesByTitle
+  getCourseById,
+  getCourseDetailById
 };

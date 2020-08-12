@@ -17,7 +17,10 @@ import { CoursesContext } from '../../context/CoursesContext';
 
 import { getAuthors } from '../../core/services/authors-service';
 import { getCategories } from '../../core/services/categories-service';
-import { getNewCourses, getTopRateCourses, getCoursesByAuthor, getCoursesByCategory } from '../../core/services/courses-service';
+import {
+  getNewCourses, getTopRateCourses,
+  getCoursesByAuthor, getCoursesByCategory
+} from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
   const navigation = useNavigation();
@@ -61,12 +64,14 @@ const BrowseScreen = () => {
       }
     };
 
-    const loadAuthors = () => {
-      const { status, authors, errorString } = getAuthors();
-      if (status === 200) {
-        setAuthors(authors);
-      } else {
-        Alert.alert(errorString);
+    const loadAuthors = async () => {
+      if (authors.length === 0) {
+        const { message, payload } = await getAuthors();
+        if (message === 'OK') {
+          setAuthors(payload);
+        } else {
+          Alert.alert('Lỗi khi load danh sách tác giả!');
+        }
       }
     }
 
@@ -79,13 +84,14 @@ const BrowseScreen = () => {
 
   const onPressAuthor = (authorId) => {
     const author = authors.find(a => a.id === authorId);
-    const data = getCoursesByAuthor(authorId);
+    console.log(author);
+    // const data = getCoursesByAuthor(authorId);
 
-    navigation.navigate(ScreenKey.BrowseCoursesScreen, {
-      screenDetail: ScreenKey.BrowseCourseDetailScreen,
-      subject: `${author.name}'s courses`,
-      data: data
-    });
+    // navigation.navigate(ScreenKey.BrowseCoursesScreen, {
+    //   screenDetail: ScreenKey.BrowseCourseDetailScreen,
+    //   subject: `${author.name}'s courses`,
+    //   data: data
+    // });
   };
 
   const onPressCategory = (categoryId) => {
@@ -98,7 +104,7 @@ const BrowseScreen = () => {
       data: data
     })
   };
-
+  
   return (
     <ScrollView >
       {
@@ -187,7 +193,7 @@ const BrowseScreen = () => {
                   data={topRateCourses}
                   screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
-                <HeaderList title="Top authors" />
+                <HeaderList title="Tác giả nổi bật" />
                 <Authors authors={authors} direction="row" txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
               </View>
             </>

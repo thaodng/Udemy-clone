@@ -16,11 +16,14 @@ const Authors = ({ authors, direction, txColor, onPress,
   onEndReached, onEndReachedThreshold, ListFooterComponent }) => {
 
   const renderRowItem = (item) => {
+    const avatar = item['user.avatar'] ? item['user.avatar']  : item.avatar;
+    const name = item['user.name'] ? item['user.name'] : item.name;
+
     return (
       <TouchableOpacity style={styles.buttonAuthor} onPress={() => onPress(item.id)}>
-        <Image style={styles.avatarAuthor} source={{ uri: item.avatar }} />
+        <Image style={styles.avatarAuthor} source={{ uri: avatar }} />
         <Text style={{ ...styles.nameAuthor, color: txColor }}>
-          {item.name}
+          {name}
         </Text>
       </TouchableOpacity>
     );
