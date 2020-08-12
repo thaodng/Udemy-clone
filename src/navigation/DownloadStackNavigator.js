@@ -25,8 +25,9 @@ const DownloadStackNavigator = () => {
         name={ScreenKey.DownloadedCoursesScreen}
         component={DownloadScreen}
         // options={{ title: 'Downloaded courses' }}
-        options={{ title: 'Favorite courses' }}
+        options={{ title: 'Downloaded courses' }}
       />
+      
       <DownloadStack.Screen
         name={ScreenKey.DownloadedCourseDetailScreen}
         component={CourseDetailScreen}

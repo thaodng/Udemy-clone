@@ -176,9 +176,28 @@ export const { Provider, Context } = createDataContext(
     clearErrorMessage
   },
   {
-    token: null,
-    isAuthenticated: false,
-    userInfo: {},
+    // token: null,
+    // isAuthenticated: false,
+    // userInfo: {},
+    // message: '',
+    // errorMessage: '',
+    // isRequest: false
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYzk2NmM3LTk2OWMtNDMzZi04YzYzLTFiZTBhM2RlM2U4OSIsImlhdCI6MTU5NzI0NzcyOSwiZXhwIjoxNTk3MjU0OTI5fQ.TMzhjAy1D_Pm1Qc5ZHjLcGpCQCf7pY7agDt1KR7Qlus',
+    isAuthenticated: true,
+    userInfo: {
+      id: '22c966c7-969c-433f-8c63-1be0a3de3e89',
+      email: 'ngduythao2805@outlook.com',
+      avatar: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEducationApp-9ea25b12-3aac-434f-88e0-befa01c8f001/ImagePicker/a7ebe7b3-a525-42b9-b3ed-f3c3cea72ab4.jpg',
+      name: 'Thao Nguyen Duy',
+      favoriteCategories: [],
+      point: 0,
+      phone: '0909123456',
+      type: 'STUDENT',
+      isDeleted: false,
+      isActivated: true,
+      createdAt: '2020-08-07T06:55:41.265Z',
+      updatedAt: '2020-08-07T17:16:20.284Z'
+    },
     message: '',
     errorMessage: '',
     isRequest: false

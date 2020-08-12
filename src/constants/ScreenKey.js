@@ -11,10 +11,9 @@ const ScreenKey = {
   ActiveScreen: 'ActiveScreen',
   BrowseTabNavigator: 'BrowseTabNavigator',
 
-  HomeTabStackNavigator: 'HomeTabStackNavigator',
-  HomeScreen: 'HomeScreen',
-  ListCoursesScreen: 'ListCoursesScreen',
-  CourseDetailScreen: 'CourseDetailScreen',
+  FavoriteTabStackNavigator: 'FavoriteTabStackNavigator',
+  FavoriteCoursesScreen: 'FavoriteCoursesScreen',
+  FavoriteCourseDetailScreen: 'FavoriteCourseDetailScreen',
 
   DownloadTabStackNavigator: 'DownloadTabStackNavigator',
   DownloadedCoursesScreen: 'DownloadedCoursesScreen',

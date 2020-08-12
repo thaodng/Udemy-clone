@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeStackNavigator from './HomeStackNavigator';
+import FavoriteStackNavigator from './FavoriteStackNavigator';
 import DownloadStackNavigator from './DownloadStackNavigator';
 import BrowseStackNavigator from './BrowseStackNavigator';
 import SearchStackNavigator from './SearchStackNavigator';
@@ -22,6 +22,8 @@ const BottomTabNavigator = ({ navigation, route }) => {
   const { userSettings } = useContext(SettingContext);
   const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 
+  console.log(isAuthenticated);
+  
   return (
     <BottomTab.Navigator
       initialRouteName={ScreenKey.BrowseTabStackNavigator}
@@ -35,19 +37,18 @@ const BottomTabNavigator = ({ navigation, route }) => {
         isAuthenticated &&
         <>
           <BottomTab.Screen
-            name={ScreenKey.HomeTabStackNavigator}
-            component={HomeStackNavigator}
+            name={ScreenKey.FavoriteTabStackNavigator}
+            component={FavoriteStackNavigator}
             options={{
-              title: 'Home',
-              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="home" />,
+              title: 'Favorite',
+              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="favorite" />,
             }}
           />
           <BottomTab.Screen
             name={ScreenKey.DownloadTabStackNavigator}
             component={DownloadStackNavigator}
             options={{
-              // title: 'Download',
-              title: 'Favorite',
+              title: 'Download',
               tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-download" />,
             }}
           />
@@ -58,7 +59,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
         name={ScreenKey.BrowseTabStackNavigator}
         component={BrowseStackNavigator}
         options={{
-          title: 'Browse',
+          title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="apps" />,
         }}
       />

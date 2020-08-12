@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-import { UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { CoursesContext } from '../../context/CoursesContext';
 import { SettingContext } from '../../context/SettingContext';
 
@@ -15,7 +15,7 @@ const DownloadScreen = () => {
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
   const { courses } = useContext(CoursesContext);
   const downloadedCourses = courses.filter(course => userInfo.favoriteCourses.includes(course.id));
 

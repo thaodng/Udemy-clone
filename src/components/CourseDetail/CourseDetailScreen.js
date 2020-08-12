@@ -32,7 +32,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
   // const { userInfo, setUserInfo } = useContext(UserContext);
   const { authors } = useContext(AuthorsContext);
 
-  const tabs = ['INFOR', 'LECTURES', 'QUESTIONS', 'RATINGS'];
+  const tabs = ['INFOR', 'LECTURES', 'RATINGS'];
+
+  const subTabs = ['VIDEOS', 'QUESTIONS'];
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -175,7 +177,6 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 volume={1.0}
                 isMuted={false}
                 resizeMode="cover"
-                shouldPlay
                 isLooping
                 useNativeControls
                 style={styles.video}
@@ -188,13 +189,13 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     {
                       <View style={styles.activityContainer}>
                         <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isBookmarked ? Colors.tintColor : bgColor }} onPress={onHandleBookmark}>
-                          <Text style={{ color: isBookmarked ? txColor : Colors.tintColor }}>{isBookmarked ? 'Unbookmark' : 'Bookmark'}</Text>
+                          <Text style={{ color: isBookmarked ? txColor : Colors.tintColor }}>{isBookmarked ? 'Đã tải xuống' : 'Tải xuống'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
-                          <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Unfavorite' : 'Favorite'}</Text>
+                          <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Bỏ thích' : 'Yêu thích'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
-                          <Text style={{ color: Colors.tintColor }}>Share</Text>
+                          <Text style={{ color: Colors.tintColor }}>Chia sẽ</Text>
                         </TouchableOpacity>
                       </View>
                     }
@@ -235,20 +236,22 @@ const CourseDetailScreen = ({ route, navigation }) => {
                   </ScrollView>
                 }
                 {
-                  (sections.length > 0) && (activeTab === tabs[1]) &&
-                  <SectionList
-                    style={styles.list}
-                    showsVerticalScrollIndicator={false}
-                    sections={sections}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => renderItem(item)}
-                    renderSectionHeader={({ section: { name } }) => (
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
-                        <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
-                      </View>
-                    )}
-                  />
+                  
+                  (sections.length > 0) && (activeTab === tabs[1]) && 
+                  <TopTab tabs={subTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+                  // <SectionList
+                  //   style={styles.list}
+                  //   showsVerticalScrollIndicator={false}
+                  //   sections={sections}
+                  //   keyExtractor={(item) => item.id}
+                  //   renderItem={({ item }) => renderItem(item)}
+                  //   renderSectionHeader={({ section: { name } }) => (
+                  //     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
+                  //       <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
+                  //       <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
+                  //     </View>
+                  //   )}
+                  // />
                 }
               </View>
             </View >

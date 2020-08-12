@@ -7,8 +7,9 @@ const loginUrl = `${DOMAIN}/user/login`;
 const loginGoogleUrl = `${DOMAIN}/user/login-google-mobile`;
 const forgetPasswordUrl = `${DOMAIN}/user/forget-pass/send-email`;
 const resetPasswordUrl = `${DOMAIN}/user/reset-password`;
-
 const updateUserInfoUrl = `${DOMAIN}/user/update-profile`;
+const userFavoriteCoursesUrl = `${DOMAIN}/user/get-favorite-courses`;
+const userLikeCourseUrl = `${DOMAIN}/user/like-course`;
 
 const getAllCategoriesUrl = `${DOMAIN}/category/all`;
 const getCategoryByIdUrl = (id) => `${DOMAIN}/category/${id}`;
@@ -35,8 +36,9 @@ export {
   //loginGoogleUrl,
   forgetPasswordUrl,
   resetPasswordUrl,
-
   updateUserInfoUrl,
+  userFavoriteCoursesUrl,
+  userLikeCourseUrl,
 
   getAllCategoriesUrl,
   getCategoryByIdUrl,

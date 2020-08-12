@@ -8,7 +8,7 @@ import { AuthorsProvider } from './src/context/AuthorsContext';
 import { CategoriesProvider } from './src/context/CategoriesContext';
 import { CoursesProvider } from './src/context/CoursesContext';
 import { Provider as AuthenticationProvider } from './src/context/AuthContext';
-import { UserProvider } from './src/context/UserContext';
+import { UserFavoriteProvider } from './src/context/UserFavoriteContext';
 import { SettingProvider } from './src/context/SettingContext';
 
 import useCachedResources from './src/hooks/useCachedResources';
@@ -32,7 +32,7 @@ export default function App(props) {
             <CategoriesProvider>
               <CoursesProvider>
                 <AuthenticationProvider>
-                  <UserProvider>
+                  <UserFavoriteProvider>
                     <SettingProvider>
                       <MenuProvider >
                         <NavigationContainer linking={LinkingConfiguration}>
@@ -43,7 +43,7 @@ export default function App(props) {
                         </NavigationContainer>
                       </MenuProvider>
                     </SettingProvider>
-                  </UserProvider>
+                  </UserFavoriteProvider>
                 </AuthenticationProvider>
               </CoursesProvider>
             </CategoriesProvider>

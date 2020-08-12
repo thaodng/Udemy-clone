@@ -3,12 +3,10 @@ import { StyleSheet, Alert, Share } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { Context as AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserContext';
 
 
 const PopupMenu = ({ style, item, colorDot }) => {
-  const { state: { isAuthenticated } } = useContext(AuthContext);
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
 
   const { id } = item;
   let valueFavorite, valueBookmark;

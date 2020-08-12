@@ -3,8 +3,7 @@ import { StyleSheet, FlatList } from 'react-native'
 import CourseItemRow from './CourseItemRow';
 import CourseItemColumn from './CourseItemColumn';
 
-const ListCourses = ({ direction, txColor, bgColor, data, screenDetail,
-  onEndReached, onEndReachedThreshold, ListFooterComponent  }) => {
+const ListCourses = ({ direction, txColor, bgColor, data, screenDetail, ListFooterComponent  }) => {
     
   return (
     <FlatList
