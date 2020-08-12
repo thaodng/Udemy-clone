@@ -55,7 +55,13 @@ const CourseDetailScreen = ({ route, navigation }) => {
         const author = authors.find(a => a.id === payload.instructorId);
         setCourseAuthor(author);
 
+        for (let i = 0; i < payload.section.length; i++) {
+          payload.section[i].data = payload.section[i].lesson;
+          delete payload.section[i].lesson;
+        }
+
         setSections(payload.section);
+
       } else {
         console.log('Error');
       };
@@ -144,11 +150,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
       >
         <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{hours} mins</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{hours*60} phút</Text>
           <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
-        <PopupMenu style={styles.itemOption} item={{ id, title, hours, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
+        {/* <PopupMenu style={styles.itemOption} item={{ id, title, hours, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} /> */}
       </TouchableOpacity >
     )
   };
@@ -219,20 +225,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
                   </ScrollView>
                 }
                 {
-                  // (sections.length > 0) && (activeTab === tabs[1]) &&
-                  // <SectionList
-                  //   style={styles.list}
-                  //   showsVerticalScrollIndicator={false}
-                  //   sections={sections}
-                  //   keyExtractor={(item) => item.id}
-                  //   renderItem={({ item }) => renderItem(item)}
-                  //   renderSectionHeader={({ section: { name } }) => (
-                  //     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
-                  //       <Text style={{ fontSize: 14, fontWeight: 'bold', color: Colors.lightGray }}>{name}</Text>
-                  //       <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
-                  //     </View>
-                  //   )}
-                  // />
+                  (sections.length > 0) && (activeTab === tabs[1]) &&
+                  <SectionList
+                    style={styles.list}
+                    showsVerticalScrollIndicator={false}
+                    sections={sections}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => renderItem(item)}
+                    renderSectionHeader={({ section: { name } }) => (
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
+                        <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
+                      </View>
+                    )}
+                  />
                 }
               </View>
             </View >
@@ -327,12 +333,12 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   itemTime: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '500',
     color: 'gray'
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '500',
     color: 'black'
   },
