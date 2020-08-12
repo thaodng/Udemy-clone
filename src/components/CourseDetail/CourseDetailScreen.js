@@ -8,11 +8,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
 import ReadMore from 'react-native-read-more-text';
 
+
 import TopTab from '../Common/TopTab';
 import Authors from '../Common/Authors';
 import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
+import ListCourses from '../ListCourses/ListCourses';
 
 import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
@@ -30,7 +32,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   // const { userInfo, setUserInfo } = useContext(UserContext);
   const { authors } = useContext(AuthorsContext);
 
-  const tabs = ['INFORMATION', 'LECTURES', 'QUESTIONS'];
+  const tabs = ['INFOR', 'LECTURES', 'QUESTIONS', 'RATINGS'];
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -39,7 +41,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [sections, setSections] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
 
-  const { courseId } = route.params;
+  const { courseId, screenDetail } = route.params;
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -73,65 +75,65 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   }, []);
 
-  // let isBookmarked, isFavorite;
+  let isBookmarked, isFavorite;
   // if (isAuthenticated) {
   //   isBookmarked = userInfo.bookmarkedCourses.includes(courseId);
   //   isFavorite = userInfo.favoriteCourses.includes(courseId);
   // }
 
-  // const onHandleBookmark = () => {
-  //   if (isBookmarked) {
-  //     setUserInfo({
-  //       ...userInfo,
-  //       bookmarkedCourses: userInfo.bookmarkedCourses.filter(cId => cId !== courseId)
-  //     })
-  //   } else {
-  //     setUserInfo({
-  //       ...userInfo,
-  //       bookmarkedCourses: userInfo.bookmarkedCourses.concat(courseId)
-  //     })
-  //   }
-  // };
+  const onHandleBookmark = () => {
+    if (isBookmarked) {
+      setUserInfo({
+        ...userInfo,
+        bookmarkedCourses: userInfo.bookmarkedCourses.filter(cId => cId !== courseId)
+      })
+    } else {
+      setUserInfo({
+        ...userInfo,
+        bookmarkedCourses: userInfo.bookmarkedCourses.concat(courseId)
+      })
+    }
+  };
 
-  // const onHandleFavorite = () => {
-  //   if (isFavorite) {
-  //     setUserInfo({
-  //       ...userInfo,
-  //       favoriteCourses: userInfo.favoriteCourses.filter(cId => cId !== courseId)
-  //     })
-  //   } else {
-  //     setUserInfo({
-  //       ...userInfo,
-  //       favoriteCourses: userInfo.favoriteCourses.concat(courseId)
-  //     })
-  //   }
-  // };
+  const onHandleFavorite = () => {
+    if (isFavorite) {
+      setUserInfo({
+        ...userInfo,
+        favoriteCourses: userInfo.favoriteCourses.filter(cId => cId !== courseId)
+      })
+    } else {
+      setUserInfo({
+        ...userInfo,
+        favoriteCourses: userInfo.favoriteCourses.concat(courseId)
+      })
+    }
+  };
 
-  // const onShare = async () => {
-  //   try {
-  //     const result = await Share.share({
-  //       message:
-  //         'React Native | A framework for building native apps using React',
-  //     });
-  //     if (result.action === Share.sharedAction) {
-  //       if (result.activityType) {
-  //         // shared with activity type of result.activityType
-  //       } else {
-  //         // shared
-  //       }
-  //     } else if (result.action === Share.dismissedAction) {
-  //       // dismissed
-  //     }
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
-  // const renderReadMoreFooter = (text, handlePress) => (
-  //   <TouchableOpacity onPress={handlePress}>
-  //     <Text style={styles.readmore}>{text}</Text>
-  //   </TouchableOpacity>
-  // );
+  const renderReadMoreFooter = (text, handlePress) => (
+    <TouchableOpacity onPress={handlePress}>
+      <Text style={styles.readmore}>{text}</Text>
+    </TouchableOpacity>
+  );
 
   const onPressAuthor = () => {
     navigation.navigate(ScreenKey.BrowseCoursesScreen, {
@@ -150,7 +152,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
       >
         <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{hours*60} phút</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{hours * 60} phút</Text>
           <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
@@ -159,7 +161,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
     )
   };
 
-  
+
   return (
     <>
       {
@@ -184,7 +186,6 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 {(activeTab === tabs[0]) &&
                   <ScrollView style={styles.infoContainer} showsVerticalScrollIndicator={false}>
                     {
-                      isAuthenticated &&
                       <View style={styles.activityContainer}>
                         <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isBookmarked ? Colors.tintColor : bgColor }} onPress={onHandleBookmark}>
                           <Text style={{ color: isBookmarked ? txColor : Colors.tintColor }}>{isBookmarked ? 'Unbookmark' : 'Bookmark'}</Text>
@@ -212,9 +213,10 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
                     <Text style={styles.infoLabel}>Yêu cầu</Text>
                     <Text style={{ ...styles.infoValue, color: txColor }}>{(course.requirement && course.requirement.length > 0) ? course.requirement[0] : 'Không yêu cầu kiến thức'}</Text>
-
                     <Text style={styles.infoLabel}>Ngày xuất bản</Text>
                     <Text style={{ ...styles.infoValue, color: txColor }}>{course.createdAt}</Text>
+                    <Text style={styles.infoLabel}>Trạng thái</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.status === 'COMPLETED' ? 'Hoàn thành' : 'Đang được cập nhật'}</Text>
                     <Text style={styles.infoLabel}>Thời lượng</Text>
                     <Text style={{ ...styles.infoValue, color: txColor }}>{course.totalHours} giờ</Text>
                     <Text style={styles.infoLabel}>Tác giả</Text>
@@ -222,6 +224,14 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       courseAuthor.id &&
                       <Authors direction="row" authors={[courseAuthor]} txColor={txColor} onPress={onPressAuthor} />
                     }
+                    <Text style={styles.infoLabel}>Khoá học liên quan</Text>
+                    <ListCourses
+                      direction="row"
+                      txColor={txColor}
+                      bgColor={bgColor}
+                      data={course.coursesLikeCategory}
+                      screenDetail={screenDetail}
+                    />
                   </ScrollView>
                 }
                 {

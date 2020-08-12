@@ -25,8 +25,10 @@ const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
   // what is list this course detail screen belong to?
   return (
     <TouchableOpacity onPress={() => {
-      navigation.navigate(screenDetail, {
-        courseId: id
+      navigation.push(screenDetail, {
+        key: id,
+        courseId: id,
+        screenDetail
       })
     }}
       style={[styles.container, styles.shadow]}>
