@@ -72,7 +72,10 @@ const CourseItemColumn = ({ item, txColor, bgColor, screenDetail }) => {
 
       <View style={{...styles.contentContainer, backgroundColor: bgColor}}>
         <Text style={{...styles.title, color: txColor}}>{title}</Text>
-        <Text style={{ color: txColor }}>{item['instructor.user.name']}</Text>
+        {
+          item['instructor.user.name'] &&
+          <Text style={{ color: txColor }}>{item['instructor.user.name']}</Text>
+        }
         <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
         <Text style={{ color: Colors.lightGray, width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên</Text>
         <View style={styles.rating}>

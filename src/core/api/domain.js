@@ -8,8 +8,10 @@ const loginGoogleUrl = `${DOMAIN}/user/login-google-mobile`;
 const forgetPasswordUrl = `${DOMAIN}/user/forget-pass/send-email`;
 const resetPasswordUrl = `${DOMAIN}/user/reset-password`;
 const updateUserInfoUrl = `${DOMAIN}/user/update-profile`;
+
 const userFavoriteCoursesUrl = `${DOMAIN}/user/get-favorite-courses`;
 const userLikeCourseUrl = `${DOMAIN}/user/like-course`;
+const userLikeCourseStatusUrl = ({ courseId }) => `${DOMAIN}/user/get-course-like-status/${courseId}`;
 
 const getAllCategoriesUrl = `${DOMAIN}/category/all`;
 const getCategoryByIdUrl = (id) => `${DOMAIN}/category/${id}`;
@@ -37,8 +39,10 @@ export {
   forgetPasswordUrl,
   resetPasswordUrl,
   updateUserInfoUrl,
+
   userFavoriteCoursesUrl,
   userLikeCourseUrl,
+  userLikeCourseStatusUrl,
 
   getAllCategoriesUrl,
   getCategoryByIdUrl,

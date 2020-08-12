@@ -1,15 +1,19 @@
 import { getApiWithToken, postApiWithToken } from '../api'
 import {
   userFavoriteCoursesUrl,
-  userLikeCourseUrl
+  userLikeCourseUrl,
+  userLikeCourseStatusUrl
 } from '../api/domain';
 
 const getUserFavoriteCourse = ({ token }) => getApiWithToken(userFavoriteCoursesUrl, token);
 
-const postLikeCourse = ({ token, id }) => postApiWithToken(userLikeCourseUrl, token, { id });
+const getLikeCourseStatus = ({ token, courseId }) => getApiWithToken(userLikeCourseStatusUrl({ courseId }), token);
+
+const postLikeCourse = ({ token, courseId }) => postApiWithToken(userLikeCourseUrl, token, { courseId });
 
 
 export {
   getUserFavoriteCourse,
+  getLikeCourseStatus,
   postLikeCourse
 };

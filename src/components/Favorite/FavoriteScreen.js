@@ -10,7 +10,7 @@ import { SettingContext } from '../../context/SettingContext';
 import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
 import { getCourseById } from '../../core/services/courses-service';
-import { postLikeCourse, getUserFavoriteCourse } from '../../core/services/favorite-service';
+import { getUserFavoriteCourse } from '../../core/services/favorite-service';
 
 const { width, height } = Layout.window;
 

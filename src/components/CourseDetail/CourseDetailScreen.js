@@ -21,20 +21,17 @@ import { SettingContext } from '../../context/SettingContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
 
 import { getCourseDetailById } from '../../core/services/courses-service';
-
+import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { state: { isAuthenticated } } = useContext(AuthContext);
-  // const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
 
   const tabs = ['INFOR', 'LECTURES', 'RATINGS'];
-
-  const subTabs = ['VIDEOS', 'QUESTIONS'];
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -42,6 +39,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [courseAuthor, setCourseAuthor] = useState({});
   const [sections, setSections] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
+
+  const [isFavorite, setIsFavorite] = useState(false);
 
   const { courseId, screenDetail } = route.params;
 
@@ -55,6 +54,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
           id: 1,
           videoUrl: 'https://storage.googleapis.com/itedu-bucket/Courses/24b1856a-953c-419b-84c5-a9ef44bc139e/promo/9a1c3c44-c7e3-4080-965b-ca9650f8b92d.mp4'
         })
+
+        const { message, likeStatus } = await getLikeCourseStatus({ token, courseId });
+        setIsFavorite(likeStatus);
 
         const author = authors.find(a => a.id === payload.instructorId);
         setCourseAuthor(author);
@@ -77,10 +79,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   }, []);
 
-  let isBookmarked, isFavorite;
+  let isBookmarked;
   // if (isAuthenticated) {
   //   isBookmarked = userInfo.bookmarkedCourses.includes(courseId);
-  //   isFavorite = userInfo.favoriteCourses.includes(courseId);
   // }
 
   const onHandleBookmark = () => {
@@ -97,17 +98,10 @@ const CourseDetailScreen = ({ route, navigation }) => {
     }
   };
 
-  const onHandleFavorite = () => {
-    if (isFavorite) {
-      setUserInfo({
-        ...userInfo,
-        favoriteCourses: userInfo.favoriteCourses.filter(cId => cId !== courseId)
-      })
-    } else {
-      setUserInfo({
-        ...userInfo,
-        favoriteCourses: userInfo.favoriteCourses.concat(courseId)
-      })
+  const onHandleFavorite = async () => {
+    const { message, likeStatus } = await postLikeCourse({ token, courseId });
+    if (message === 'OK') {
+      setIsFavorite(likeStatus);
     }
   };
 
@@ -236,8 +230,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
                   </ScrollView>
                 }
                 {
-                  
-                  (sections.length > 0) && (activeTab === tabs[1]) && 
+
+                  (sections.length > 0) && (activeTab === tabs[1]) &&
                   <TopTab tabs={subTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
                   // <SectionList
                   //   style={styles.list}
