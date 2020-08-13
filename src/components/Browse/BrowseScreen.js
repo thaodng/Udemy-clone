@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SliderContainer from '../Common/SliderContainer';
 import Slide from '../Common/Slide';
@@ -18,14 +18,13 @@ import { CoursesContext } from '../../context/CoursesContext';
 import { getAuthors } from '../../core/services/authors-service';
 import { getCategories } from '../../core/services/categories-service';
 import {
-  getNewCourses, getTopRateCourses,
-  getCoursesByAuthor, getCoursesByCategory
+  getNewCourses, getTopRateCourses, getCoursesByCategory
 } from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
   const navigation = useNavigation();
   const { categories, setCategories } = useContext(CategoriesContext);
-  const { newCourses, setNewCourses, topRateCourses, setTopRateCourses } = useContext(CoursesContext);
+  const { newCourses, setNewCourses, topRateCourses, setTopRateCourses, downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
   const { authors, setAuthors } = useContext(AuthorsContext);
 
   const { userSettings } = useContext(SettingContext);
@@ -64,6 +63,16 @@ const BrowseScreen = () => {
       }
     };
 
+
+    const loadDownloadedCourses = async () => {
+      const data = await AsyncStorage.getItem('downloadedCourses');
+      const downloadedCourses = JSON.parse(data);
+
+      if (downloadedCourses !== null && downloadedCourses.length > 0) {
+        setDownloadedCourses(downloadedCourses);
+      }
+    };
+
     const loadAuthors = async () => {
       if (authors.length === 0) {
         const { message, payload } = await getAuthors();
@@ -78,6 +87,7 @@ const BrowseScreen = () => {
     loadCategories();
     loadNewCourses();
     loadTopRateCourses();
+    loadDownloadedCourses();
     loadAuthors();
     setLoading(false);
   }, []);
@@ -94,17 +104,16 @@ const BrowseScreen = () => {
     // });
   };
 
-  const onPressCategory = (categoryId) => {
-    const category = categories.find(c => c.id === categoryId);
-    const data = getCoursesByCategory(categoryId);
+  const onPressCategory = async (name, categoryId) => {
+    const { data: { payload: { rows } } } = await getCoursesByCategory({ categoryId });
 
     navigation.navigate(ScreenKey.BrowseCoursesScreen, {
       screenDetail: ScreenKey.BrowseCourseDetailScreen,
-      subject: `${category.title}`,
-      data: data
-    })
+      subject: `${name}`,
+      data: rows
+    });
   };
-  
+
   return (
     <ScrollView >
       {
@@ -130,7 +139,6 @@ const BrowseScreen = () => {
                   onPress={() =>
                     navigation.navigate(
                       ScreenKey.BrowseCategoriesScreen, {
-                      // onPress: onPressCategory,
                       subject: 'Danh sách danh mục',
                       data: categories
                     })
@@ -151,10 +159,6 @@ const BrowseScreen = () => {
                       data: newCourses
                     })
                   }
-
-                  data={newCourses}
-                  listCoursesScreen={ScreenKey.BrowseCoursesScreen}
-                  screenDetail={ScreenKey.BrowseCourseDetailScreen}
                 />
 
                 <ListCourses
@@ -179,10 +183,6 @@ const BrowseScreen = () => {
                       data: topRateCourses
                     })
                   }
-
-                  data={topRateCourses}
-                  listCoursesScreen={ScreenKey.BrowseCoursesScreen}
-                  screenDetail={ScreenKey.BrowseCourseDetailScreen}
                 />
 
                 <ListCourses

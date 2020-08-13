@@ -25,7 +25,7 @@ const W = Dimensions.get('window').width / 4;
 const TopCategories = ({ categories, onPress }) => {
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity style={styles.button} onPress={() => onPress(item.id)}>
+      <TouchableOpacity style={styles.button} onPress={() => onPress(item.name, item.id)}>
         <Text style={styles.title}>
           {item.name}
         </Text>

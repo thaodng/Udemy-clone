@@ -6,10 +6,15 @@ import {
   StyleSheet,
   Dimensions,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome } from '@expo/vector-icons';
 import { SettingContext } from '../../context/SettingContext';
+
 import Colors from '../../constants/Colors';
+import ScreenKey from '../../constants/ScreenKey';
+
+import { getCoursesByCategory } from '../../core/services/courses-service';
 
 const W = Dimensions.get('window').width / 4;
 
@@ -28,20 +33,29 @@ const RowItem = ({ name, rightIcon, onPress, txColor, bgColor }) => {
 
 
 const BrowseCategoriesScreen = ({ route }) => {
+  const navigation = useNavigation();
   const { data } = route.params;
 
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  // onPress={() => onSearch(title)}
+  const onPressCategory = async (name, categoryId) => {
+    const { data: { payload: { rows } } } = await getCoursesByCategory({ categoryId });
 
-  const renderItem = ({ name, rightIcon }) => {
+    navigation.navigate(ScreenKey.BrowseCoursesScreen, {
+      screenDetail: ScreenKey.BrowseCourseDetailScreen,
+      subject: `${name}`,
+      data: rows
+    });
+  };
+
+  const renderItem = ({ id, name, rightIcon }) => {
     return (
       <RowItem
         name={name}
         rightIcon={rightIcon}
-
+        onPress={() => onPressCategory(name, id)}
         txColor={txColor}
         bgColor={bgColor}
       />
@@ -54,7 +68,7 @@ const BrowseCategoriesScreen = ({ route }) => {
         showsVerticalScrollIndicator={false}
         data={data}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => renderItem({ name: item.name, rightIcon: true })
+        renderItem={({ item }) => renderItem({ id: item.id, name: item.name, rightIcon: true })
         }
       />
     </>
