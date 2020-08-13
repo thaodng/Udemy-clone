@@ -14,7 +14,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
       <Animable.View
         animation={animateSignUp}
         delay={0}
-        duration={1500}
+        duration={500}
         useNativeDriver>
         <TouchableOpacity
           style={styles.button}
@@ -27,7 +27,7 @@ const BrowseLogin = ({ animateSignUp, animateLogin }) => {
       <Animable.View
         animation={animateLogin}
         delay={0}
-        duration={1500}
+        duration={500}
         useNativeDriver>
         <TouchableOpacity
           style={{ ...styles.button, backgroundColor: Colors.tintColor, marginLeft: 20 }}

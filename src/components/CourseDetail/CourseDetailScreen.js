@@ -148,7 +148,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
       >
         <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{hours * 60} phút</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{Number((hours * 60).toFixed(1))} phút</Text>
           <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
@@ -232,20 +232,19 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 {
 
                   (sections.length > 0) && (activeTab === tabs[1]) &&
-                  <TopTab tabs={subTabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-                  // <SectionList
-                  //   style={styles.list}
-                  //   showsVerticalScrollIndicator={false}
-                  //   sections={sections}
-                  //   keyExtractor={(item) => item.id}
-                  //   renderItem={({ item }) => renderItem(item)}
-                  //   renderSectionHeader={({ section: { name } }) => (
-                  //     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
-                  //       <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
-                  //       <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
-                  //     </View>
-                  //   )}
-                  // />
+                  <SectionList
+                    style={styles.list}
+                    showsVerticalScrollIndicator={false}
+                    sections={sections}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => renderItem(item)}
+                    renderSectionHeader={({ section: { name } }) => (
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
+                        <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
+                      </View>
+                    )}
+                  />
                 }
               </View>
             </View >
