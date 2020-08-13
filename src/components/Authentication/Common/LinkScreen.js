@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   link: {
     textAlign: 'right', 
     marginTop: 15,
+    marginBottom: 10,
     color: Colors.tintColor
   },
 })

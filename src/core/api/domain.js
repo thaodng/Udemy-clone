@@ -35,7 +35,7 @@ export {
   sendActiveEmailUrl,
   activeEmailUrl,
   loginUrl,
-  //loginGoogleUrl,
+  loginGoogleUrl,
   forgetPasswordUrl,
   resetPasswordUrl,
   updateUserInfoUrl,

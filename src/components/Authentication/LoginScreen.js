@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import * as Google from "expo-google-app-auth";
 import Header from './Common/Header';
 import Row from './Common/Row';
 import LinkScreen from './Common/LinkScreen';
@@ -9,19 +10,18 @@ import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
 import { Context as AuthContext } from '../../context/AuthContext';
-// import { UserContext } from '../../context/UserContext';
-// import { SettingContext } from '../../context/SettingContext';
 
-// import { getUserInfo } from '../../core/services/user-service';
+// import { SettingContext } from '../../context/SettingContext';
 // import { getUserSettings } from '../../core/services/user-setting-service';
 
+const ANDROID_CLIENT_ID = '999772301023-hebd8ma90o6im9vdccg342jdcpj076bu.apps.googleusercontent.com';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [focus, setFocus] = useState(null);
 
-  const { state: { token, isAuthenticated, errorMessage }, signin, clearErrorMessage } = useContext(AuthContext);
+  const { state: { token, isAuthenticated, errorMessage }, signin, signinGoogle, clearErrorMessage } = useContext(AuthContext);
   // const { setUserInfo } = useContext(UserContext);
   // const { setUserSettings } = useContext(SettingContext);
 
@@ -44,11 +44,32 @@ const LoginScreen = ({ navigation }) => {
     return unsubscribe;
   }, [token, navigation]);
 
-  const onSubmit = () => {
+  const onSubmitLogin = () => {
     signin({ email, password });
     setEmail('');
     setPassword('');
   };
+
+  const onSubmitLoginGoogle = async () => {
+    try {
+      const { user, type, accessToken } = await Google.logInAsync({
+        // iosClientId: IOS_CLIENT_ID,
+        androidClientId: ANDROID_CLIENT_ID,
+        scopes: ["profile", "email", "openid"]
+      });
+
+      if (type === "success") {
+        signinGoogle({ email: user.email, id: user.id });
+
+        return accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  };
+
 
   return (
     <View style={styles.container}>
@@ -85,7 +106,14 @@ const LoginScreen = ({ navigation }) => {
 
       <ButtonConfirm
         content="Login"
-        onPress={onSubmit}
+        onPress={onSubmitLogin}
+        backgroundColor={Colors.tintColor}
+      />
+
+      <ButtonConfirm
+        content="Login with Google"
+        onPress={onSubmitLoginGoogle}
+        backgroundColor={Colors.errorBackground}
       />
 
       <Footer

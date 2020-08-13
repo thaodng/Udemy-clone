@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Colors from '../../../constants/Colors';
 
-const ButtonConfirm = ({ onPress, content }) => {
+const ButtonConfirm = ({ content, onPress, backgroundColor }) => {
   return (
-    <TouchableOpacity style={styles.confirmButton} onPress={onPress}>
+    <TouchableOpacity style={{ ...styles.confirmButton, backgroundColor: backgroundColor }} onPress={onPress}>
       <Text style={styles.textConfirm}>{content}</Text>
     </TouchableOpacity>
   );
@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
   confirmButton: {
     width: '100%',
     height: 40,
-    backgroundColor: Colors.tintColor,
+    // backgroundColor: Colors.tintColor,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 25,
+    marginTop: 10,
     borderRadius: 50
   },
   textConfirm: {

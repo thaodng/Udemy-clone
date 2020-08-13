@@ -4,6 +4,7 @@ import {
   register,
   sendActiveEmail,
   login,
+  loginMobile,
   forgetPassword,
   resetPassword,
   updateUser
@@ -111,6 +112,25 @@ const signin = dispatch => async ({ email, password }) => {
   }
 };
 
+const signinGoogle = dispatch => async ({ email, id }) => {
+  try {
+    // const status = 200;
+    const { status, data: { token, userInfo } } = await loginMobile({ email, id }); // make api request to sign up
+    if (status === 200) {
+      //await AsyncStorage.setItem('token', 'response.data.token');
+      // dispatch({ type: 'signin', payload: 'response.data.token' });
+      await AsyncStorage.setItem('token', token);
+      dispatch({ type: 'signin', payload: token, userInfo });
+    }
+  } catch (err) {
+    if (err.response) {
+      dispatch({ type: 'add_error', payload: err.response.data.message });
+    } else {
+      dispatch({ type: 'add_error', payload: err.message });
+    }
+  }
+};
+
 const forgetPass = dispatch => async ({ email }) => {
   try {
     const status = 200;
@@ -150,7 +170,7 @@ const updateUserInfo = dispatch => async ({ token, newInfo }) => {
     const { payload } = await updateUser({ token, newInfo });
     dispatch({ type: 'update_info', payload });
     console.log(payload);
-    
+
   } catch (err) {
     if (err.response) {
       dispatch({ type: 'add_error', payload: err.response.data.message });
@@ -170,36 +190,38 @@ export const { Provider, Context } = createDataContext(
     signup,
     sendActivateEmail,
     signin,
+    signinGoogle,
     forgetPass,
     resetPass,
     updateUserInfo,
     clearErrorMessage
   },
   {
-    // token: null,
-    // isAuthenticated: false,
-    // userInfo: {},
-    // message: '',
-    // errorMessage: '',
-    // isRequest: false
-    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYzk2NmM3LTk2OWMtNDMzZi04YzYzLTFiZTBhM2RlM2U4OSIsImlhdCI6MTU5NzMyNzkxNywiZXhwIjoxNTk3MzM1MTE3fQ.c-9yp-DEATi1S17uH2-F9ib1y4UkIQ2o__Pfa7RMgGU',
-    isAuthenticated: true,
-    userInfo: {
-      id: '22c966c7-969c-433f-8c63-1be0a3de3e89',
-      email: 'ngduythao2805@outlook.com',
-      avatar: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEducationApp-9ea25b12-3aac-434f-88e0-befa01c8f001/ImagePicker/a7ebe7b3-a525-42b9-b3ed-f3c3cea72ab4.jpg',
-      name: 'Thao Nguyen Duy',
-      favoriteCategories: [],
-      point: 0,
-      phone: '0909123456',
-      type: 'STUDENT',
-      isDeleted: false,
-      isActivated: true,
-      createdAt: '2020-08-07T06:55:41.265Z',
-      updatedAt: '2020-08-07T17:16:20.284Z'
-    },
+    token: null,
+    isAuthenticated: false,
+    userInfo: {},
     message: '',
     errorMessage: '',
     isRequest: false
+
+    // token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIyYzk2NmM3LTk2OWMtNDMzZi04YzYzLTFiZTBhM2RlM2U4OSIsImlhdCI6MTU5NzMyNzkxNywiZXhwIjoxNTk3MzM1MTE3fQ.c-9yp-DEATi1S17uH2-F9ib1y4UkIQ2o__Pfa7RMgGU',
+    // isAuthenticated: true,
+    // userInfo: {
+    //   id: '22c966c7-969c-433f-8c63-1be0a3de3e89',
+    //   email: 'ngduythao2805@outlook.com',
+    //   avatar: 'file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FEducationApp-9ea25b12-3aac-434f-88e0-befa01c8f001/ImagePicker/a7ebe7b3-a525-42b9-b3ed-f3c3cea72ab4.jpg',
+    //   name: 'Thao Nguyen Duy',
+    //   favoriteCategories: [],
+    //   point: 0,
+    //   phone: '0909123456',
+    //   type: 'STUDENT',
+    //   isDeleted: false,
+    //   isActivated: true,
+    //   createdAt: '2020-08-07T06:55:41.265Z',
+    //   updatedAt: '2020-08-07T17:16:20.284Z'
+    // },
+    // message: '',
+    // errorMessage: '',
+    // isRequest: false
   }
 );
