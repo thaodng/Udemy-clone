@@ -10,27 +10,32 @@ import ListCourses from '../ListCourses/ListCourses';
 import ScreenKey from '../../constants/ScreenKey';
 import Colors from '../../constants/Colors';
 
+import { Context as AuthContext } from '../../context/AuthContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
-import { SettingContext } from '../../context/SettingContext';
 import { CategoriesContext } from '../../context/CategoriesContext';
 import { CoursesContext } from '../../context/CoursesContext';
+import { SettingContext } from '../../context/SettingContext';
 
 import { getAuthors } from '../../core/services/authors-service';
 import { getCategories } from '../../core/services/categories-service';
 import {
-  getNewCourses, getTopRateCourses, getCoursesByCategory
+  getNewCourses, getTopRateCourses, getMyCourses, getCoursesByCategory, getCourseById
 } from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
   const navigation = useNavigation();
   const { categories, setCategories } = useContext(CategoriesContext);
   const { authors, setAuthors } = useContext(AuthorsContext);
+  const { state: { isAuthenticated, token } } = useContext(AuthContext);
+
   const {
     newCourses,
     setNewCourses,
     topRateCourses,
     setTopRateCourses,
-    setDownloadedCourses
+    setDownloadedCourses,
+    myCourses,
+    setMyCourses
   } = useContext(CoursesContext);
 
 
@@ -70,6 +75,20 @@ const BrowseScreen = () => {
       }
     };
 
+    const loadMyCourses = async () => {
+      const { message, payload } = await getMyCourses({ token });
+      if (message === 'OK') {
+        const ids = payload.map(course => getCourseById({ id: course.id }));
+        const res = await Promise.all(ids);
+
+        const mCourses = res.map(r => r.payload);
+        setMyCourses(mCourses);
+      } else {
+        Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
+
+      }
+    };
+
 
     const loadDownloadedCourses = async () => {
       const data = await AsyncStorage.getItem('downloadedCourses');
@@ -91,11 +110,18 @@ const BrowseScreen = () => {
       }
     }
 
+
+    setLoading(true);
     loadCategories();
     loadNewCourses();
     loadTopRateCourses();
     loadDownloadedCourses();
     loadAuthors();
+
+    if (isAuthenticated) {
+      loadMyCourses();
+    }
+
     setLoading(false);
   }, []);
 
@@ -141,6 +167,7 @@ const BrowseScreen = () => {
               </SliderContainer>
 
               <View style={{ flex: 1 }}>
+
                 <HeaderList
                   title="Danh sách danh mục"
                   onPress={() =>
@@ -152,6 +179,36 @@ const BrowseScreen = () => {
                   }
                 />
                 <TopCategories categories={categories} onPress={onPressCategory} />
+
+
+                {
+                  isAuthenticated &&
+                  <>
+                    <HeaderList
+                      title="Khoá học của tôi"
+                      txColor={txColor}
+                      bgColor={bgColor}
+
+                      onPress={() =>
+                        navigation.navigate(
+                          ScreenKey.BrowseCoursesScreen, {
+                          screenDetail: ScreenKey.BrowseCourseDetailScreen,
+                          subject: "Khoá học của tôi",
+                          data: myCourses
+                        })
+                      }
+                    />
+
+                    <ListCourses
+                      direction="row"
+                      txColor={txColor}
+                      bgColor={bgColor}
+                      data={myCourses}
+                      screenDetail={ScreenKey.BrowseCourseDetailScreen}
+                    />
+                  </>
+                }
+
 
                 <HeaderList
                   title="Khoá học mới"

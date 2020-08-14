@@ -21,6 +21,7 @@ const getAuthorByIdUrl = (id) => `${DOMAIN}​/instructor​/detail​/${id}`;
 
 const getNewCoursessUrl = `${DOMAIN}/course/top-new`;
 const getTopRateCoursessUrl = `${DOMAIN}/course/top-rate`;
+const getProcessCoursesUrl = `${DOMAIN}/user/get-process-courses`;
 const getCourseInfoUrl = (id) => `${DOMAIN}/course/get-course-info?id=${id}`;
 const getCourseDetailInfoUrl = (id) => `${DOMAIN}/course/get-course-detail/${id}/null`;
 
@@ -58,6 +59,7 @@ export {
 
   getNewCoursessUrl,
   getTopRateCoursessUrl,
+  getProcessCoursesUrl,
   getCourseInfoUrl,
   getCourseDetailInfoUrl,
 

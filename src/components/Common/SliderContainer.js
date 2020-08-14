@@ -25,7 +25,7 @@ export default SliderContainer;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
-    marginBottom: 20
+    marginBottom: 5
   },
   titleContainer: {
     marginBottom: 20,

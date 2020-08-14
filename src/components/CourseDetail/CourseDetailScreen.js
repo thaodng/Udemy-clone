@@ -259,6 +259,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 isMuted={false}
                 resizeMode="cover"
                 isLooping
+                shouldPlay
                 useNativeControls
                 style={styles.video}
               />

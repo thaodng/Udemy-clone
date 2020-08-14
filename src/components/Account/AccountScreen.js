@@ -24,7 +24,7 @@ const AccountScreen = ({ navigation }) => {
 
   const onSignOut = () => {
     signout();
-    navigation.navigate(ScreenKey.LoginScreen);
+    navigation.replace(ScreenKey.LoginScreen);
   }
 
   const Intro = () => {

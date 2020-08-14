@@ -1,8 +1,9 @@
-import { getApi, postApi } from '../api'
+import { getApi, getApiWithToken, postApi } from '../api'
 import {
   searchCourseUrl,
   getNewCoursessUrl,
   getTopRateCoursessUrl,
+  getProcessCoursesUrl,
   getCourseInfoUrl,
   getCourseDetailInfoUrl,
 } from '../api/domain';
@@ -14,6 +15,9 @@ const getNewCourses = ({ limit, page }) => postApi(getNewCoursessUrl, { limit, p
 
 // Top rating courses
 const getTopRateCourses = ({ limit, page }) => postApi(getTopRateCoursessUrl, { limit, page });
+
+// My courses
+const getMyCourses = ({ token }) => getApiWithToken(getProcessCoursesUrl, token);
 
 const getCourses = () => postApi(searchCourseUrl, { keyword: '' });
 
@@ -29,6 +33,7 @@ const getCourseDetailById = ({ id }) => getApi(getCourseDetailInfoUrl(id));
 export {
   getNewCourses,
   getTopRateCourses,
+  getMyCourses,
   getCourses,
   getCoursesByCategory,
   getCourseById,
