@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import Colors from '../../constants/Colors'
 
 const Slide = ({ item, screenDetail }) => {
-  const { id, thumbnail, title, rating, description } = item;
+  const { id, title, imageUrl, contentPoint, description } = item;
   const navigation = useNavigation();
   const goToDetail = () => {
     navigation.navigate(screenDetail, { courseId: id });
@@ -13,19 +13,19 @@ const Slide = ({ item, screenDetail }) => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.background} source={{ uri: thumbnail }} />
+      <Image style={styles.background} source={{ uri: imageUrl }} />
       <View style={styles.content}>
-        <Image style={styles.poster} resizeMode="stretch" source={{ uri: thumbnail }} />
+        <Image style={styles.poster} resizeMode="stretch" source={{ uri: imageUrl }} />
         <View style={styles.data}>
           <Text numberOfLines={1} style={styles.title}>{title}</Text>
           <View style={styles.ratingContainer}>
             <FontAwesome name="star" size={18} color={Colors.tintColor} />
-            <Text style={styles.rating} >{`${rating}/5`}</Text>
+            <Text style={styles.rating} >{contentPoint ? `${Number((contentPoint).toFixed(1))}/5` : `0/5`}</Text>
           </View>
           <Text numberOfLines={5} style={styles.overview}>{description}</Text>
           <TouchableOpacity onPress={goToDetail}>
             <View style={styles.button}>
-              <Text style={styles.buttonText}>View details</Text>
+              <Text style={styles.buttonText}>Xem chi tiết</Text>
             </View>
           </TouchableOpacity>
         </View>

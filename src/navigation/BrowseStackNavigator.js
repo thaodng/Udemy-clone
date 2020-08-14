@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import BrowseScreen from '../components/Browse/BrowseScreen';
+import BrowseCategoriesScreen from '../components/Browse/BrowseCategoriesScreen'
 import ListCoursesScreen from '../components/ListCourses/ListCoursesScreen';
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen';
+
 
 import { SettingContext } from '../context/SettingContext';
 
@@ -39,10 +41,21 @@ const BrowseStackNavigator = () => {
       />
 
       <BrowseStack.Screen
+        name={ScreenKey.BrowseCategoriesScreen}
+        component={BrowseCategoriesScreen}
+        options={({ route }) => (
+          {
+            title: route.params.subject
+          }
+        )}
+      />
+
+      <BrowseStack.Screen
         name={ScreenKey.BrowseCourseDetailScreen}
         component={CourseDetailScreen}
         options={{ headerShown: false }}
       />
+      
     </BrowseStack.Navigator>
   );
 };

@@ -1,16 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
-
 import { SettingContext } from '../../context/SettingContext';
 
-import { getCoursesByTitle } from '../../core/services/courses-service';
-import { getAuthorsByName } from '../../core/services/authors-service';
-
-import topCategories from '../../mocks/top-categories.json';
 
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
@@ -25,20 +20,32 @@ const SearchScreen = ({ navigation }) => {
     setRecentSearch([...recentSearch, { id: searchTerm, title: searchTerm }]);
   };
 
-  const onSearch = (term) => {
-    if (term) {
-      const dataCourses = getCoursesByTitle(term);
-      const dataAuthors = getAuthorsByName(term);
+  useEffect(() => {
+    // const loadHistory = async () => {
+    //   if (categories.length === 0) {
+    //     const { message, payload } = await getCategories();
+    //     if (message === 'OK') {
+    //       setCategories(payload);
+    //     } else {
+    //       Alert.alert('Lỗi khi load danh sách danh mục!');
+    //     }
+    //   }
+    // };
 
+    // loadHistory();
+  }, []);
+
+
+  // Search object { "keyword": "h", "limit": 10, "offset": 1}
+  const onSearch = async (term) => {
+    if (term) {
       navigation.navigate(ScreenKey.SearchResultScreen,
         {
           screenDetail: ScreenKey.SearchCourseDetailScreen,
           keyword: term,
-          dataCourses,
-          dataAuthors,
           withMap
         });
-    }
+    };
   };
 
   const renderItem = ({ title, icon, rightIcon }) => {
@@ -53,7 +60,6 @@ const SearchScreen = ({ navigation }) => {
       />
     );
   };
-
 
 
   return (
@@ -73,12 +79,12 @@ const SearchScreen = ({ navigation }) => {
           (recentSearch.length > 0) &&
           <>
             <View style={styles.recentBar}>
-              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >Recent searches</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >Lịch sử tìm kiếm</Text>
               <TouchableOpacity onPress={() => {
                 setRecentSearch([]);
                 setTerm('');
               }}>
-                <Text style={{ color: Colors.tintColor }}>CLEAR ALL</Text>
+                <Text style={{ color: Colors.tintColor }}>Xoá tất cả</Text>
               </TouchableOpacity>
             </View>
 
@@ -91,16 +97,16 @@ const SearchScreen = ({ navigation }) => {
           </>
         }
 
-        <View style={styles.recentBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }}>Top categories</Text>
-        </View>
-
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={topCategories}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
-        />
+        {
+          /* 
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={topCategories}
+              keyExtractor={item => item.id}
+              renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
+            /> 
+          */
+        }
 
       </View>
 

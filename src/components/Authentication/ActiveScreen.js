@@ -1,30 +1,27 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, View, Alert, Text } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react';
+import { StyleSheet, View, Alert, Text } from 'react-native';
 import Header from './Common/Header';
 import Row from './Common/Row';
 import ButtonConfirm from './Common/ButtonConfirm';
 import Footer from './Common/Footer';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
-
 import { Context as AuthContext } from '../../context/AuthContext';
 
 
-const ForgetScreen = ({ navigation }) => {
+const ActiveScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
-  const [focus, setFocus] = useState(null);
-
-  const { state: { message, errorMessage }, forgetPass, clearErrorMessage } = useContext(AuthContext);
+  const {  state: { message, errorMessage }, sendActivateEmail, clearErrorMessage } = useContext(AuthContext);
 
   useEffect(() => {
-    if (message === 'forget') {
+    if (message === 'active') {
       Alert.alert(
         'Message',
-        'Hệ thống đã gửi link reset mật khẩu!',
+        'Chúng tôi đã gửi email kích hoạt!',
         [{
           text: 'OK', onPress: () => {
             clearErrorMessage();
-            navigation.navigate(ScreenKey.NewPassword)
+            navigation.navigate(ScreenKey.LoginScreen)
           }
         }]
       );
@@ -37,12 +34,9 @@ const ForgetScreen = ({ navigation }) => {
     return unsubscribe;
   }, [navigation, message]);
 
+
   const onSubmit = () => {
-    if (email) {
-      forgetPass({ email });
-    } else {
-      Alert.alert('Please fill in your email!')
-    }
+    sendActivateEmail({ email });
   };
 
   return (
@@ -55,22 +49,22 @@ const ForgetScreen = ({ navigation }) => {
           icon="email"
           placeholder="Email"
           value={email}
-          color={focus === 'Email' ? Colors.tintColor : Colors.lightGray}
+          color={Colors.tintColor}
           secureTextEntry={false}
-          onFocus={() => setFocus('Email')}
           onChangeText={text => setEmail(text)}
         />
+
       </View>
 
       <ButtonConfirm
-        content="Send password reset link"
+        content="Send active email"
         onPress={onSubmit}
       />
 
       <Footer
-        label="Remeber your password?"
+        label="Already active account?"
         onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}
-        content="Login"
+        content="Login now"
       />
 
       <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>
@@ -79,7 +73,7 @@ const ForgetScreen = ({ navigation }) => {
   );
 };
 
-export default ForgetScreen;
+export default ActiveScreen;
 
 const styles = StyleSheet.create({
   container: {

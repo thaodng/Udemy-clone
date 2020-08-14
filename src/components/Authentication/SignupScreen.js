@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Alert } from 'react-native'
+import React, { useState, useContext, useEffect } from 'react'
+import { StyleSheet, View, Alert, Text } from 'react-native'
 import Header from './Common/Header';
 import Row from './Common/Row';
 import LinkScreen from './Common/LinkScreen';
@@ -8,36 +8,62 @@ import Footer from './Common/Footer';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
-import { signup } from '../../core/services/authentication-service';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 const SignupScreen = ({ navigation }) => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [focus, setFocus] = useState(null);
 
+  const { state: { message, errorMessage }, signup, clearErrorMessage } = useContext(AuthContext);
 
-  const onSubmit = () => {
-    if (password === password2) {
-      const { status, message, errorString } = signup({ email, password });
-
-      if (status === 200) {
-        Alert.alert(
-          'Message',
-          message,
-          [
-            { text: 'OK', onPress: () => navigation.navigate(ScreenKey.LoginScreen) }
-          ]
-        );
-      } else {
-        Alert.alert(errorString);
-      }
+  useEffect(() => {
+    if (message === 'signup') {
+      Alert.alert(
+        'Message',
+        'Đăng ký thành công, vui lòng kích hoạt tài khoản!',
+        [{
+          text: 'OK', onPress: () => {
+            clearErrorMessage();
+            navigation.navigate(ScreenKey.ActiveScreen)
+          }
+        }]
+      );
     }
 
-    setEmail('');
-    setPassword('');
-    setPassword2('');
-  };
+    const unsubscribe = navigation.addListener('focus', () => {
+      clearErrorMessage();
+    });
+
+    return unsubscribe;
+  }, [navigation, message]);
+
+
+  const onSubmit = () => {
+
+    if (password === password2) {
+      signup({ username: 'mrtester1234', email: 'mrtester1234@gmail.com', phone: '0909991234', password: '123456' })
+      // signup({ username, email, phone, password });
+
+      setUsername('');
+      setPhone('');
+      setEmail('');
+      setPassword('');
+      setPassword2('');
+
+    } else {
+      Alert.alert(
+        'Message',
+        "Password doesn't match!!",
+        [{ text: 'OK' }]
+      );
+      setPassword('');
+      setPassword2('');
+    };
+  }
 
   return (
     <View style={styles.container}>
@@ -53,6 +79,26 @@ const SignupScreen = ({ navigation }) => {
           secureTextEntry={false}
           onFocus={() => setFocus('Email')}
           onChangeText={text => setEmail(text)}
+        />
+
+        <Row
+          icon="people"
+          placeholder="Username"
+          value={username}
+          color={focus === 'Username' ? Colors.tintColor : Colors.lightGray}
+          secureTextEntry={false}
+          onFocus={() => setFocus('Username')}
+          onChangeText={text => setUsername(text)}
+        />
+
+        <Row
+          icon="phone"
+          placeholder="Phone"
+          value={phone}
+          color={focus === 'Phone' ? Colors.tintColor : Colors.lightGray}
+          secureTextEntry={false}
+          onFocus={() => setFocus('Phone')}
+          onChangeText={text => setPhone(text)}
         />
 
         <Row
@@ -92,6 +138,8 @@ const SignupScreen = ({ navigation }) => {
         onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}
         content="Login"
       />
+
+      <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>
 
     </View>
   );

@@ -1,82 +1,180 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, SectionList, Share } from 'react-native'
+import {
+  StyleSheet, Text, View, Dimensions,
+  TouchableOpacity, SectionList, Share,
+  ActivityIndicator, AsyncStorage
+} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 import ReadMore from 'react-native-read-more-text';
+
 
 import TopTab from '../Common/TopTab';
 import Authors from '../Common/Authors';
 import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
+import ListCourses from '../ListCourses/ListCourses';
 
-import { AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
-import { getCourseById, getCoursesByAuthor } from '../../core/services/courses-service';
-import { getCourseDetail } from '../../core/services/course-detail-service';
+import { CoursesContext } from '../../context/CoursesContext';
+import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
+import { getCourseDetailById } from '../../core/services/courses-service';
+import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
+import { getLessonVideo } from '../../core/services/lessions-service';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { authentication: { isAuthenticated } } = useContext(AuthContext);
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { isAuthenticated, token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
+  const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
+  const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
-  const tabs = ['INFORMATION', 'LECTURES'];
+  const tabs = ['Thông tin', 'Bài giảng', 'Đánh giá'];
+
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [details, setDetails] = useState([]);
-
+  const [course, setCourse] = useState({});
+  const [courseAuthor, setCourseAuthor] = useState({});
+  const [sections, setSections] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
 
-  const { courseId } = route.params;
-  const course = getCourseById(courseId);
-  const courseAuthors = course.authorIds.map(id => authors.find(a => a.id === id));
+  const [isDownloaded, setIsDownloaded] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const [buttonDownload, setButtonDownload] = useState('Tải xuống');
+  const [progressValue, setProgressValue] = useState(0);
+  const [totalSize, setTotalSize] = useState(0);
+
+  const { courseId, screenDetail } = route.params;
 
   useEffect(() => {
-    const { status, data } = getCourseDetail(courseId);
-    if (status === 200) {
-      setDetails(data);
+    const loadCourse = async () => {
+      const { message, payload } = await getCourseDetailById({ id: courseId });
+      if (message === 'OK') {
+        setCourse(payload);
+
+        setCurrentItem({ id: payload.id, videoUrl: payload.promoVidUrl })
+
+        const { message, likeStatus } = await getLikeCourseStatus({ token, courseId });
+        setIsFavorite(likeStatus);
+
+        const author = authors.find(a => a.id === payload.instructorId);
+        setCourseAuthor(author);
+
+        for (let i = 0; i < payload.section.length; i++) {
+          payload.section[i].data = payload.section[i].lesson;
+          delete payload.section[i].lesson;
+        }
+
+        setSections(payload.section);
+
+      } else {
+        console.log('Error');
+      };
     }
+
+    setLoading(true);
+    loadCourse();
+    setLoading(false);
+
   }, []);
 
-  let isBookmarked, isFavorite;
-  if (isAuthenticated) {
-    isBookmarked = userInfo.bookmarkedCourses.includes(courseId);
-    isFavorite = userInfo.favoriteCourses.includes(courseId);
+
+  const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  const onHandleBookmark = () => {
-    if (isBookmarked) {
-      setUserInfo({
-        ...userInfo,
-        bookmarkedCourses: userInfo.bookmarkedCourses.filter(cId => cId !== courseId)
-      })
-    } else {
-      setUserInfo({
-        ...userInfo,
-        bookmarkedCourses: userInfo.bookmarkedCourses.concat(courseId)
-      })
+  const downloadVideo = async ({ videoUrl, name }) => {
+
+    const callback = downloadProgress => {
+      setTotalSize(formatBytes(downloadProgress.totalBytesExpectedToWrite))
+
+      let progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+      progress = progress.toFixed(2) * 100
+      setProgressValue(progress.toFixed(0))
+    };
+
+    const downloadResumable = FileSystem.createDownloadResumable(
+      videoUrl,
+      `${FileSystem.documentDirectory}${name}`,
+      {},
+      callback
+    );
+
+    try {
+      const { uri } = await downloadResumable.downloadAsync();
+      console.log('Finished download video: ', uri);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const onHandleDownload = async () => {
+    setButtonDownload('Đang tải xuống');
+
+    // kiểm tra đã download hay chưa
+    const downloaded = downloadedCourses.map(dc => dc.id).includes(course.id);
+
+    if (downloaded) {
+      setButtonDownload('Đã tải xuống');
+      return;
+    }
+
+    // tiến hành download videos
+    const arrayDownloadVideos = [];
+
+    for (let i = 0; i < course.section.length; i++) {
+      const s = course.section[i];
+      for (let j = 0; j < s.lesson.length; j++) {
+        const lesson = s.lesson[j];
+        if (lesson.videoUrl) {
+
+          // thêm video để chuẩn bị tải
+          arrayDownloadVideos.push(downloadVideo({ videoUrl: lesson.videoUrl, name: lesson.name }));
+
+          // đổi lại đường dẫn video thành đường dẫn local
+          s.lesson[j].videoUrl = `${FileSystem.documentDirectory}${lesson.name}`;
+        }
+      }
+    }
+
+    await Promise.all(arrayDownloadVideos);
+
+    const newDownloadedCourses = [...downloadedCourses, course];
+
+    // thêm mới khoá đã tải vào storage
+    await AsyncStorage.setItem('downloadedCourses', JSON.stringify(newDownloadedCourses));
+
+    // cập nhật state
+    setDownloadedCourses(newDownloadedCourses);
+
+    setButtonDownload('Đã tải xuống');
+  };
+
+  const onHandleFavorite = async () => {
+    const { message, likeStatus } = await postLikeCourse({ token, courseId });
+    if (message === 'OK') {
+      setIsFavorite(likeStatus);
+      setFavoriteCourses([...favoriteCourses, course]);
     }
   };
 
-  const onHandleFavorite = () => {
-    if (isFavorite) {
-      setUserInfo({
-        ...userInfo,
-        favoriteCourses: userInfo.favoriteCourses.filter(cId => cId !== courseId)
-      })
-    } else {
-      setUserInfo({
-        ...userInfo,
-        favoriteCourses: userInfo.favoriteCourses.concat(courseId)
-      })
-    }
-  };
 
   const onShare = async () => {
     try {
@@ -104,107 +202,139 @@ const CourseDetailScreen = ({ route, navigation }) => {
     </TouchableOpacity>
   );
 
-  const onPressAuthor = (authorId) => {
-    const author = courseAuthors.find(a => a.id === authorId);
-    const data = getCoursesByAuthor(authorId);
-
-    navigation.navigate(ScreenKey.BrowseCoursesScreen, {
-      screenDetail: ScreenKey.BrowseCourseDetailScreen,
-      subject: `${author.name}'s courses`,
-      data: data
-    });
+  const onPressAuthor = () => {
+    // navigation.navigate(ScreenKey.BrowseCoursesScreen, {
+    //   screenDetail: ScreenKey.BrowseCourseDetailScreen,
+    //   subject: `${courseAuthor.name}'s courses`,
+    //   data: courseAuthor
+    // });
   };
 
-  const renderItem = ({ id, title, duration, videoUrl }) => {
-    
+  const renderItem = ({ id, name, hours, videoUrl }) => {
+
+    let url;
+
+    const getUrl = async () => {
+      if (!videoUrl) {
+        const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
+        url = payload.videoUrl;
+      } else {
+        url = videoUrl;
+      }
+    };
+
+    getUrl();
+
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => setCurrentItem({ id, videoUrl })}
+        onPress={() => setCurrentItem({ id, videoUrl: url })}
       >
         <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{duration} mins</Text>
-          <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{title}</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{Number((hours * 60).toFixed(1))} phút</Text>
+          <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
-        <PopupMenu style={styles.itemOption} item={{ id, title, duration, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
+        <PopupMenu style={styles.itemOption} item={{ id, name, hours, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
       </TouchableOpacity >
     )
   };
 
+
   return (
-    <View style={styles.courseContainer}>
-      <Video
-        source={{ uri: currentItem.videoUrl }}
-        rate={1.0}
-        volume={1.0}
-        isMuted={false}
-        resizeMode="cover"
-        shouldPlay
-        isLooping
-        useNativeControls
-        style={styles.video}
-      />
-      <View style={styles.playlistContainer}>
-        {/* <Text style={styles.heading}>Course Content</Text> */}
-        <TopTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-        {(activeTab === tabs[0]) &&
-          <ScrollView style={styles.infoContainer} showsVerticalScrollIndicator={false}>
-            {
-              isAuthenticated &&
-              <View style={styles.activityContainer}>
-                <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isBookmarked ? Colors.tintColor : bgColor }} onPress={onHandleBookmark}>
-                  <Text style={{ color: isBookmarked ? txColor : Colors.tintColor }}>{isBookmarked ? 'Unbookmark' : 'Bookmark'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
-                  <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Unfavorite' : 'Favorite'}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
-                  <Text style={{ color: Colors.tintColor }}>Share</Text>
-                </TouchableOpacity>
+    <>
+      {
+        loading
+          ? (<ActivityIndicator size="large" />)
+          : (
+            <View style={styles.courseContainer}>
+              <Video
+                source={{ uri: currentItem.videoUrl }}
+                rate={1.0}
+                volume={1.0}
+                isMuted={false}
+                resizeMode="cover"
+                isLooping
+                useNativeControls
+                style={styles.video}
+              />
+              <View style={styles.playlistContainer}>
+                {/* <Text style={styles.heading}>Course Content</Text> */}
+                <TopTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+                {(activeTab === tabs[0]) &&
+                  <ScrollView style={styles.infoContainer} showsVerticalScrollIndicator={false}>
+                    {
+                      <View style={styles.activityContainer}>
+                        <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} onPress={onHandleDownload}>
+                          <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
+                          <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Bỏ thích' : 'Yêu thích'}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
+                          <Text style={{ color: Colors.tintColor }}>Chia sẽ</Text>
+                        </TouchableOpacity>
+                      </View>
+                    }
+                    <Text style={styles.infoLabel}>Tổng quan</Text>
+                    <ReadMore
+                      numberOfLines={3}
+                      renderTruncatedFooter={handlePress =>
+                        renderReadMoreFooter('Read more', handlePress)
+                      }
+                      renderRevealedFooter={handlePress =>
+                        renderReadMoreFooter('Read less', handlePress)
+                      }
+                    >
+                      <Text style={{ ...styles.infoValue, color: txColor }}>{course.description}</Text>
+                    </ReadMore>
+
+                    <Text style={styles.infoLabel}>Yêu cầu</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{(course.requirement && course.requirement.length > 0) ? course.requirement[0] : 'Không yêu cầu kiến thức'}</Text>
+                    <Text style={styles.infoLabel}>Ngày xuất bản</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.createdAt}</Text>
+                    <Text style={styles.infoLabel}>Trạng thái</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.status === 'COMPLETED' ? 'Hoàn thành' : 'Đang được cập nhật'}</Text>
+                    <Text style={styles.infoLabel}>Thời lượng</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.totalHours} giờ</Text>
+                    <Text style={styles.infoLabel}>Tác giả</Text>
+                    {
+                      courseAuthor.id &&
+                      <Authors direction="row" authors={[courseAuthor]} txColor={txColor} onPress={onPressAuthor} />
+                    }
+                    <Text style={styles.infoLabel}>Khoá học liên quan</Text>
+                    <ListCourses
+                      direction="row"
+                      txColor={txColor}
+                      bgColor={bgColor}
+                      data={course.coursesLikeCategory}
+                      screenDetail={screenDetail}
+                    />
+                  </ScrollView>
+                }
+                {
+                  (sections.length > 0) && (activeTab === tabs[1]) &&
+                  <SectionList
+                    style={styles.list}
+                    showsVerticalScrollIndicator={false}
+                    sections={sections}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => renderItem(item)}
+                    renderSectionHeader={({ section: { name } }) => (
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
+                        {<PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />}
+                      </View>
+                    )}
+                  />
+                }
+
               </View>
-            }
-            <Text style={styles.infoLabel}>Overview</Text>
-            <ReadMore
-              numberOfLines={3}
-              renderTruncatedFooter={handlePress =>
-                renderReadMoreFooter('Read more', handlePress)
-              }
-              renderRevealedFooter={handlePress =>
-                renderReadMoreFooter('Read less', handlePress)
-              }
-            >
-              <Text style={{ ...styles.infoValue, color: txColor }}>{course.description}</Text>
-            </ReadMore>
-            <Text style={styles.infoLabel}>Level</Text>
-            <Text style={{ ...styles.infoValue, color: txColor }}>{course.level}</Text>
-            <Text style={styles.infoLabel}>Data release</Text>
-            <Text style={{ ...styles.infoValue, color: txColor }}>{course.dateRelease}</Text>
-            <Text style={styles.infoLabel}>Duration</Text>
-            <Text style={{ ...styles.infoValue, color: txColor }}>{course.duration}</Text>
-            <Text style={styles.infoLabel}>Authors</Text>
-            <Authors authors={courseAuthors} txColor={txColor} onPress={onPressAuthor} />
-          </ScrollView>
-        }
-        {
-          (details.length > 0) && (activeTab === tabs[1]) &&
-          <SectionList
-            style={styles.list}
-            showsVerticalScrollIndicator={false}
-            sections={details}
-            keyExtractor={(item, index) => item.id + index}
-            renderItem={({ item }) => renderItem(item)}
-            renderSectionHeader={({ section: { sectionTitle } }) => (
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
-                <Text style={{ fontSize: 14, fontWeight: 'bold', color: Colors.lightGray }}>{sectionTitle}</Text>
-                <PopupMenu style={styles.itemOption} item={{ title: sectionTitle }} colorDot={Colors.lightGray} />
-              </View>
-            )}
-          />
-        }
-      </View>
-    </View >
+            </View >
+          )
+      }
+    </>
   )
 }
 
@@ -293,12 +423,12 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
   itemTime: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '500',
     color: 'gray'
   },
   itemTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '500',
     color: 'black'
   },

@@ -6,10 +6,8 @@ import * as Permissions from 'expo-permissions';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 
-import { updateUserInfo } from '../../core/services/user-service';
+import { Context as AuthContext } from '../../context/AuthContext';
 
-import { AuthContext } from '../../context/AuthContext'
-import { UserContext } from '../../context/UserContext';
 
 const theme = {
   colors: {
@@ -22,25 +20,21 @@ const { width, height } = Layout.window;
 const ProfileScreen = ({ route }) => {
   const { user } = route.params;
 
-  const { authentication: { token } } = useContext(AuthContext);
-  const { setUserInfo } = useContext(UserContext);
+  const { state: { token }, updateUserInfo } = useContext(AuthContext);
 
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
-  const [address, setAddress] = useState(user.address);
+  const [userType, setUserType] = useState(user.type);
   const [avatar, setAvatar] = useState(user.avatar);
   const [modal, setModal] = useState(false);
   const [enableshift, setenableShift] = useState(false);
 
   const updateDetails = () => {
     // update in database
-    const result = updateUserInfo({ token, newInfo: { name, email, phone, address, avatar } });
-    if (result.status === 200) {
-      // update in user context
-      setUserInfo(result.user);
-      Alert.alert('Update success!');
-    }
+    updateUserInfo({ token, newInfo: { name, avatar, phone } });
+
+    Alert.alert('Update success!');
   }
 
   const pickImage = async (type) => {
@@ -73,8 +67,8 @@ const ProfileScreen = ({ route }) => {
   const handleUpload = (image) => {
     const data = new FormData()
     data.append('file', image)
-    // save to database
-
+    // hosting file
+    
     // update image
     setAvatar(image.uri);
   };
@@ -94,15 +88,6 @@ const ProfileScreen = ({ route }) => {
       {/*  */}
       <View style={styles.profileContainer}>
         <TextInput
-          label='Name'
-          style={styles.inputStyle}
-          mode="outlined"
-          theme={theme}
-          value={name}
-          onFocus={() => setenableShift(false)}
-          onChangeText={text => setName(text)}
-        />
-        <TextInput
           label='Email'
           style={styles.inputStyle}
           mode="outlined"
@@ -110,6 +95,16 @@ const ProfileScreen = ({ route }) => {
           value={email}
           onFocus={() => setenableShift(false)}
           onChangeText={text => setEmail(text)}
+          disabled
+        />
+        <TextInput
+          label='Name'
+          style={styles.inputStyle}
+          mode="outlined"
+          theme={theme}
+          value={name}
+          onFocus={() => setenableShift(false)}
+          onChangeText={text => setName(text)}
         />
         <TextInput
           label='Phone'
@@ -122,13 +117,13 @@ const ProfileScreen = ({ route }) => {
           onChangeText={text => setPhone(text)}
         />
         <TextInput
-          label='Address'
+          label='Type'
           style={styles.inputStyle}
           mode="outlined"
           theme={theme}
-          value={address}
+          value={userType}
           onFocus={() => setenableShift(false)}
-          onChangeText={text => setAddress(text)}
+          disabled
         />
         {/*  */}
       </View>
@@ -152,10 +147,10 @@ const ProfileScreen = ({ route }) => {
         <View style={styles.modalView}>
           <View style={styles.modalButtonView}>
             <Button mode="contained" icon="camera" theme={theme} onPress={() => pickImage('Gallery')}>
-              Camera
+              Gallery
               </Button>
             <Button mode="contained" icon="image-area" theme={theme} onPress={() => pickImage('Camera')}>
-              Gallery
+              Camera
               </Button>
           </View>
           <Button theme={theme} onPress={() => setModal(false)}>

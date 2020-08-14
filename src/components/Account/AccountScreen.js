@@ -10,12 +10,12 @@ import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 
 import { SettingContext } from '../../context/SettingContext';
-import { AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
+
 
 const AccountScreen = ({ navigation }) => {
-  const { authentication: { isAuthenticated }, setAuthentication } = useContext(AuthContext);
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
+
   const { name, avatar } = userInfo;
 
   const { userSettings } = useContext(SettingContext);
@@ -24,7 +24,7 @@ const AccountScreen = ({ navigation }) => {
 
   const onSignOut = () => {
     setAuthentication({});
-    setUserInfo({});
+    updateUserInfo({});
     navigation.navigate(ScreenKey.LoginScreen);
   }
 
@@ -47,11 +47,11 @@ const AccountScreen = ({ navigation }) => {
                 : (
                   <>
                     <TouchableOpacity TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
-                      <Text style={styles.authText}>Login</Text>
+                      <Text style={styles.authText}>Đăng nhập</Text>
                     </TouchableOpacity>
                     <Text style={styles.authText}>/</Text>
                     <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}>
-                      <Text style={styles.authText}>Signup</Text>
+                      <Text style={styles.authText}>Đăng ký</Text>
                     </TouchableOpacity>
                   </>
                 )
@@ -67,7 +67,7 @@ const AccountScreen = ({ navigation }) => {
       <>
         <RowItem
           icon="account-circle"
-          title="User profile"
+          title="Thông tin cá nhân"
           txColor={txColor}
           bgColor={bgColor}
           onPress={() => {
@@ -79,7 +79,7 @@ const AccountScreen = ({ navigation }) => {
         />
         <RowItem
           icon="settings"
-          title="Settings"
+          title="Cài đặt"
           txColor={txColor}
           bgColor={bgColor}
           onPress={() => {
@@ -121,7 +121,7 @@ const AccountScreen = ({ navigation }) => {
           }}
           style={styles.buttonSignOut}
           onPress={onSignOut}>
-          Sign out
+          Đăng xuất
       </Button>
       }
     </View >
@@ -189,12 +189,12 @@ const styles = StyleSheet.create({
   avatarContainer: {
     width: 50,
     height: 50,
-    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.tintColor,
     borderWidth: 1,
     borderColor: Colors.lightgray
+    // borderRadius: 25,
+    // backgroundColor: Colors.tintColor,
   },
   textContainer: {
     flex: 1,

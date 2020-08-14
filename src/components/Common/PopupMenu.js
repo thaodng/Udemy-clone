@@ -2,21 +2,19 @@ import React, { useContext } from 'react'
 import { StyleSheet, Alert, Share } from 'react-native'
 import { Entypo } from '@expo/vector-icons';
 import { Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
-import { AuthContext } from '../../context/AuthContext';
-import { UserContext } from '../../context/UserContext';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const PopupMenu = ({ style, item, colorDot }) => {
-  const { authentication: { isAuthenticated } } = useContext(AuthContext);
-  const { userInfo, setUserInfo } = useContext(UserContext);
+  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
 
   const { id } = item;
   let valueFavorite, valueBookmark;
 
-  if (isAuthenticated) {
-    valueFavorite = userInfo.favoriteCourses.includes(id) ? "UnFavorite" : "Favorite";
-    valueBookmark = userInfo.bookmarkedCourses.includes(id) ? "UnBookmark" : "Bookmark";
-  }
+  // if (isAuthenticated) {
+  //   valueFavorite = userInfo.favoriteCourses.includes(id) ? "UnFavorite" : "Favorite";
+  //   valueBookmark = userInfo.bookmarkedCourses.includes(id) ? "UnBookmark" : "Bookmark";
+  // }
 
 
   const onShare = async () => {
@@ -35,7 +33,7 @@ const PopupMenu = ({ style, item, colorDot }) => {
         // dismissed
       }
     } catch (error) {
-      alert(error.message);
+      Alert.alert(error.message);
     }
   };
 
@@ -90,9 +88,8 @@ const PopupMenu = ({ style, item, colorDot }) => {
             />
           </MenuTrigger>
           <MenuOptions>
-            {/* <MenuOption value={"Download"} text="Download" /> */}
-            <MenuOption value={valueFavorite} text={valueFavorite} />
-            <MenuOption value={valueBookmark} text={valueBookmark} />
+            {/* <MenuOption value={"Download"} text="Download" />
+            <MenuOption value={valueFavorite} text={valueFavorite} /> */}
             <MenuOption value="Share" text="Share" />
           </MenuOptions>
         </Menu >
@@ -103,4 +100,4 @@ const PopupMenu = ({ style, item, colorDot }) => {
 
 export default PopupMenu
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

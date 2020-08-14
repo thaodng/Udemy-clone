@@ -6,37 +6,45 @@ import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 import Rating from '../Common/Rating';
 
-import { AuthorsContext } from '../../context/AuthorsContext';
-
 const { width, height } = Layout.window;
 
 const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
   const navigation = useNavigation();
-  const { authors } = useContext(AuthorsContext);
 
-  const { id, categoryId, authorIds, title, thumbnail, level, dateRelease, duration, description, rating, reviews } = item;
-  const authorsName = authorIds.map(aId => authors.find(a => a.id === aId)).map(author => author.name).join(', ');
-  
+  const {
+    id,
+    title,
+    imageUrl,
+    totalHours,
+    contentPoint,
+    price,
+    soldNumber,
+    ratedNumber
+  } = item;
+
   // what is list this course detail screen belong to?
   return (
     <TouchableOpacity onPress={() => {
-      navigation.navigate(screenDetail, {
-        courseId: id
+      navigation.push(screenDetail, {
+        key: id,
+        courseId: id,
+        screenDetail
       })
     }}
       style={[styles.container, styles.shadow]}>
+      <Image style={styles.image} source={{ uri: imageUrl }} />
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: thumbnail }} />
         <PopupMenu style={styles.imageOption} item={item} colorDot='white' />
       </View>
-      <View style={{...styles.contentContainer, backgroundColor: bgColor}}>
-        <Text numberOfLines={1} style={{...styles.title, color: txColor}}>{title}</Text>
-        <Text numberOfLines={1} style={{ color: txColor }}>{authorsName}</Text>
-        <Text numberOfLines={1} style={{ color: Colors.lightGray, width: '100%', maxHeight: 40 }}>{level} - {dateRelease}</Text>
+      <View style={{ ...styles.contentContainer, backgroundColor: bgColor }}>
+        <Text numberOfLines={1} style={{ ...styles.title, color: txColor }}>{title}</Text>
+        <Text numberOfLines={1} style={{ color: txColor }}>{item['instructor.user.name']}</Text>
+        <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
+        <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên - {ratedNumber} đánh giá </Text>
         <View style={styles.rating}>
-          <Rating rating={rating} />
+          <Rating rating={contentPoint} />
           <Text style={{ color: Colors.tintColor }}>
-            ({rating})
+            ({contentPoint ? Number((contentPoint).toFixed(1)) : 0})
             </Text>
         </View>
       </View>
@@ -66,7 +74,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: 8,
     width: width / 2,
-    height: width / 3
+    height: width / 2.5
   },
   title: {
     fontSize: 18,
