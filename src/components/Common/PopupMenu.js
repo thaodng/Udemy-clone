@@ -33,7 +33,7 @@ const PopupMenu = ({ style, item, colorDot }) => {
         // dismissed
       }
     } catch (error) {
-      alert(error.message);
+      Alert.alert(error.message);
     }
   };
 
@@ -88,9 +88,8 @@ const PopupMenu = ({ style, item, colorDot }) => {
             />
           </MenuTrigger>
           <MenuOptions>
-            {/* <MenuOption value={"Download"} text="Download" /> */}
-            <MenuOption value={valueFavorite} text={valueFavorite} />
-            <MenuOption value={valueBookmark} text={valueBookmark} />
+            {/* <MenuOption value={"Download"} text="Download" />
+            <MenuOption value={valueFavorite} text={valueFavorite} /> */}
             <MenuOption value="Share" text="Share" />
           </MenuOptions>
         </Menu >
@@ -101,4 +100,4 @@ const PopupMenu = ({ style, item, colorDot }) => {
 
 export default PopupMenu
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

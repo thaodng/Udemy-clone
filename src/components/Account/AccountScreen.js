@@ -47,11 +47,11 @@ const AccountScreen = ({ navigation }) => {
                 : (
                   <>
                     <TouchableOpacity TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
-                      <Text style={styles.authText}>Login</Text>
+                      <Text style={styles.authText}>Đăng nhập</Text>
                     </TouchableOpacity>
                     <Text style={styles.authText}>/</Text>
                     <TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}>
-                      <Text style={styles.authText}>Signup</Text>
+                      <Text style={styles.authText}>Đăng ký</Text>
                     </TouchableOpacity>
                   </>
                 )
@@ -67,7 +67,7 @@ const AccountScreen = ({ navigation }) => {
       <>
         <RowItem
           icon="account-circle"
-          title="User profile"
+          title="Thông tin cá nhân"
           txColor={txColor}
           bgColor={bgColor}
           onPress={() => {
@@ -79,7 +79,7 @@ const AccountScreen = ({ navigation }) => {
         />
         <RowItem
           icon="settings"
-          title="Settings"
+          title="Cài đặt"
           txColor={txColor}
           bgColor={bgColor}
           onPress={() => {
@@ -121,7 +121,7 @@ const AccountScreen = ({ navigation }) => {
           }}
           style={styles.buttonSignOut}
           onPress={onSignOut}>
-          Sign out
+          Đăng xuất
       </Button>
       }
     </View >

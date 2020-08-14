@@ -29,6 +29,12 @@ const searchCourseAndAuthorUrl = `${DOMAIN}/course/searchV2`;
 const searchHistoryUrl = `${DOMAIN}/course/search-history`;
 const deleteSearchHistoryUrl = (id) => `${DOMAIN}/course/delete-search-history/${id}`;
 
+const getLessonDetailUrl = (courseId, lessonId) => `${DOMAIN}/lesson/detail/${courseId}/${lessonId}`;
+const getLessonVideoUrl = (courseId, lessonId) => `${DOMAIN}/lesson/video/${courseId}/${lessonId}`;
+const updateLessonStatusUrl = `${DOMAIN}/lesson/update-status`;
+const updateCurrentTimeLessonUrl = `${DOMAIN}/lesson/update-current-time-learn-video`;
+
+
 export {
   DOMAIN,
   registerUrl,
@@ -58,5 +64,10 @@ export {
   searchCourseUrl,
   searchCourseAndAuthorUrl,
   searchHistoryUrl,
-  deleteSearchHistoryUrl
+  deleteSearchHistoryUrl,
+
+  getLessonDetailUrl,
+  getLessonVideoUrl,
+  updateLessonStatusUrl,
+  updateCurrentTimeLessonUrl
 };

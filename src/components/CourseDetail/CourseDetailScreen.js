@@ -60,11 +60,6 @@ const CourseDetailScreen = ({ route, navigation }) => {
       if (message === 'OK') {
         setCourse(payload);
 
-        setCurrentItem({
-          id: 1,
-          videoUrl: 'https://storage.googleapis.com/itedu-bucket/Courses/24b1856a-953c-419b-84c5-a9ef44bc139e/promo/9a1c3c44-c7e3-4080-965b-ca9650f8b92d.mp4'
-        })
-
         const { message, likeStatus } = await getLikeCourseStatus({ token, courseId });
         setIsFavorite(likeStatus);
 

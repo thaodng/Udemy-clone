@@ -79,12 +79,12 @@ const SearchScreen = ({ navigation }) => {
           (recentSearch.length > 0) &&
           <>
             <View style={styles.recentBar}>
-              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >Recent searches</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >Lịch sử tìm kiếm</Text>
               <TouchableOpacity onPress={() => {
                 setRecentSearch([]);
                 setTerm('');
               }}>
-                <Text style={{ color: Colors.tintColor }}>CLEAR ALL</Text>
+                <Text style={{ color: Colors.tintColor }}>Xoá tất cả</Text>
               </TouchableOpacity>
             </View>
 

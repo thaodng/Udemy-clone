@@ -20,7 +20,7 @@ const Slide = ({ item, screenDetail }) => {
           <Text numberOfLines={1} style={styles.title}>{title}</Text>
           <View style={styles.ratingContainer}>
             <FontAwesome name="star" size={18} color={Colors.tintColor} />
-            <Text style={styles.rating} >{contentPoint ? `${contentPoint}/5` : `0/5`}</Text>
+            <Text style={styles.rating} >{contentPoint ? `${Number((contentPoint).toFixed(1))}/5` : `0/5`}</Text>
           </View>
           <Text numberOfLines={5} style={styles.overview}>{description}</Text>
           <TouchableOpacity onPress={goToDetail}>

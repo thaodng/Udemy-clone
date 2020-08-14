@@ -96,7 +96,7 @@ const SearchResult = ({ navigation, route }) => {
           onPress={type === 'course' ? loadMoreCourses : loadMoreAuthors}
           //On Click of button calling loadMoreData function to load more data
           style={styles.loadMoreBtn}>
-          <Text style={styles.btnText}>Loading</Text>
+          <Text style={styles.btnText}>Hiển thị thêm</Text>
           {fetchingFromServer ? (
             <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
           ) : null}
