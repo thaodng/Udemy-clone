@@ -171,7 +171,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
     const { message, likeStatus } = await postLikeCourse({ token, courseId });
     if (message === 'OK') {
       setIsFavorite(likeStatus);
-      setFavoriteCourses([...favoriteCourses, course]);
+      if (likeStatus) {
+        setFavoriteCourses([...favoriteCourses, course]);
+      } else {
+        setFavoriteCourses(favoriteCourses.filter(c => c.id !== course.id));
+      }
     }
   };
 
@@ -179,8 +183,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message:
-          'React Native | A framework for building native apps using React',
+        message: course.name
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
