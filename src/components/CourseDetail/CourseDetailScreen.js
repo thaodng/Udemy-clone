@@ -37,7 +37,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
   const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
-  const tabs = ['INFOR', 'LECTURES', 'RATINGS'];
+  const tabs = ['Thông tin', 'Bài giảng', 'Đánh giá'];
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -210,16 +210,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
     // });
   };
 
-  const renderItem = async ({ id, name, hours, videoUrl }) => {
+  const renderItem = ({ id, name, hours, videoUrl }) => {
 
     let url;
 
-    if (!videoUrl) {
-      const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
-      url = payload.videoUrl;
-    } else {
-      url = videoUrl;
-    }
+    const getUrl = async () => {
+      if (!videoUrl) {
+        const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
+        url = payload.videoUrl;
+      } else {
+        url = videoUrl;
+      }
+    };
+
+    getUrl();
 
     return (
       <TouchableOpacity
@@ -232,7 +236,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
           <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
-        {/* <PopupMenu style={styles.itemOption} item={{ id, title, hours, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} /> */}
+        <PopupMenu style={styles.itemOption} item={{ id, name, hours, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
       </TouchableOpacity >
     )
   };
@@ -310,7 +314,6 @@ const CourseDetailScreen = ({ route, navigation }) => {
                   </ScrollView>
                 }
                 {
-
                   (sections.length > 0) && (activeTab === tabs[1]) &&
                   <SectionList
                     style={styles.list}
@@ -321,11 +324,12 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     renderSectionHeader={({ section: { name } }) => (
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
                         <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
-                        <PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />
+                        {<PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />}
                       </View>
                     )}
                   />
                 }
+
               </View>
             </View >
           )
