@@ -11,7 +11,6 @@ import Colors from '../../constants/Colors';
 
 const W = Dimensions.get('window').width / 4;
 
-
 /* 
 { 
   "id": "4eb0c150-8212-44ef-a90b-fcd40130ac01", 
@@ -34,16 +33,13 @@ const TopCategories = ({ categories, onPress }) => {
   };
 
   return (
-    <>
-      {/* <HeaderList title="Top Authors" /> */}
-      <FlatList
-        horizontal
-        keyExtractor={item => item.id}
-        data={categories}
-        showsHorizontalScrollIndicator={false}
-        renderItem={renderItem}
-      />
-    </>
+    <FlatList
+      horizontal
+      keyExtractor={item => item.id}
+      data={categories}
+      showsHorizontalScrollIndicator={false}
+      renderItem={renderItem}
+    />
   );
 };
 

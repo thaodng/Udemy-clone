@@ -25,9 +25,7 @@ const FavoriteScreen = () => {
   const { state: { token } } = useContext(AuthContext);
 
   useEffect(() => {
-
     const loadFavoriteCourses = async () => {
-
       const { message, payload } = await getUserFavoriteCourse({ token });
       if (message === 'OK') {
         const ids = payload.map(course => course.id).map(id => getCourseById({ id }));
@@ -35,7 +33,9 @@ const FavoriteScreen = () => {
 
         const favCourses = res.map(r => r.payload);
         setFavoriteCourses(favCourses);
-      };
+      } else {
+        setFavoriteCourses([]);
+      }
     }
 
 
@@ -47,7 +47,7 @@ const FavoriteScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerFavoriteContainer}>
-        <Text style={styles.total}>{`${favoriteCourses.length} courses`}</Text>
+        <Text style={styles.total}>{`${favoriteCourses.length} khoá`}</Text>
       </View>
       <ListCourses direction="column" txColor={txColor} bgColor={bgColor} data={favoriteCourses} screenDetail={ScreenKey.FavoriteCourseDetailScreen} />
     </SafeAreaView >

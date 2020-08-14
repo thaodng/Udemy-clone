@@ -21,6 +21,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
 import { CoursesContext } from '../../context/CoursesContext';
+import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
 import { getCourseDetailById } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
@@ -32,6 +33,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   const { state: { token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
+  const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
   const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
   const tabs = ['INFOR', 'LECTURES', 'RATINGS'];
@@ -171,10 +173,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
     const { message, likeStatus } = await postLikeCourse({ token, courseId });
     if (message === 'OK') {
       setIsFavorite(likeStatus);
+      setFavoriteCourses([...favoriteCourses, course]);
     }
   };
 
-  
+
   const onShare = async () => {
     try {
       const result = await Share.share({

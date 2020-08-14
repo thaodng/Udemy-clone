@@ -7,7 +7,6 @@ import SearchStackNavigator from './SearchStackNavigator';
 import AccountStackNavigator from './AccountStackNavigator';
 import TabBarIcon from '../components/Common/TabBarIcon';
 
-import { Context as AuthContext } from '../context/AuthContext';
 import { SettingContext } from '../context/SettingContext';
 
 import Colors from '../constants/Colors';
@@ -18,12 +17,9 @@ const BottomTab = createBottomTabNavigator();
 const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
-  const { state: { isAuthenticated } } = useContext(AuthContext);
   const { userSettings } = useContext(SettingContext);
   const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 
-  console.log(isAuthenticated);
-  
   return (
     <BottomTab.Navigator
       initialRouteName={ScreenKey.BrowseTabStackNavigator}
@@ -33,27 +29,23 @@ const BottomTabNavigator = ({ navigation, route }) => {
         }
       }}
     >
-      {
-        isAuthenticated &&
-        <>
-          <BottomTab.Screen
-            name={ScreenKey.FavoriteTabStackNavigator}
-            component={FavoriteStackNavigator}
-            options={{
-              title: 'Favorite',
-              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="favorite" />,
-            }}
-          />
-          <BottomTab.Screen
-            name={ScreenKey.DownloadTabStackNavigator}
-            component={DownloadStackNavigator}
-            options={{
-              title: 'Download',
-              tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-download" />,
-            }}
-          />
-        </>
-      }
+      <BottomTab.Screen
+        name={ScreenKey.FavoriteTabStackNavigator}
+        component={FavoriteStackNavigator}
+        options={{
+          title: 'Favorite',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="favorite" />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name={ScreenKey.DownloadTabStackNavigator}
+        component={DownloadStackNavigator}
+        options={{
+          title: 'Download',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-download" />,
+        }}
+      />
 
       <BottomTab.Screen
         name={ScreenKey.BrowseTabStackNavigator}
@@ -63,6 +55,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="apps" />,
         }}
       />
+
       <BottomTab.Screen
         name={ScreenKey.SearchTabStackNavigator}
         component={SearchStackNavigator}

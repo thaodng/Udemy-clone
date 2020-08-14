@@ -26,7 +26,7 @@ const FavoriteStackScreens = () => {
       <FavoriteStack.Screen
         name={ScreenKey.FavoriteCoursesScreen}
         component={FavoriteScreen}
-        options={{ title: 'Favorite courses' }}
+        options={{ title: 'Khoá học yêu thích' }}
       />
 
       <FavoriteStack.Screen
