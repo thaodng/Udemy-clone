@@ -189,12 +189,12 @@ const styles = StyleSheet.create({
   avatarContainer: {
     width: 50,
     height: 50,
-    borderRadius: 25,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.tintColor,
     borderWidth: 1,
     borderColor: Colors.lightgray
+    // borderRadius: 25,
+    // backgroundColor: Colors.tintColor,
   },
   textContainer: {
     flex: 1,

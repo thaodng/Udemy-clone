@@ -25,13 +25,14 @@ import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
 import { getCourseDetailById } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
+import { getLessonVideo } from '../../core/services/lessions-service';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { state: { token } } = useContext(AuthContext);
+  const { state: { isAuthenticated, token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
   const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
@@ -59,6 +60,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
       const { message, payload } = await getCourseDetailById({ id: courseId });
       if (message === 'OK') {
         setCourse(payload);
+
+        setCurrentItem({ id: payload.id, videoUrl: payload.promoVidUrl })
 
         const { message, likeStatus } = await getLikeCourseStatus({ token, courseId });
         setIsFavorite(likeStatus);
@@ -207,12 +210,21 @@ const CourseDetailScreen = ({ route, navigation }) => {
     // });
   };
 
-  const renderItem = ({ id, name, hours, videoUrl }) => {
+  const renderItem = async ({ id, name, hours, videoUrl }) => {
+
+    let url;
+
+    if (!videoUrl) {
+      const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
+      url = payload.videoUrl;
+    } else {
+      url = videoUrl;
+    }
 
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => setCurrentItem({ id, videoUrl })}
+        onPress={() => setCurrentItem({ id, videoUrl: url })}
       >
         <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
@@ -304,7 +316,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     style={styles.list}
                     showsVerticalScrollIndicator={false}
                     sections={sections}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={item => item.id}
                     renderItem={({ item }) => renderItem(item)}
                     renderSectionHeader={({ section: { name } }) => (
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
