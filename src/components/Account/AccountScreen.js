@@ -14,7 +14,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 
 const AccountScreen = ({ navigation }) => {
-  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
+  const { state: { isAuthenticated, userInfo }, signout } = useContext(AuthContext);
 
   const { name, avatar } = userInfo;
 
@@ -23,8 +23,7 @@ const AccountScreen = ({ navigation }) => {
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
   const onSignOut = () => {
-    setAuthentication({});
-    updateUserInfo({});
+    signout();
     navigation.navigate(ScreenKey.LoginScreen);
   }
 

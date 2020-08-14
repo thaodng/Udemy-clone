@@ -169,8 +169,6 @@ const updateUserInfo = dispatch => async ({ token, newInfo }) => {
 
     const { payload } = await updateUser({ token, newInfo });
     dispatch({ type: 'update_info', payload });
-    console.log(payload);
-
   } catch (err) {
     if (err.response) {
       dispatch({ type: 'add_error', payload: err.response.data.message });
@@ -184,6 +182,10 @@ const clearErrorMessage = dispatch => () => {
   dispatch({ type: 'clear_error_message' });
 };
 
+const signout = dispatch => () => {
+  dispatch({ type: 'signout' });
+};
+
 export const { Provider, Context } = createDataContext(
   authReducer,
   {
@@ -194,7 +196,8 @@ export const { Provider, Context } = createDataContext(
     forgetPass,
     resetPass,
     updateUserInfo,
-    clearErrorMessage
+    clearErrorMessage,
+    signout
   },
   {
     token: null,
