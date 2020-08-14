@@ -24,6 +24,8 @@ const getCourseById = ({ id }) => getApi(getCourseInfoUrl(id));
 
 const getCourseDetailById = ({ id }) => getApi(getCourseDetailInfoUrl(id));
 
+
+
 export {
   getNewCourses,
   getTopRateCourses,

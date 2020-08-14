@@ -24,8 +24,15 @@ import {
 const BrowseScreen = () => {
   const navigation = useNavigation();
   const { categories, setCategories } = useContext(CategoriesContext);
-  const { newCourses, setNewCourses, topRateCourses, setTopRateCourses, downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
   const { authors, setAuthors } = useContext(AuthorsContext);
+  const {
+    newCourses,
+    setNewCourses,
+    topRateCourses,
+    setTopRateCourses,
+    setDownloadedCourses
+  } = useContext(CoursesContext);
+
 
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;

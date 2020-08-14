@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-import { Context as AuthContext } from '../../context/AuthContext';
 import { CoursesContext } from '../../context/CoursesContext';
 import { SettingContext } from '../../context/SettingContext';
 
@@ -15,23 +14,27 @@ const DownloadScreen = () => {
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { state: { isAuthenticated, userInfo }, updateUserInfo } = useContext(AuthContext);
-  const { courses } = useContext(CoursesContext);
-  const downloadedCourses = courses.filter(course => userInfo.favoriteCourses.includes(course.id));
+  const { downloadedCourses } = useContext(CoursesContext);
 
   const onRemove = () => {
-    setUserInfo({ ...userInfo, favoriteCourses: [] });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerDownloadContainer}>
-        <Text style={styles.total}>{`${downloadedCourses.length} courses`}</Text>
+        <Text style={styles.total}>{`${downloadedCourses.length} khoá`}</Text>
         <TouchableOpacity onPress={onRemove}>
-          <Text style={styles.remove}>REMOVE ALL</Text>
+          <Text style={styles.remove}>Xoá tất cả</Text>
         </TouchableOpacity>
       </View>
-      <ListCourses direction="column" txColor={txColor} bgColor={bgColor} data={downloadedCourses} screenDetail={ScreenKey.DownloadedCourseDetailScreen} />
+
+      <ListCourses
+        direction="column"
+        txColor={txColor}
+        bgColor={bgColor}
+        data={downloadedCourses}
+        screenDetail={ScreenKey.DownloadedCourseDetailScreen}
+      />
     </View>
   )
 }

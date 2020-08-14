@@ -2,10 +2,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import {
   StyleSheet, Text, View, Dimensions,
   TouchableOpacity, SectionList, Share,
-  ActivityIndicator
+  ActivityIndicator, AsyncStorage
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
+import * as FileSystem from 'expo-file-system';
 import ReadMore from 'react-native-read-more-text';
 
 
@@ -19,6 +20,7 @@ import ListCourses from '../ListCourses/ListCourses';
 import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
 import { AuthorsContext } from '../../context/AuthorsContext';
+import { CoursesContext } from '../../context/CoursesContext';
 
 import { getCourseDetailById } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
@@ -30,6 +32,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   const { state: { token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
+  const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
   const tabs = ['INFOR', 'LECTURES', 'RATINGS'];
 
@@ -40,7 +43,12 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [sections, setSections] = useState([]);
   const [currentItem, setCurrentItem] = useState({});
 
+  const [isDownloaded, setIsDownloaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const [buttonDownload, setButtonDownload] = useState('Tải xuống');
+  const [progressValue, setProgressValue] = useState(0);
+  const [totalSize, setTotalSize] = useState(0);
 
   const { courseId, screenDetail } = route.params;
 
@@ -79,23 +87,84 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   }, []);
 
-  let isBookmarked;
-  // if (isAuthenticated) {
-  //   isBookmarked = userInfo.bookmarkedCourses.includes(courseId);
-  // }
 
-  const onHandleBookmark = () => {
-    if (isBookmarked) {
-      setUserInfo({
-        ...userInfo,
-        bookmarkedCourses: userInfo.bookmarkedCourses.filter(cId => cId !== courseId)
-      })
-    } else {
-      setUserInfo({
-        ...userInfo,
-        bookmarkedCourses: userInfo.bookmarkedCourses.concat(courseId)
-      })
+  const formatBytes = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  const downloadVideo = async ({ videoUrl, name }) => {
+
+    const callback = downloadProgress => {
+      setTotalSize(formatBytes(downloadProgress.totalBytesExpectedToWrite))
+
+      let progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
+      progress = progress.toFixed(2) * 100
+      setProgressValue(progress.toFixed(0))
+    };
+
+    const downloadResumable = FileSystem.createDownloadResumable(
+      videoUrl,
+      `${FileSystem.documentDirectory}${name}`,
+      {},
+      callback
+    );
+
+    try {
+      const { uri } = await downloadResumable.downloadAsync();
+      console.log('Finished download video: ', uri);
+    } catch (e) {
+      console.error(e);
     }
+  }
+
+  const onHandleDownload = async () => {
+    setButtonDownload('Đang tải xuống');
+
+    // kiểm tra đã download hay chưa
+    const downloaded = downloadedCourses.map(dc => dc.id).includes(course.id);
+
+    if (downloaded) {
+      setButtonDownload('Đã tải xuống');
+      return;
+    }
+
+    // tiến hành download videos
+    const arrayDownloadVideos = [];
+
+    for (let i = 0; i < course.section.length; i++) {
+      const s = course.section[i];
+      for (let j = 0; j < s.lesson.length; j++) {
+        const lesson = s.lesson[j];
+        if (lesson.videoUrl) {
+
+          // thêm video để chuẩn bị tải
+          arrayDownloadVideos.push(downloadVideo({ videoUrl: lesson.videoUrl, name: lesson.name }));
+
+          // đổi lại đường dẫn video thành đường dẫn local
+          s.lesson[j].videoUrl = `${FileSystem.documentDirectory}${lesson.name}`;
+        }
+      }
+    }
+
+    await Promise.all(arrayDownloadVideos);
+
+    const newDownloadedCourses = [...downloadedCourses, course];
+
+    // thêm mới khoá đã tải vào storage
+    await AsyncStorage.setItem('downloadedCourses', JSON.stringify(newDownloadedCourses));
+
+    // cập nhật state
+    setDownloadedCourses(newDownloadedCourses);
+
+    setButtonDownload('Đã tải xuống');
   };
 
   const onHandleFavorite = async () => {
@@ -105,6 +174,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
     }
   };
 
+  
   const onShare = async () => {
     try {
       const result = await Share.share({
@@ -132,11 +202,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
   );
 
   const onPressAuthor = () => {
-    navigation.navigate(ScreenKey.BrowseCoursesScreen, {
-      screenDetail: ScreenKey.BrowseCourseDetailScreen,
-      subject: `${courseAuthor.name}'s courses`,
-      data: courseAuthor
-    });
+    // navigation.navigate(ScreenKey.BrowseCoursesScreen, {
+    //   screenDetail: ScreenKey.BrowseCourseDetailScreen,
+    //   subject: `${courseAuthor.name}'s courses`,
+    //   data: courseAuthor
+    // });
   };
 
   const renderItem = ({ id, name, hours, videoUrl }) => {
@@ -182,8 +252,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
                   <ScrollView style={styles.infoContainer} showsVerticalScrollIndicator={false}>
                     {
                       <View style={styles.activityContainer}>
-                        <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isBookmarked ? Colors.tintColor : bgColor }} onPress={onHandleBookmark}>
-                          <Text style={{ color: isBookmarked ? txColor : Colors.tintColor }}>{isBookmarked ? 'Đã tải xuống' : 'Tải xuống'}</Text>
+                        <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} onPress={onHandleDownload}>
+                          <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
                           <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Bỏ thích' : 'Yêu thích'}</Text>

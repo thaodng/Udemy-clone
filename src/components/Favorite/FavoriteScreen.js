@@ -22,7 +22,7 @@ const FavoriteScreen = () => {
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
 
   const [loading, setLoading] = useState(true);
-  const { state: { token, isAuthenticated, userInfo } } = useContext(AuthContext);
+  const { state: { token } } = useContext(AuthContext);
 
   useEffect(() => {
 
