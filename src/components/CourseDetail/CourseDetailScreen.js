@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import {
   StyleSheet, Text, View, Dimensions,
   TouchableOpacity, SectionList, Share,
@@ -8,7 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import ReadMore from 'react-native-read-more-text';
-
+import YoutubePlayer from 'react-native-youtube-iframe';
 
 import TopTab from '../Common/TopTab';
 import Authors from '../Common/Authors';
@@ -44,7 +44,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [course, setCourse] = useState({});
   const [courseAuthor, setCourseAuthor] = useState({});
   const [sections, setSections] = useState([]);
+
   const [currentItem, setCurrentItem] = useState({});
+
+  // link youtube
+  const playerRef = useRef(null);
 
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -61,7 +65,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
       if (message === 'OK') {
         setCourse(payload);
 
-        setCurrentItem({ id: payload.id, videoUrl: payload.promoVidUrl })
+        if (payload.typeUploadVideoLesson === 1) {
+          setCurrentItem({ id: payload.id, videoUrl: payload.promoVidUrl })
+        } else {
+          setCurrentItem({ id: payload.id, videoUrl: '7beJYPZefyE' }); // VERY VERY BAD CODE
+        };
 
         const { message, likeStatus } = await getLikeCourseStatus({ token, courseId });
         setIsFavorite(likeStatus);
@@ -213,16 +221,16 @@ const CourseDetailScreen = ({ route, navigation }) => {
     // });
   };
 
-  const renderItem = ({ id, name, hours, videoUrl }) => {
+  const renderItem = ({ id, name, hours }) => {
 
     let url;
 
     const getUrl = async () => {
-      if (!videoUrl) {
-        const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
+      const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
+      if (course.typeUploadVideoLesson === 1) {
         url = payload.videoUrl;
       } else {
-        url = videoUrl;
+        url = payload.videoUrl.substring(payload.videoUrl.lastIndexOf('/') + 1);
       }
     };
 
@@ -239,7 +247,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
           <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
-        <PopupMenu style={styles.itemOption} item={{ id, name, hours, videoUrl }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
+        <PopupMenu style={styles.itemOption} item={{ id, name, hours }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
       </TouchableOpacity >
     )
   };
@@ -252,17 +260,42 @@ const CourseDetailScreen = ({ route, navigation }) => {
           ? (<ActivityIndicator size="large" />)
           : (
             <View style={styles.courseContainer}>
-              <Video
-                source={{ uri: currentItem.videoUrl }}
-                rate={1.0}
-                volume={1.0}
-                isMuted={false}
-                resizeMode="cover"
-                isLooping
-                shouldPlay
-                useNativeControls
-                style={styles.video}
-              />
+              {
+                course.typeUploadVideoLesson === 1
+                  ? (
+                    <Video
+                      source={{ uri: currentItem.videoUrl }}
+                      rate={1.0}
+                      volume={1.0}
+                      isMuted={false}
+                      resizeMode="cover"
+                      isLooping
+                      shouldPlay
+                      useNativeControls
+                      style={styles.video}
+                    />
+                  )
+                  : (
+                    <YoutubePlayer
+                      ref={playerRef}
+                      height={height / 3}
+                      width={width}
+                      videoId={currentItem.videoUrl}
+                      play={true}
+                      onChangeState={event => console.log(event)}
+                      onReady={() => console.log("ready")}
+                      onError={e => console.log(e)}
+                      onPlaybackQualityChange={q => console.log(q)}
+                      volume={50}
+                      playbackRate={1}
+                      initialPlayerParams={{
+                        cc_lang_pref: "us",
+                        showClosedCaptions: true
+                      }}
+                    />
+                  )
+              }
+
               <View style={styles.playlistContainer}>
                 {/* <Text style={styles.heading}>Course Content</Text> */}
                 <TopTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />

@@ -22,6 +22,8 @@ import {
   getNewCourses, getTopRateCourses, getMyCourses, getCoursesByCategory, getCourseById
 } from '../../core/services/courses-service';
 
+import { ProgressBar } from 'react-native-paper';
+
 const BrowseScreen = () => {
   const navigation = useNavigation();
   const { categories, setCategories } = useContext(CategoriesContext);
@@ -179,6 +181,7 @@ const BrowseScreen = () => {
                   }
                 />
                 <TopCategories categories={categories} onPress={onPressCategory} />
+                <ProgressBar style={{ height: 20 }} progress={0.5} color={Colors.tintColor} />
 
 
                 {
