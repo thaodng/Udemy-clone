@@ -27,7 +27,7 @@ import { getCourseDetailById } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
 import { getLastWatchedLesson, getLessonVideo, updateCurrentTimeLesson } from '../../core/services/lessions-service';
 
-const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxNjcxMDA4LWM4YzEtNGYwNC05Njk0LTcxMWU4MWQ5MjE2NSIsImlhdCI6MTU5NzUwODg0MSwiZXhwIjoxNTk3NTE2MDQxfQ.zLmDRu4K6smUTMg5vL5mz5scpc5yZtQHc5QSagtwSjs';
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxNjcxMDA4LWM4YzEtNGYwNC05Njk0LTcxMWU4MWQ5MjE2NSIsImlhdCI6MTU5NzUwODg0MSwiZXhwIjoxNTk3NTE2MDQxfQ.zLmDRu4K6smUTMg5vL5mz5scpc5yZtQHc5QSagtwSjs';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { userSettings } = useContext(SettingContext);
@@ -79,20 +79,29 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
         // loading last watched lesson
         try {
-          const last = await getLastWatchedLesson({ courseId: courseId, token });
-          if (last.message === 'OK') {
-            last.payload['id'] = last.payload.lessonId;
-            last.payload['videoUrl'] = last.payload.videoUrl.substring(last.payload.videoUrl.lastIndexOf('/') + 1);
-            delete last.payload.lessonId;
-            setCurrentVideo(last.payload);
-          }
+          if (payload.typeUploadVideoLesson === 1) {
+            const last = await getLastWatchedLesson({ courseId: courseId, token });
+            if (last.message === 'OK') {
+              last.payload['id'] = last.payload.lessonId;
+              delete last.payload.lessonId;
+              setCurrentVideo(last.payload);
+            } else {
+              setCurrentVideo({ id: payload.id, videoUrl: payload.promoVidUrl });
+            }
+          } else {
+            const last = await getLastWatchedLesson({ courseId: courseId, token });
+            if (last.message === 'OK') {
+              last.payload['id'] = last.payload.lessonId;
+              last.payload['videoUrl'] = last.payload.videoUrl.substring(last.payload.videoUrl.lastIndexOf('/') + 1);
+              delete last.payload.lessonId;
+              setCurrentVideo(last.payload);
+            } else {
+              setCurrentVideo({ id: last.payload.id, videoUrl: '7beJYPZefyE' }); // VERY VERY BAD CODE
+            }
+          };
+
         } catch (error) {
           console.log(error.message);
-          if (payload.typeUploadVideoLesson === 1) {
-            setCurrentVideo({ id: payload.id, videoUrl: payload.promoVidUrl })
-          } else {
-            setCurrentVideo({ id: payload.id, videoUrl: '7beJYPZefyE' }); // VERY VERY BAD CODE
-          };
         }
 
         const { likeStatus } = await getLikeCourseStatus({ token, courseId });
@@ -331,7 +340,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     <Video
                       source={{ uri: currentVideo.videoUrl }}
                       ref={handleVideoRef}
-                      positionMillis={currentVideo.currentTime ? currentVideo.currentTime : 0}
+                      // positionMillis={currentVideo.currentTime ? currentVideo.currentTime : 0}
                       rate={1.0}
                       volume={1.0}
                       isMuted={false}
