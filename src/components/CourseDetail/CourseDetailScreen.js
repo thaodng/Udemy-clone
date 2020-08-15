@@ -25,14 +25,16 @@ import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
 import { getCourseDetailById } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
-import { getLessonVideo } from '../../core/services/lessions-service';
+import { getLastWatchedLesson, getLessonVideo, updateCurrentTimeLesson } from '../../core/services/lessions-service';
+
+const token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxNjcxMDA4LWM4YzEtNGYwNC05Njk0LTcxMWU4MWQ5MjE2NSIsImlhdCI6MTU5NzUwODg0MSwiZXhwIjoxNTk3NTE2MDQxfQ.zLmDRu4K6smUTMg5vL5mz5scpc5yZtQHc5QSagtwSjs';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { state: { isAuthenticated, token } } = useContext(AuthContext);
+  // const { state: { isAuthenticated, token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
   const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
@@ -45,10 +47,19 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [courseAuthor, setCourseAuthor] = useState({});
   const [sections, setSections] = useState([]);
 
-  const [currentItem, setCurrentItem] = useState({});
+  // {id, videoUrl, currentTime}
+  const [currentVideo, setCurrentVideo] = useState({});
 
   // link youtube
   const playerRef = useRef(null);
+
+  // link .mp4
+  const playbackInstance = useRef(null);
+  const handleVideoRef = (component) => {
+    if (component) {
+      playbackInstance.current = component;
+    };
+  }
 
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -59,19 +70,32 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   const { courseId, screenDetail } = route.params;
 
+
   useEffect(() => {
     const loadCourse = async () => {
       const { message, payload } = await getCourseDetailById({ id: courseId });
       if (message === 'OK') {
         setCourse(payload);
 
-        if (payload.typeUploadVideoLesson === 1) {
-          setCurrentItem({ id: payload.id, videoUrl: payload.promoVidUrl })
-        } else {
-          setCurrentItem({ id: payload.id, videoUrl: '7beJYPZefyE' }); // VERY VERY BAD CODE
-        };
+        // loading last watched lesson
+        try {
+          const last = await getLastWatchedLesson({ courseId: courseId, token });
+          if (last.message === 'OK') {
+            last.payload['id'] = last.payload.lessonId;
+            last.payload['videoUrl'] = last.payload.videoUrl.substring(last.payload.videoUrl.lastIndexOf('/') + 1);
+            delete last.payload.lessonId;
+            setCurrentVideo(last.payload);
+          }
+        } catch (error) {
+          console.log(error.message);
+          if (payload.typeUploadVideoLesson === 1) {
+            setCurrentVideo({ id: payload.id, videoUrl: payload.promoVidUrl })
+          } else {
+            setCurrentVideo({ id: payload.id, videoUrl: '7beJYPZefyE' }); // VERY VERY BAD CODE
+          };
+        }
 
-        const { message, likeStatus } = await getLikeCourseStatus({ token, courseId });
+        const { likeStatus } = await getLikeCourseStatus({ token, courseId });
         setIsFavorite(likeStatus);
 
         const author = authors.find(a => a.id === payload.instructorId);
@@ -92,6 +116,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
     setLoading(true);
     loadCourse();
     setLoading(false);
+
+    // lưu lại vị trí đang xem, hàm này được gọi khi mình di chuyển sang màn hình khác
+    // return () => {
+    //   saveCurrentVideo();
+    // };
 
   }, []);
 
@@ -221,33 +250,69 @@ const CourseDetailScreen = ({ route, navigation }) => {
     // });
   };
 
-  const renderItem = ({ id, name, hours }) => {
 
-    let url;
-
-    const getUrl = async () => {
-      const { message, payload } = await getLessonVideo({ courseId, lessonId: id, token });
+  // hàm lưu lại vị trí video đang xem
+  const saveCurrentVideo = async () => {
+    try {
       if (course.typeUploadVideoLesson === 1) {
-        url = payload.videoUrl;
+        // code update currentTime nếu link là .mp4
+        const { positionMillis } = await playbackInstance.current.getStatusAsync();
+        await updateCurrentTimeLesson({ lessonId: currentVideo.id, currentTime: positionMillis, token });
       } else {
-        url = payload.videoUrl.substring(payload.videoUrl.lastIndexOf('/') + 1);
+        // code update currentTime nếu link là youtube
+        const currentTime = await playerRef.current.getCurrentTime();
+        await updateCurrentTimeLesson({ lessonId: currentVideo.id, currentTime, token });
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+
+  // khi click vào xem 1 video khác
+  const onPressVideo = (id) => {
+
+    // lưu lại vị trí video cũ
+    saveCurrentVideo();
+
+    // load video khác
+    let url;
+    const getVideo = async () => {
+      const { message, payload } = await getLessonVideo({ courseId: course.id, lessonId: id, token });
+      if (message === 'OK') {
+        if (course.typeUploadVideoLesson === 1) {
+          url = payload.videoUrl;
+        } else {
+          url = payload.videoUrl.substring(payload.videoUrl.lastIndexOf('/') + 1);
+        }
+        setCurrentVideo({ id, videoUrl: url, currentTime: payload.currentTime });
       }
     };
 
-    getUrl();
+    getVideo();
+  };
 
+  const onReady = () => {
+    const seek = async () => {
+      await playerRef.current.seekTo(currentVideo.currentTime);
+    }
+    seek();
+  };
+
+
+  const renderItem = ({ id, name, hours }) => {
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => setCurrentItem({ id, videoUrl: url })}
+        onPress={() => onPressVideo(id)}
       >
-        <Text style={{ ...styles.numHead, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
+        <Text style={{ ...styles.numHead, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentItem.id ? Colors.tintColor : Colors.lightGray }}>{Number((hours * 60).toFixed(1))} phút</Text>
-          <Text style={{ ...styles.itemTitle, color: id === currentItem.id ? Colors.tintColor : txColor }}>{name}</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{Number((hours * 60).toFixed(1))} phút</Text>
+          <Text style={{ ...styles.itemTitle, color: id === currentVideo.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
-        <PopupMenu style={styles.itemOption} item={{ id, name, hours }} colorDot={id === currentItem.id ? Colors.tintColor : txColor} />
+        <PopupMenu style={styles.itemOption} item={{ id, name, hours }} colorDot={id === currentVideo.id ? Colors.tintColor : txColor} />
       </TouchableOpacity >
     )
   };
@@ -264,7 +329,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 course.typeUploadVideoLesson === 1
                   ? (
                     <Video
-                      source={{ uri: currentItem.videoUrl }}
+                      source={{ uri: currentVideo.videoUrl }}
+                      ref={handleVideoRef}
+                      positionMillis={currentVideo.currentTime ? currentVideo.currentTime : 0}
                       rate={1.0}
                       volume={1.0}
                       isMuted={false}
@@ -280,12 +347,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       ref={playerRef}
                       height={height / 3}
                       width={width}
-                      videoId={currentItem.videoUrl}
+                      videoId={currentVideo.videoUrl}
                       play={true}
-                      onChangeState={event => console.log(event)}
-                      onReady={() => console.log("ready")}
-                      onError={e => console.log(e)}
-                      onPlaybackQualityChange={q => console.log(q)}
+                      onReady={onReady}
                       volume={50}
                       playbackRate={1}
                       initialPlayerParams={{

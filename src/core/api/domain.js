@@ -30,6 +30,7 @@ const searchCourseAndAuthorUrl = `${DOMAIN}/course/searchV2`;
 const searchHistoryUrl = `${DOMAIN}/course/search-history`;
 const deleteSearchHistoryUrl = (id) => `${DOMAIN}/course/delete-search-history/${id}`;
 
+const getLastWatchedLessonUrl = (courseId) => `${DOMAIN}/course/last-watched-lesson/${courseId}`;
 const getLessonDetailUrl = (courseId, lessonId) => `${DOMAIN}/lesson/detail/${courseId}/${lessonId}`;
 const getLessonVideoUrl = (courseId, lessonId) => `${DOMAIN}/lesson/video/${courseId}/${lessonId}`;
 const updateLessonStatusUrl = `${DOMAIN}/lesson/update-status`;
@@ -68,6 +69,7 @@ export {
   searchHistoryUrl,
   deleteSearchHistoryUrl,
 
+  getLastWatchedLessonUrl,
   getLessonDetailUrl,
   getLessonVideoUrl,
   updateLessonStatusUrl,
