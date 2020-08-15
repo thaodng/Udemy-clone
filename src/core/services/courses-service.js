@@ -1,4 +1,4 @@
-import { getApi, getApiWithToken, postApi } from '../api'
+import { getApi, getApiWithToken, postApi, postApiWithToken } from '../api'
 import {
   searchCourseUrl,
   getNewCoursessUrl,
@@ -6,6 +6,7 @@ import {
   getProcessCoursesUrl,
   getCourseInfoUrl,
   getCourseDetailInfoUrl,
+  getFreeCourseUrl
 } from '../api/domain';
 
 // my courses
@@ -28,7 +29,7 @@ const getCourseById = ({ id }) => getApi(getCourseInfoUrl(id));
 
 const getCourseDetailById = ({ id }) => getApi(getCourseDetailInfoUrl(id));
 
-
+const registerFreeCourse = ({ token, courseId }) => postApiWithToken(getFreeCourseUrl, token, { courseId });
 
 export {
   getNewCourses,
@@ -37,5 +38,6 @@ export {
   getCourses,
   getCoursesByCategory,
   getCourseById,
-  getCourseDetailById
+  getCourseDetailById,
+  registerFreeCourse
 };

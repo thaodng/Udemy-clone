@@ -36,6 +36,7 @@ const getLessonVideoUrl = (courseId, lessonId) => `${DOMAIN}/lesson/video/${cour
 const updateLessonStatusUrl = `${DOMAIN}/lesson/update-status`;
 const updateCurrentTimeLessonUrl = `${DOMAIN}/lesson/update-current-time-learn-video`;
 
+const getFreeCourseUrl = `${DOMAIN}/payment/get-free-courses`;
 
 export {
   DOMAIN,
@@ -73,5 +74,7 @@ export {
   getLessonDetailUrl,
   getLessonVideoUrl,
   updateLessonStatusUrl,
-  updateCurrentTimeLessonUrl
+  updateCurrentTimeLessonUrl,
+
+  getFreeCourseUrl
 };

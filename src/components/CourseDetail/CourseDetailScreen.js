@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react'
 import {
   StyleSheet, Text, View, Dimensions,
   TouchableOpacity, SectionList, Share,
-  ActivityIndicator, AsyncStorage
+  ActivityIndicator, AsyncStorage, Alert
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Video } from 'expo-av';
@@ -23,21 +23,20 @@ import { AuthorsContext } from '../../context/AuthorsContext';
 import { CoursesContext } from '../../context/CoursesContext';
 import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
-import { getCourseDetailById } from '../../core/services/courses-service';
+import { getMyCourses, getCourseById, getCourseDetailById, registerFreeCourse } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
 import { getLastWatchedLesson, getLessonVideo, updateCurrentTimeLesson } from '../../core/services/lessions-service';
 
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxNjcxMDA4LWM4YzEtNGYwNC05Njk0LTcxMWU4MWQ5MjE2NSIsImlhdCI6MTU5NzUwODg0MSwiZXhwIjoxNTk3NTE2MDQxfQ.zLmDRu4K6smUTMg5vL5mz5scpc5yZtQHc5QSagtwSjs';
 
 const CourseDetailScreen = ({ route, navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  // const { state: { isAuthenticated, token } } = useContext(AuthContext);
+  const { state: { isAuthenticated, token } } = useContext(AuthContext);
   const { authors } = useContext(AuthorsContext);
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
-  const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
+  const { myCourses, setMyCourses, downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
   const tabs = ['Thông tin', 'Bài giảng', 'Đánh giá'];
 
@@ -61,6 +60,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
     };
   }
 
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -72,23 +72,39 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
 
   useEffect(() => {
+
+    const checkEnroll = async () => {
+      const isRegistered = myCourses.map(c => c.id).includes(courseId);
+      if (isRegistered) {
+        setIsEnrolled(true);
+        const { likeStatus } = await getLikeCourseStatus({ token, courseId });
+        setIsFavorite(likeStatus);
+      }
+    };
+
     const loadCourse = async () => {
       const { message, payload } = await getCourseDetailById({ id: courseId });
       if (message === 'OK') {
         setCourse(payload);
 
         // loading last watched lesson
-        try {
-          if (payload.typeUploadVideoLesson === 1) {
+        if (payload.typeUploadVideoLesson === 1) {
+          try {
             const last = await getLastWatchedLesson({ courseId: courseId, token });
             if (last.message === 'OK') {
               last.payload['id'] = last.payload.lessonId;
               delete last.payload.lessonId;
               setCurrentVideo(last.payload);
             } else {
-              setCurrentVideo({ id: payload.id, videoUrl: payload.promoVidUrl });
+              setCurrentVideo({ id: payload.id, videoUrl: payload.promoVidUrl, currentTime: 0 });
             }
-          } else {
+          } catch (error) {
+            console.log(error.message);
+            setCurrentVideo({ id: '#7beJYPZefyE', videoUrl: payload.promoVidUrl, currentTime: 0 });
+          }
+
+        } else {
+          try {
             const last = await getLastWatchedLesson({ courseId: courseId, token });
             if (last.message === 'OK') {
               last.payload['id'] = last.payload.lessonId;
@@ -96,16 +112,14 @@ const CourseDetailScreen = ({ route, navigation }) => {
               delete last.payload.lessonId;
               setCurrentVideo(last.payload);
             } else {
-              setCurrentVideo({ id: last.payload.id, videoUrl: '7beJYPZefyE' }); // VERY VERY BAD CODE
+              setCurrentVideo({ id: last.payload.id, videoUrl: '7beJYPZefyE', currentTime: 0 }); // VERY VERY BAD CODE
             }
-          };
+          } catch (error) {
+            console.log(error.message);
+            setCurrentVideo({ id: '7beJYPZefyE', videoUrl: '7beJYPZefyE', currentTime: 0 });
+          }
+        };
 
-        } catch (error) {
-          console.log(error.message);
-        }
-
-        const { likeStatus } = await getLikeCourseStatus({ token, courseId });
-        setIsFavorite(likeStatus);
 
         const author = authors.find(a => a.id === payload.instructorId);
         setCourseAuthor(author);
@@ -123,6 +137,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
     }
 
     setLoading(true);
+    checkEnroll();
     loadCourse();
     setLoading(false);
 
@@ -309,11 +324,43 @@ const CourseDetailScreen = ({ route, navigation }) => {
   };
 
 
+  const onRegisterCourse = () => {
+    const enroll = async () => {
+      try {
+        const { message } = await registerFreeCourse({ token, courseId: course.id });
+        if (message === 'OK') {
+          Alert.alert('Đăng ký khoá học thành công');
+        }
+      } catch (error) {
+        Alert.alert('Đăng ký khoá học!');
+      }
+    }
+
+    const loadMyCourses = async () => {
+      const { message, payload } = await getMyCourses({ token });
+      if (message === 'OK') {
+        const ids = payload.map(course => getCourseById({ id: course.id }));
+        const res = await Promise.all(ids);
+
+        const mCourses = res.map(r => r.payload);
+        setMyCourses(mCourses);
+      } else {
+        Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
+
+      }
+    };
+
+    enroll();
+    loadMyCourses();
+    navigation.navigate(ScreenKey.BrowseScreen);
+  }
+
   const renderItem = ({ id, name, hours }) => {
     return (
       <TouchableOpacity
         style={styles.item}
         onPress={() => onPressVideo(id)}
+        disabled={isEnrolled ? false : true}
       >
         <Text style={{ ...styles.numHead, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
@@ -375,17 +422,25 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 {(activeTab === tabs[0]) &&
                   <ScrollView style={styles.infoContainer} showsVerticalScrollIndicator={false}>
                     {
-                      <View style={styles.activityContainer}>
-                        <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} onPress={onHandleDownload}>
-                          <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
-                          <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Bỏ thích' : 'Yêu thích'}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
-                          <Text style={{ color: Colors.tintColor }}>Chia sẽ</Text>
-                        </TouchableOpacity>
-                      </View>
+                      isEnrolled
+                        ? (
+                          <View style={styles.activityContainer}>
+                            <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} onPress={onHandleDownload}>
+                              <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
+                              <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Bỏ thích' : 'Yêu thích'}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
+                              <Text style={{ color: Colors.tintColor }}>Chia sẽ</Text>
+                            </TouchableOpacity>
+                          </View>
+                        )
+                        : (
+                          <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: bgColor }} onPress={onRegisterCourse}>
+                            <Text style={{ color: txColor }}>{'Tham gia khoá học'}</Text>
+                          </TouchableOpacity>
+                        )
                     }
                     <Text style={styles.infoLabel}>Tổng quan</Text>
                     <ReadMore
