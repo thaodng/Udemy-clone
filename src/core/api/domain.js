@@ -38,6 +38,8 @@ const updateCurrentTimeLessonUrl = `${DOMAIN}/lesson/update-current-time-learn-v
 
 const getFreeCourseUrl = `${DOMAIN}/payment/get-free-courses`;
 
+const ratingCourseUrl = `${DOMAIN}/course/rating-course`;
+
 export {
   DOMAIN,
   registerUrl,
@@ -76,5 +78,6 @@ export {
   updateLessonStatusUrl,
   updateCurrentTimeLessonUrl,
 
-  getFreeCourseUrl
+  getFreeCourseUrl,
+  ratingCourseUrl
 };

@@ -27,7 +27,7 @@ import { AuthorsContext } from '../../context/AuthorsContext';
 import { CoursesContext } from '../../context/CoursesContext';
 import { UserFavoriteContext } from '../../context/UserFavoriteContext';
 
-import { getMyCourses, getCourseById, getCourseDetailById, registerFreeCourse } from '../../core/services/courses-service';
+import { getMyCourses, getCourseById, getCourseDetailById, registerFreeCourse, ratingCourse } from '../../core/services/courses-service';
 import { getLikeCourseStatus, postLikeCourse } from '../../core/services/favorite-service';
 import { getLastWatchedLesson, getLessonVideo, updateCurrentTimeLesson } from '../../core/services/lessions-service';
 
@@ -75,6 +75,19 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const { courseId, screenDetail } = route.params;
 
   const [modal, setModal] = useState(false);
+  const [formalityPoint, setFormalityPoint] = useState(0);
+  const [contentPoint, setContentPoint] = useState(0);
+  const [presentationPoint, setPresentationPoint] = useState(0);
+  const [content, setContent] = useState('');
+
+  // // rating{courseId, formalityPoint, contentPoint, presentationPoint, content}
+  const onRating = async () => {
+    const { message } = await ratingCourse({ token, rating: { courseId: course.id, formalityPoint, contentPoint, presentationPoint, content } });
+    if (message === 'OK') {
+      alert('Nhận xét thành công');
+      setModal(false);
+    }
+  };
 
   useEffect(() => {
 
@@ -510,19 +523,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       startingValue={3.6}
                       imageSize={30}
                       onFinishRating={(rating) => { console.log('Rating is: ' + rating) }}
-                      style={{ paddingVertical: 10 }}
+                      style={{ paddingVertical: 5 }}
                     />
                     <FlatList
                       style={styles.listRating}
                       showsVerticalScrollIndicator={false}
-                      data={[{ id: 1, name: 1 }, { id: 2, name: 1 }, { id: 3, name: 1 }, { id: 4, name: 1 }]}
+                      data={course.ratings.ratingList}
                       keyExtractor={(item) => `${item.id}`}
                       renderItem={({ item }) => (
                         <UserRating
-                          imageUrl={'https://storage.googleapis.com/itedu-bucket/Avatar/8512fcb6-7ac6-4446-bab1-c1e5b2bd5f63.jpg'}
-                          name={"Thao D."}
-                          content="Good"
-                        />  
+                          imageUrl={item.user.avatar}
+                          name={item.user.name}
+                          content={item.content}
+                          rate={item.averagePoint}
+                        />
                       )}
                     />
                     {/*  */}
@@ -543,14 +557,16 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       }}
                     >
                       <View style={styles.modalView}>
-                        <RatingHeader title='Hình thức' onFinishRating={(rating) => { console.log('Rating is: ' + rating) }} />
-                        <RatingHeader title='Nội dung' onFinishRating={(rating) => { console.log('Rating is: ' + rating) }} />
-                        <RatingHeader title='Trình bày' onFinishRating={(rating) => { console.log('Rating is: ' + rating) }} />
+                        <RatingHeader title='Hình thức' onFinishRating={(rating) => setFormalityPoint(rating)} />
+                        <RatingHeader title='Nội dung' onFinishRating={(rating) => setContentPoint(rating)} />
+                        <RatingHeader title='Trình bày' onFinishRating={(rating) => setPresentationPoint(rating)} />
                         <TextInput
                           placeholder="Đánh giá của bạn"
+                          value={content}
+                          onChangeText={text => setContent(text)}
                         />
                         <View style={styles.modalButtonView}>
-                          <Button mode="contained" onPress={() => console.log('Nhận xét')}>
+                          <Button mode="contained" onPress={() => onRating()}>
                             Nhận xét
                           </Button>
                           <Button mode="contained" onPress={() => setModal(false)}>

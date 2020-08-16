@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Rating } from 'react-native-ratings';
 import { ListItem } from 'react-native-elements';
 
-const UserRating = ({ imageUrl, name, content }) => {
+const UserRating = ({ imageUrl, name, content,rate }) => {
   return (
     <ListItem
       leftAvatar={{ source: {uri: imageUrl} }}
@@ -14,11 +14,11 @@ const UserRating = ({ imageUrl, name, content }) => {
             <Rating
               type="star"
               fractions={1}
-              startingValue={3.6}
+              startingValue={rate}
               readonly
               imageSize={20}
             />
-            <Text style={styles.ratingText}>5 months ago</Text>
+            {/* <Text style={styles.ratingText}>5 months ago</Text> */}
           </View>
         </View>
       }
