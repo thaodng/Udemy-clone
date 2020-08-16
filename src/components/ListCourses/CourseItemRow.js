@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { StyleSheet, TouchableOpacity, Image, Text, View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { ProgressBar } from 'react-native-paper';
 import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
@@ -19,7 +20,11 @@ const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
     contentPoint,
     price,
     soldNumber,
-    ratedNumber
+    ratedNumber,
+    total,
+    learnLesson,
+    process,
+    latestLearnTime
   } = item;
 
   // what is list this course detail screen belong to?
@@ -38,15 +43,30 @@ const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
       </View>
       <View style={{ ...styles.contentContainer, backgroundColor: bgColor }}>
         <Text numberOfLines={1} style={{ ...styles.title, color: txColor }}>{title}</Text>
-        <Text numberOfLines={1} style={{ color: txColor }}>{item['instructor.user.name']}</Text>
-        <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
-        <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên - {ratedNumber} đánh giá </Text>
-        <View style={styles.rating}>
-          <Rating rating={contentPoint} />
-          <Text style={{ color: Colors.tintColor }}>
-            ({contentPoint ? Number((contentPoint).toFixed(1)) : 0})
-            </Text>
-        </View>
+        {
+          total
+            ? (
+              <View>
+                <ProgressBar style={{ height: 20 }} progress={process / 100} color={Colors.tintColor} />
+                <Text numberOfLines={1} style={{ color: Colors.tintColor, fontSize: 16 }}>{`Đã học ${learnLesson}/${total} bài học`}</Text>
+                <Text numberOfLines={1} style={{ color: Colors.tintColor, fontSize: 16 }}>{`(${Number((totalHours * process / 100 * 60).toFixed(1))}/${Number((totalHours * 60).toFixed(1))} phút)`}</Text>
+                <Text numberOfLines={2} style={{ color: txColor }}>{`Lần học cuối: ${latestLearnTime}`}</Text>
+              </View>
+            )
+            : (
+              <>
+                <Text numberOfLines={1} style={{ color: txColor }}>{item['instructor.user.name']}</Text>
+                <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
+                <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên - {ratedNumber} đánh giá </Text>
+                <View style={styles.rating}>
+                  <Rating rating={contentPoint} />
+                  <Text style={{ color: Colors.tintColor }}>
+                    ({contentPoint ? Number((contentPoint).toFixed(1)) : 0})
+                  </Text>
+                </View>
+              </>
+            )
+        }
       </View>
     </TouchableOpacity>
   );

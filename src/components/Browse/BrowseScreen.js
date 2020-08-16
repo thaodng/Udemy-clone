@@ -22,8 +22,6 @@ import {
   getNewCourses, getTopRateCourses, getMyCourses, getCoursesByCategory, getCourseById
 } from '../../core/services/courses-service';
 
-import { ProgressBar } from 'react-native-paper';
-
 const BrowseScreen = () => {
   const navigation = useNavigation();
   const { categories, setCategories } = useContext(CategoriesContext);
@@ -83,7 +81,16 @@ const BrowseScreen = () => {
         const ids = payload.map(course => getCourseById({ id: course.id }));
         const res = await Promise.all(ids);
 
-        const mCourses = res.map(r => r.payload);
+        const mCourses = res.map((r, i) => {
+          return {
+            ...r.payload, 
+            total: payload[i].total,
+            learnLesson: payload[i].learnLesson,
+            process: payload[i].process,
+            latestLearnTime: payload[i].latestLearnTime,
+          }
+        });
+        
         setMyCourses(mCourses);
       } else {
         Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
@@ -181,9 +188,6 @@ const BrowseScreen = () => {
                   }
                 />
                 <TopCategories categories={categories} onPress={onPressCategory} />
-                <ProgressBar style={{ height: 20 }} progress={0.5} color={Colors.tintColor} />
-
-
                 {
                   isAuthenticated &&
                   <>
