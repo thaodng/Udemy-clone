@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from 'react-native'
 
 import { CoursesContext } from '../../context/CoursesContext';
 import { SettingContext } from '../../context/SettingContext';
@@ -14,16 +14,18 @@ const DownloadScreen = () => {
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
-  const { downloadedCourses } = useContext(CoursesContext);
+  const { downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
-  const onRemove = () => {
+  const onRemove = async () => {
+    await AsyncStorage.clear();
+    setDownloadedCourses([]);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerDownloadContainer}>
         <Text style={styles.total}>{`${downloadedCourses.length} khoá`}</Text>
-        <TouchableOpacity onPress={onRemove}>
+        <TouchableOpacity onPress={() => onRemove()}>
           <Text style={styles.remove}>Xoá tất cả</Text>
         </TouchableOpacity>
       </View>

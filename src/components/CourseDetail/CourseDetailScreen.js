@@ -68,26 +68,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
 
+  const [modalDownload, setModalDownload] = useState(false);
   const [buttonDownload, setButtonDownload] = useState('Tải xuống');
+  const [currentDownload, setCurrentDownload] = useState('');
   const [progressValue, setProgressValue] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
 
   const { courseId, screenDetail } = route.params;
 
-  const [modal, setModal] = useState(false);
+  const [modalRating, setModalRating] = useState(false);
   const [formalityPoint, setFormalityPoint] = useState(0);
   const [contentPoint, setContentPoint] = useState(0);
   const [presentationPoint, setPresentationPoint] = useState(0);
   const [content, setContent] = useState('');
 
-  // // rating{courseId, formalityPoint, contentPoint, presentationPoint, content}
-  const onRating = async () => {
-    const { message } = await ratingCourse({ token, rating: { courseId: course.id, formalityPoint, contentPoint, presentationPoint, content } });
-    if (message === 'OK') {
-      alert('Nhận xét thành công');
-      setModal(false);
-    }
-  };
 
   useEffect(() => {
 
@@ -97,6 +91,21 @@ const CourseDetailScreen = ({ route, navigation }) => {
         setIsEnrolled(true);
         const { likeStatus } = await getLikeCourseStatus({ token, courseId });
         setIsFavorite(likeStatus);
+      }
+    };
+
+    const downloaded = downloadedCourses.map(dc => dc.id).includes(courseId);
+    const checkDownload = async () => {
+      if (downloaded) {
+        const c = downloadedCourses.find(dc => dc.id === courseId);
+        setCourse(c);
+        setButtonDownload('Đã tải xuống');
+        setIsDownloaded(true);
+        const author = authors.find(a => a.id === c.instructorId);
+
+        setCourseAuthor(author);
+        setSections(c.section);
+        return;
       }
     };
 
@@ -156,7 +165,10 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
     setLoading(true);
     checkEnroll();
-    loadCourse();
+    checkDownload();
+    if (!downloaded) {
+      loadCourse();
+    }
     setLoading(false);
 
     // lưu lại vị trí đang xem, hàm này được gọi khi mình di chuyển sang màn hình khác
@@ -165,6 +177,16 @@ const CourseDetailScreen = ({ route, navigation }) => {
     // };
 
   }, []);
+
+
+  // // rating{courseId, formalityPoint, contentPoint, presentationPoint, content}
+  const onRating = async () => {
+    const { message } = await ratingCourse({ token, rating: { courseId: course.id, formalityPoint, contentPoint, presentationPoint, content } });
+    if (message === 'OK') {
+      alert('Nhận xét thành công');
+      setModalRating(false);
+    }
+  };
 
 
   const formatBytes = (bytes, decimals = 2) => {
@@ -179,9 +201,10 @@ const CourseDetailScreen = ({ route, navigation }) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }
 
-  const downloadVideo = async ({ videoUrl, name }) => {
+  const downloadVideo = async ({ videoUrl, name, id }) => {
 
     const callback = downloadProgress => {
+      setCurrentDownload(name);
       setTotalSize(formatBytes(downloadProgress.totalBytesExpectedToWrite))
 
       let progress = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
@@ -191,7 +214,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
     const downloadResumable = FileSystem.createDownloadResumable(
       videoUrl,
-      `${FileSystem.documentDirectory}${name}`,
+      `${FileSystem.documentDirectory}${id}`,
       {},
       callback
     );
@@ -206,44 +229,77 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   const onHandleDownload = async () => {
     setButtonDownload('Đang tải xuống');
+    setModalDownload(true);
 
     // kiểm tra đã download hay chưa
     const downloaded = downloadedCourses.map(dc => dc.id).includes(course.id);
 
     if (downloaded) {
+      setIsDownloaded(true);
       setButtonDownload('Đã tải xuống');
+      setModalDownload(false);
       return;
     }
+
+
+    // lấy videoUrl
+    // tiến hành download videos
+    const arrayVideoUrls = [];
+
+    for (let i = 0; i < course.section.length; i++) {
+      const s = course.section[i];
+      for (let j = 0; j < s.data.length; j++) {
+        const lesson = s.data[j];
+        arrayVideoUrls.push(getLessonVideo({ courseId: course.id, lessonId: lesson.id, token }));
+      }
+    }
+
+    const res = await Promise.all(arrayVideoUrls);
+
+    const tempCourse = JSON.parse(JSON.stringify(course));
+
+    let k = 0;
+    for (let i = 0; i < tempCourse.section.length; i++) {
+      const s = tempCourse.section[i];
+      for (let j = 0; j < s.data.length; j++) {
+        tempCourse.section[i].data[j].videoUrl = res[k].payload.videoUrl;
+        k++;
+      }
+    }
+    // kết thúc lấy videoUrl
 
     // tiến hành download videos
     const arrayDownloadVideos = [];
 
-    for (let i = 0; i < course.section.length; i++) {
-      const s = course.section[i];
-      for (let j = 0; j < s.lesson.length; j++) {
-        const lesson = s.lesson[j];
+    for (let i = 0; i < tempCourse.section.length; i++) {
+      const s = tempCourse.section[i];
+      for (let j = 0; j < s.data.length; j++) {
+        const lesson = s.data[j];
         if (lesson.videoUrl) {
-
           // thêm video để chuẩn bị tải
-          arrayDownloadVideos.push(downloadVideo({ videoUrl: lesson.videoUrl, name: lesson.name }));
+          arrayDownloadVideos.push(downloadVideo({ videoUrl: lesson.videoUrl, name: lesson.name, id: lesson.id }));
 
           // đổi lại đường dẫn video thành đường dẫn local
-          s.lesson[j].videoUrl = `${FileSystem.documentDirectory}${lesson.name}`;
+          s.data[j].videoUrl = `${FileSystem.documentDirectory}${lesson.id}`;
         }
       }
     }
 
     await Promise.all(arrayDownloadVideos);
 
-    const newDownloadedCourses = [...downloadedCourses, course];
+    const newDownloadedCourses = [...downloadedCourses, tempCourse];
 
     // thêm mới khoá đã tải vào storage
+    await AsyncStorage.clear();
     await AsyncStorage.setItem('downloadedCourses', JSON.stringify(newDownloadedCourses));
 
     // cập nhật state
     setDownloadedCourses(newDownloadedCourses);
 
+    setIsDownloaded(true);
     setButtonDownload('Đã tải xuống');
+    setModalDownload(false);
+    Alert.alert('Tải xuống thành công!');
   };
 
   const onHandleFavorite = async () => {
@@ -312,26 +368,29 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
 
   // khi click vào xem 1 video khác
-  const onPressVideo = (id) => {
+  const onPressVideo = (id, videoUrl) => {
+    if (!isDownloaded) {
+      // lưu lại vị trí video cũ
+      saveCurrentVideo();
 
-    // lưu lại vị trí video cũ
-    saveCurrentVideo();
-
-    // load video khác
-    let url;
-    const getVideo = async () => {
-      const { message, payload } = await getLessonVideo({ courseId: course.id, lessonId: id, token });
-      if (message === 'OK') {
-        if (course.typeUploadVideoLesson === 1) {
-          url = payload.videoUrl;
-        } else {
-          url = payload.videoUrl.substring(payload.videoUrl.lastIndexOf('/') + 1);
+      // load video khác
+      let url;
+      const getVideo = async () => {
+        const { message, payload } = await getLessonVideo({ courseId: course.id, lessonId: id, token });
+        if (message === 'OK') {
+          if (course.typeUploadVideoLesson === 1) {
+            url = payload.videoUrl;
+          } else {
+            url = payload.videoUrl.substring(payload.videoUrl.lastIndexOf('/') + 1);
+          }
+          setCurrentVideo({ id, videoUrl: url, currentTime: payload.currentTime });
         }
-        setCurrentVideo({ id, videoUrl: url, currentTime: payload.currentTime });
-      }
-    };
+      };
 
-    getVideo();
+      getVideo();
+    } else {
+      setCurrentVideo({ id, videoUrl, currentTime: 0 });
+    }
   };
 
   const onReady = () => {
@@ -373,11 +432,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
     navigation.navigate(ScreenKey.BrowseScreen);
   }
 
-  const renderItem = ({ id, name, hours }) => {
+  const renderItem = ({ id, name, hours, videoUrl }) => {
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => onPressVideo(id)}
+        onPress={() => onPressVideo(id, videoUrl)}
         disabled={isEnrolled ? false : true}
       >
         <Text style={{ ...styles.numHead, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
@@ -494,6 +553,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       data={course.coursesLikeCategory}
                       screenDetail={screenDetail}
                     />
+                    <Modal
+                      animationType="fade"
+                      transparent={true}
+                      visible={modalDownload}
+                      onRequestClose={() => {
+                        setModalDownload(false)
+                      }}
+                    >
+                      <View style={styles.modalView}>
+                        <Text style={{ color: Colors.tintColor, textAlign: 'center' }}> Đang tải: {currentDownload} </Text>
+                        <Text> Kích thước: {totalSize} </Text>
+                        <Text> Quá trình: {progressValue} %</Text>
+                      </View>
+                    </Modal>
                   </ScrollView>
                 }
                 {
@@ -542,7 +615,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     {/*  */}
                     <TouchableOpacity
                       style={styles.buttonInfo}
-                      onPress={() => setModal(true)}
+                      onPress={() => setModalRating(true)}
                     >
                       <Text>
                         Viết nhận xét
@@ -551,9 +624,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     <Modal
                       animationType="fade"
                       transparent={true}
-                      visible={modal}
+                      visible={modalRating}
                       onRequestClose={() => {
-                        setModal(false)
+                        setModalRating(false)
                       }}
                     >
                       <View style={styles.modalView}>
@@ -569,7 +642,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                           <Button mode="contained" onPress={() => onRating()}>
                             Nhận xét
                           </Button>
-                          <Button mode="contained" onPress={() => setModal(false)}>
+                          <Button mode="contained" onPress={() => setModalRating(false)}>
                             Huỷ bỏ
                         </Button>
                         </View>
