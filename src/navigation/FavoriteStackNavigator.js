@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
-
+import { useTranslation } from "react-i18next";
 import FavoriteScreen from '../components/Favorite/FavoriteScreen';
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen'
 
@@ -13,6 +13,8 @@ const FavoriteStack = createStackNavigator();
 
 const FavoriteStackScreens = () => {
   const { userSettings } = useContext(SettingContext);
+  const [t] = useTranslation('common');
+
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
@@ -26,7 +28,7 @@ const FavoriteStackScreens = () => {
       <FavoriteStack.Screen
         name={ScreenKey.FavoriteCoursesScreen}
         component={FavoriteScreen}
-        options={{ title: 'Khoá học yêu thích' }}
+        options={{ title: t('screen.favoriteCourses') }}
       />
 
       <FavoriteStack.Screen

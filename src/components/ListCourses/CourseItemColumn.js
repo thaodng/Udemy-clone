@@ -1,13 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { StyleSheet, Image, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
 
 import PopupMenu from '../Common/PopupMenu';
 import Rating from '../Common/Rating';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
-
-import { AuthorsContext } from '../../context/AuthorsContext';
 
 
 const { width, height } = Layout.window;
@@ -45,7 +44,8 @@ typeUploadVideoLesson	integer
 
 const CourseItemColumn = ({ item, txColor, bgColor, screenDetail }) => {
   const navigation = useNavigation();
-  
+  const [t] = useTranslation('common');
+
   const {
     id,
     title,
@@ -70,14 +70,14 @@ const CourseItemColumn = ({ item, txColor, bgColor, screenDetail }) => {
         <Image style={styles.image} source={{ uri: imageUrl }} resizeMode="cover" />
       </View>
 
-      <View style={{...styles.contentContainer, backgroundColor: bgColor}}>
-        <Text style={{...styles.title, color: txColor}}>{title}</Text>
+      <View style={{ ...styles.contentContainer, backgroundColor: bgColor }}>
+        <Text style={{ ...styles.title, color: txColor }}>{title}</Text>
         {
           item['instructor.user.name'] &&
           <Text style={{ color: txColor }}>{item['instructor.user.name']}</Text>
         }
-        <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
-        <Text style={{ color: Colors.lightGray, width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên</Text>
+        <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? t('course.free') : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
+        <Text style={{ color: Colors.lightGray, width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{totalHours} {t('course.hours')} - {soldNumber} {t('course.students')}</Text>
         <View style={styles.rating}>
           <Rating rating={contentPoint} />
           <Text style={{ color: Colors.tintColor }}>

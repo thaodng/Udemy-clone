@@ -2,11 +2,13 @@ import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from '@expo/vector-icons';
+import { useTranslation } from "react-i18next";
 import Colors from '../../constants/Colors'
 
 const Slide = ({ item, screenDetail }) => {
   const { id, title, imageUrl, contentPoint, description } = item;
   const navigation = useNavigation();
+  const [t] = useTranslation('common');
   const goToDetail = () => {
     navigation.navigate(screenDetail, { courseId: id });
   }
@@ -25,7 +27,7 @@ const Slide = ({ item, screenDetail }) => {
           <Text numberOfLines={5} style={styles.overview}>{description}</Text>
           <TouchableOpacity onPress={goToDetail}>
             <View style={styles.button}>
-              <Text style={styles.buttonText}>Xem chi tiết</Text>
+              <Text style={styles.buttonText}>{t('course.detail')}</Text>
             </View>
           </TouchableOpacity>
         </View>

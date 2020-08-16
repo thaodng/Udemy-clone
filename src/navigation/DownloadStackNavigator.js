@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import DownloadScreen from '../components/Download/DownloadScreen'
+import { useTranslation } from "react-i18next";
 import CourseDetailScreen from '../components/CourseDetail/CourseDetailScreen';
 
 import { SettingContext } from '../context/SettingContext';
@@ -12,6 +13,8 @@ const DownloadStack = createStackNavigator();
 
 const DownloadStackNavigator = () => {
   const { userSettings } = useContext(SettingContext);
+  const [t] = useTranslation('common');
+
   const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
 
   return (
@@ -24,7 +27,7 @@ const DownloadStackNavigator = () => {
       <DownloadStack.Screen
         name={ScreenKey.DownloadedCoursesScreen}
         component={DownloadScreen}
-        options={{ title: 'Khoá học đã tải' }}
+        options={{ title: t('screen.downloadedCourses') }}
       />
       
       <DownloadStack.Screen

@@ -1,7 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { StyleSheet, TouchableOpacity, Image, Text, View, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { ProgressBar } from 'react-native-paper';
+import { useTranslation } from "react-i18next";
+
 import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
@@ -11,6 +13,7 @@ const { width, height } = Layout.window;
 
 const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
   const navigation = useNavigation();
+  const [t] = useTranslation('common');
 
   const {
     id,
@@ -48,16 +51,16 @@ const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
             ? (
               <View>
                 <ProgressBar style={{ height: 20 }} progress={process / 100} color={Colors.tintColor} />
-                <Text numberOfLines={1} style={{ color: Colors.tintColor, fontSize: 16 }}>{`Đã học ${learnLesson}/${total} bài học`}</Text>
-                <Text numberOfLines={1} style={{ color: Colors.tintColor, fontSize: 16 }}>{`(${Number((totalHours * process / 100 * 60).toFixed(1))}/${Number((totalHours * 60).toFixed(1))} phút)`}</Text>
-                <Text numberOfLines={2} style={{ color: txColor }}>{`Lần học cuối: ${latestLearnTime}`}</Text>
+                <Text numberOfLines={1} style={{ color: Colors.tintColor, fontSize: 16 }}>{`${t('course.learnt')} ${learnLesson}/${total} ${t('course.lessons')}`}</Text>
+                <Text numberOfLines={1} style={{ color: Colors.tintColor, fontSize: 16 }}>{`(${Number((totalHours * process / 100 * 60).toFixed(1))}/${Number((totalHours * 60).toFixed(1))} ${t('course.minutes')})`}</Text>
+                <Text numberOfLines={2} style={{ color: txColor }}>{`${t('course.lastLearning')}: ${latestLearnTime}`}</Text>
               </View>
             )
             : (
               <>
                 <Text numberOfLines={1} style={{ color: txColor }}>{item['instructor.user.name']}</Text>
-                <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? 'Miễn phí' : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
-                <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} giờ - {soldNumber} học viên - {ratedNumber} đánh giá </Text>
+                <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? t('course.free') : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
+                <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} {t('course.hours')} - {soldNumber} {t('course.students')} - {ratedNumber} {t('course.ratings')} </Text>
                 <View style={styles.rating}>
                   <Rating rating={contentPoint} />
                   <Text style={{ color: Colors.tintColor }}>

@@ -11,6 +11,7 @@ import * as FileSystem from 'expo-file-system';
 import ReadMore from 'react-native-read-more-text';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { Rating } from 'react-native-ratings';
+import { useTranslation } from "react-i18next";
 
 import TopTab from '../Common/TopTab';
 import Authors from '../Common/Authors';
@@ -33,6 +34,7 @@ import { getLastWatchedLesson, getLessonVideo, updateCurrentTimeLesson } from '.
 
 
 const CourseDetailScreen = ({ route, navigation }) => {
+  const [t] = useTranslation('common');
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
@@ -42,7 +44,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
   const { myCourses, setMyCourses, downloadedCourses, setDownloadedCourses } = useContext(CoursesContext);
 
-  const tabs = ['Thông tin', 'Bài giảng', 'Đánh giá'];
+  const tabs = [t('courseDetail.intro'), t('courseDetail.lessons'), t('courseDetail.ratings')];
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -69,7 +71,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const [modalDownload, setModalDownload] = useState(false);
-  const [buttonDownload, setButtonDownload] = useState('Tải xuống');
+  const [buttonDownload, setButtonDownload] = useState(t('courseDetail.download'));
   const [currentDownload, setCurrentDownload] = useState('');
   const [progressValue, setProgressValue] = useState(0);
   const [totalSize, setTotalSize] = useState(0);
@@ -99,7 +101,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
       if (downloaded) {
         const c = downloadedCourses.find(dc => dc.id === courseId);
         setCourse(c);
-        setButtonDownload('Đã tải xuống');
+        setButtonDownload(t('courseDetail.downloaded'));
         setIsDownloaded(true);
         const author = authors.find(a => a.id === c.instructorId);
 
@@ -185,7 +187,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
     if (message === 'OK') {
       const res = await getCourseDetailById({ id: courseId });
       setRatingList(res.payload.ratings.ratingList);
-      alert('Nhận xét thành công');
+      alert(t('courseDetail.ratingSuccess'));
       setModalRating(false);
     }
   };
@@ -230,7 +232,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   }
 
   const onHandleDownload = async () => {
-    setButtonDownload('Đang tải xuống');
+    setButtonDownload(t('courseDetail.downloading'));
     setModalDownload(true);
 
     // kiểm tra đã download hay chưa
@@ -238,7 +240,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
     if (downloaded) {
       setIsDownloaded(true);
-      setButtonDownload('Đã tải xuống');
+      setButtonDownload(t('courseDetail.downloaded'));
       setModalDownload(false);
       return;
     }
@@ -299,9 +301,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
     setDownloadedCourses(newDownloadedCourses);
 
     setIsDownloaded(true);
-    setButtonDownload('Đã tải xuống');
+    setButtonDownload(t('courseDetail.downloaded'));
     setModalDownload(false);
-    Alert.alert('Tải xuống thành công!');
+    Alert.alert(t('courseDetail.downloadSuccess'));
   };
 
   const onHandleFavorite = async () => {
@@ -453,7 +455,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
       >
         <Text style={{ ...styles.numHead, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{'.'}</Text>
         <View style={styles.itemBody}>
-          <Text style={{ ...styles.itemTime, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{Number((hours * 60).toFixed(1))} phút</Text>
+          <Text style={{ ...styles.itemTime, color: id === currentVideo.id ? Colors.tintColor : Colors.lightGray }}>{Number((hours * 60).toFixed(1))} {t('courseDetail.minutes')}</Text>
           <Text style={{ ...styles.itemTitle, color: id === currentVideo.id ? Colors.tintColor : txColor }}>{name}</Text>
         </View>
 
@@ -518,46 +520,46 @@ const CourseDetailScreen = ({ route, navigation }) => {
                               <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
-                              <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? 'Bỏ thích' : 'Yêu thích'}</Text>
+                              <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? t('courseDetail.unFavorite') : t('courseDetail.favorite')}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ ...styles.buttonInfo }} onPress={onShare}>
-                              <Text style={{ color: Colors.tintColor }}>Chia sẽ</Text>
+                              <Text style={{ color: Colors.tintColor }}>{t('courseDetail.share')}</Text>
                             </TouchableOpacity>
                           </View>
                         )
                         : (
                           <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: bgColor }} onPress={onRegisterCourse}>
-                            <Text style={{ color: txColor }}>{'Tham gia khoá học'}</Text>
+                            <Text style={{ color: txColor }}>{t('courseDetail.enroll')}</Text>
                           </TouchableOpacity>
                         )
                     }
-                    <Text style={styles.infoLabel}>Tổng quan</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.overview')}</Text>
                     <ReadMore
                       numberOfLines={3}
                       renderTruncatedFooter={handlePress =>
-                        renderReadMoreFooter('Read more', handlePress)
+                        renderReadMoreFooter(t('courseDetail.readmore'), handlePress)
                       }
                       renderRevealedFooter={handlePress =>
-                        renderReadMoreFooter('Read less', handlePress)
+                        renderReadMoreFooter(t('courseDetail.readless'), handlePress)
                       }
                     >
                       <Text style={{ ...styles.infoValue, color: txColor }}>{course.description}</Text>
                     </ReadMore>
 
-                    <Text style={styles.infoLabel}>Yêu cầu</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.requirement')}</Text>
                     <Text style={{ ...styles.infoValue, color: txColor }}>{(course.requirement && course.requirement.length > 0) ? course.requirement[0] : 'Không yêu cầu kiến thức'}</Text>
-                    <Text style={styles.infoLabel}>Ngày xuất bản</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.dateRelease')}</Text>
                     <Text style={{ ...styles.infoValue, color: txColor }}>{course.createdAt}</Text>
-                    <Text style={styles.infoLabel}>Trạng thái</Text>
-                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.status === 'COMPLETED' ? 'Hoàn thành' : 'Đang được cập nhật'}</Text>
-                    <Text style={styles.infoLabel}>Thời lượng</Text>
-                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.totalHours} giờ</Text>
-                    <Text style={styles.infoLabel}>Tác giả</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.courseStatus')}</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.status}</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.duration')}</Text>
+                    <Text style={{ ...styles.infoValue, color: txColor }}>{course.totalHours} {t('courseDetail.hours')}</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.author')}</Text>
                     {
                       courseAuthor.id &&
                       <Authors direction="row" authors={[courseAuthor]} txColor={txColor} onPress={onPressAuthor} />
                     }
-                    <Text style={styles.infoLabel}>Khoá học liên quan</Text>
+                    <Text style={styles.infoLabel}>{t('courseDetail.relatedCourses')}</Text>
                     <ListCourses
                       direction="row"
                       txColor={txColor}
@@ -574,9 +576,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       }}
                     >
                       <View style={styles.modalView}>
-                        <Text style={{ color: Colors.tintColor, textAlign: 'center' }}> Đang tải: {currentDownload} </Text>
-                        <Text> Kích thước: {totalSize} </Text>
-                        <Text> Quá trình: {progressValue} %</Text>
+                        <Text style={{ color: Colors.tintColor, textAlign: 'center' }}> {t('courseDetail.downloading')} {currentDownload} </Text>
+                        <Text> {t('courseDetail.fileSize')}: {totalSize} </Text>
+                        <Text> {t('courseDetail.process')}: {progressValue} %</Text>
                       </View>
                     </Modal>
                   </ScrollView>
@@ -591,7 +593,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     renderItem={({ item }) => renderItem(item)}
                     renderSectionHeader={({ section: { name } }) => (
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, backgroundColor: bgColor }}>
-                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>Chương: {name}</Text>
+                        <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.lightGray }}>{t('courseDetail.section')}: {name}</Text>
                         {<PopupMenu style={styles.itemOption} item={{ title: name }} colorDot={Colors.lightGray} />}
                       </View>
                     )}
@@ -600,7 +602,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 {
                   (activeTab === tabs[2]) &&
                   <View style={styles.ratingContainer}>
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, marginTop: 10 }}>Đánh giá trung bình: </Text>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, marginTop: 10 }}>{t('courseDetail.averageRating')}: </Text>
                     <Rating
                       type="star"
                       readonly
@@ -630,7 +632,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       onPress={() => setModalRating(true)}
                     >
                       <Text>
-                        Viết nhận xét
+                        {t('courseDetail.rating')}
                       </Text>
                     </TouchableOpacity>
                     <Modal
@@ -642,20 +644,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       }}
                     >
                       <View style={styles.modalView}>
-                        <RatingHeader title='Hình thức' onFinishRating={(rating) => setFormalityPoint(rating)} />
-                        <RatingHeader title='Nội dung' onFinishRating={(rating) => setContentPoint(rating)} />
-                        <RatingHeader title='Trình bày' onFinishRating={(rating) => setPresentationPoint(rating)} />
+                        <RatingHeader title={t('courseDetail.format')} onFinishRating={(rating) => setFormalityPoint(rating)} />
+                        <RatingHeader title={t('courseDetail.content')} onFinishRating={(rating) => setContentPoint(rating)} />
+                        <RatingHeader title={t('courseDetail.presentation')} onFinishRating={(rating) => setPresentationPoint(rating)} />
                         <TextInput
-                          placeholder="Đánh giá của bạn"
+                          placeholder={t('courseDetail.rating')}
                           value={content}
                           onChangeText={text => setContent(text)}
                         />
                         <View style={styles.modalButtonView}>
                           <Button mode="contained" onPress={() => onRating()}>
-                            Nhận xét
+                            {t('courseDetail.rating')}
                           </Button>
                           <Button mode="contained" onPress={() => setModalRating(false)}>
-                            Huỷ bỏ
+                            {t('course.cancel')}
                         </Button>
                         </View>
                       </View>

@@ -1,10 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { useTranslation } from "react-i18next";
 import Colors from '../../constants/Colors';
 
 const HeaderList = ({ title, txColor, onPress }) => {
-  
+  const [t] = useTranslation('common');
+
   return (
     <View style={styles.headerContainer}>
       <Text style={{ ...styles.text, color: txColor }}>
@@ -14,7 +16,7 @@ const HeaderList = ({ title, txColor, onPress }) => {
         <TouchableOpacity onPress={onPress}>
           <View style={styles.buttonViewAll}>
             <Text style={{ color: Colors.tintColor }} >
-              Xem thêm
+              {t('course.seeMore')}
             </Text>
             <Entypo size={18} color={Colors.tintColor} name="chevron-small-right" />
           </View>

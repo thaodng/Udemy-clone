@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
+import { useTranslation } from "react-i18next";
 import ListCourses from '../ListCourses/ListCourses';
 import Layout from '../../constants/Layout';
 import ScreenKey from '../../constants/ScreenKey';
@@ -18,6 +19,7 @@ const FavoriteScreen = ({ navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+  const [t] = useTranslation('common');
 
   const { favoriteCourses, setFavoriteCourses } = useContext(UserFavoriteContext);
 
@@ -52,7 +54,7 @@ const FavoriteScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerFavoriteContainer}>
-        <Text style={styles.total}>{`${favoriteCourses.length} khoá`}</Text>
+        <Text style={styles.total}>{`${favoriteCourses.length} ${t('course.courses')}`}</Text>
       </View>
       <ListCourses
         direction="column"

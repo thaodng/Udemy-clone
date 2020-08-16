@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTranslation } from "react-i18next";
 import FavoriteStackNavigator from './FavoriteStackNavigator';
 import DownloadStackNavigator from './DownloadStackNavigator';
 import BrowseStackNavigator from './BrowseStackNavigator';
@@ -16,6 +17,7 @@ const BottomTab = createBottomTabNavigator();
 
 const BottomTabNavigator = ({ navigation, route }) => {
   // navigation.setOptions({ headerTitle: getHeaderTitle(route) });
+  const [t] = useTranslation('common');
 
   const { userSettings } = useContext(SettingContext);
   const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
@@ -33,7 +35,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
         name={ScreenKey.FavoriteTabStackNavigator}
         component={FavoriteStackNavigator}
         options={{
-          title: 'Favorite',
+          title: t('screen.favorite'),
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="favorite" />,
         }}
       />
@@ -42,7 +44,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
         name={ScreenKey.DownloadTabStackNavigator}
         component={DownloadStackNavigator}
         options={{
-          title: 'Download',
+          title: t('screen.download'),
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-download" />,
         }}
       />
@@ -51,7 +53,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
         name={ScreenKey.BrowseTabStackNavigator}
         component={BrowseStackNavigator}
         options={{
-          title: 'Home',
+          title: t('screen.home'),
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="apps" />,
         }}
       />
@@ -60,7 +62,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
         name={ScreenKey.SearchTabStackNavigator}
         component={SearchStackNavigator}
         options={{
-          title: 'Search',
+          title: t('screen.search'),
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="search" />,
         }}
       />
@@ -69,7 +71,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
         name={ScreenKey.AccountTabStackNavigator}
         component={AccountStackNavigator}
         options={{
-          title: 'Account',
+          title: t('screen.account'),
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="account-circle" />,
         }}
       />

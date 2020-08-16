@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, Switch, StyleSheet } from "react-native";
+import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import { Context as AuthContext } from '../../context/AuthContext';
@@ -13,6 +13,9 @@ const SettingsScreen = () => {
   const { userSettings, setUserSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+  const [currentLanguague, setCurrentLanguague] = useState('en');
+
+  const [darkTheme, setDarkTheme] = useState(false);
 
   const [t, i18n] = useTranslation('common');
 
@@ -21,12 +24,11 @@ const SettingsScreen = () => {
     setUserSettings(settings); // update context
   }, [])
 
-  const toggleSwitch = (label, value) => {
-    i18n.changeLanguage('vi');
-    // userSettings[label] = value;
-    // setUserSettings({
-    //   ...userSettings,
-    // });
+  const toggleSwitch = (value) => {
+    setDarkTheme(value);
+    setUserSettings({
+      "Dark theme": value
+    });
   };
 
   const Setting = ({ label, value, toggleSwitch }) => {
@@ -45,16 +47,18 @@ const SettingsScreen = () => {
 
   return (
     <View style={styles.container}>
-      {
-        Object.keys(userSettings).length > 0 && Object.keys(userSettings).map((label) =>
-          <Setting
-            key={`${label}`}
-            label={label}
-            value={userSettings[label]}
-            toggleSwitch={value => toggleSwitch(label, value)} />
-        )
-      }
-    </View>
+      <Setting
+        label={t('settingScreen.darkTheme')}
+        value={darkTheme}
+        toggleSwitch={value => toggleSwitch(value)}
+      />
+      <TouchableOpacity onPress={() => { i18n.changeLanguage('vi'); setCurrentLanguague('vi') }} style={{ ...styles.itemContainer, backgroundColor: bgColor }}>
+        <Text style={{ ...styles.itemText, color: currentLanguague === 'vi' ? Colors.tintColor : txColor }}>{'Vietnamese'}</Text>
+      </TouchableOpacity >
+      <TouchableOpacity onPress={() => { i18n.changeLanguage('en'); setCurrentLanguague('en') }} style={{ ...styles.itemContainer, backgroundColor: bgColor }}>
+        <Text style={{ ...styles.itemText, color: currentLanguague === 'en' ? Colors.tintColor : txColor }}>{'English'}</Text>
+      </TouchableOpacity >
+    </View >
   );
 };
 

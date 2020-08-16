@@ -4,6 +4,8 @@ import {
   useTheme, DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
+
 import AccountScreen from '../components/Account/AccountScreen'
 import ProfileScreen from '../components/Account/ProfileScreen';
 import SettingsScreen from '../components/Account/SettingsScreen';
@@ -16,6 +18,8 @@ const AccountStack = createStackNavigator();
 
 const AccountStackNavigator = () => {
   const { colors } = useTheme();
+  const [t] = useTranslation('common');
+
   // console.log(colors, DefaultTheme, DarkTheme);
   const { userSettings } = useContext(SettingContext);
   const bg = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
@@ -36,13 +40,13 @@ const AccountStackNavigator = () => {
       <AccountStack.Screen
         name={ScreenKey.ProfileScreen}
         component={ProfileScreen}
-        options={{ title: 'Profile' }}
+        options={{ title: t('screen.profile') }}
       />
 
       <AccountStack.Screen
         name={ScreenKey.SettingScreen}
         component={SettingsScreen}
-        options={{ title: 'Setting' }}
+        options={{ title: t('screen.setting') }}
       />
 
     </AccountStack.Navigator>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { View, ScrollView, Alert, ActivityIndicator, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
 import SliderContainer from '../Common/SliderContainer';
 import Slide from '../Common/Slide';
 import HeaderList from '../Common/HeaderList';
@@ -24,6 +25,7 @@ import {
 
 const BrowseScreen = () => {
   const navigation = useNavigation();
+  const [t] = useTranslation('common');
   const { categories, setCategories } = useContext(CategoriesContext);
   const { authors, setAuthors } = useContext(AuthorsContext);
   const { state: { isAuthenticated, token } } = useContext(AuthContext);
@@ -83,14 +85,14 @@ const BrowseScreen = () => {
 
         const mCourses = res.map((r, i) => {
           return {
-            ...r.payload, 
+            ...r.payload,
             total: payload[i].total,
             learnLesson: payload[i].learnLesson,
             process: payload[i].process,
             latestLearnTime: payload[i].latestLearnTime,
           }
         });
-        
+
         setMyCourses(mCourses);
       } else {
         Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
@@ -177,11 +179,11 @@ const BrowseScreen = () => {
               <View style={{ flex: 1 }}>
 
                 <HeaderList
-                  title="Danh sách danh mục"
+                  title={t('homeScreen.categories')}
                   onPress={() =>
                     navigation.navigate(
                       ScreenKey.BrowseCategoriesScreen, {
-                      subject: 'Danh sách danh mục',
+                      subject: t('homeScreen.categories'),
                       data: categories
                     })
                   }
@@ -191,7 +193,7 @@ const BrowseScreen = () => {
                   isAuthenticated &&
                   <>
                     <HeaderList
-                      title="Khoá học của tôi"
+                      title={t('homeScreen.myCourses')}
                       txColor={txColor}
                       bgColor={bgColor}
 
@@ -199,7 +201,7 @@ const BrowseScreen = () => {
                         navigation.navigate(
                           ScreenKey.BrowseCoursesScreen, {
                           screenDetail: ScreenKey.BrowseCourseDetailScreen,
-                          subject: "Khoá học của tôi",
+                          subject: t('homeScreen.myCourses'),
                           data: myCourses
                         })
                       }
@@ -217,7 +219,7 @@ const BrowseScreen = () => {
 
 
                 <HeaderList
-                  title="Khoá học mới"
+                  title={t('homeScreen.newCourses')}
                   txColor={txColor}
                   bgColor={bgColor}
 
@@ -225,7 +227,7 @@ const BrowseScreen = () => {
                     navigation.navigate(
                       ScreenKey.BrowseCoursesScreen, {
                       screenDetail: ScreenKey.BrowseCourseDetailScreen,
-                      subject: "Khoá học mới",
+                      subject: t('homeScreen.newCourses'),
                       data: newCourses
                     })
                   }
@@ -241,7 +243,7 @@ const BrowseScreen = () => {
                 />
 
                 <HeaderList
-                  title="Khoá học nổi bật"
+                  title={t('homeScreen.topCourses')}
                   txColor={txColor}
                   bgColor={bgColor}
 
@@ -249,7 +251,7 @@ const BrowseScreen = () => {
                     navigation.navigate(
                       ScreenKey.BrowseCoursesScreen, {
                       screenDetail: ScreenKey.BrowseCourseDetailScreen,
-                      subject: "Khoá học nổi bật",
+                      subject: t('homeScreen.topCourses'),
                       data: topRateCourses
                     })
                   }
@@ -263,7 +265,7 @@ const BrowseScreen = () => {
                   data={topRateCourses}
                   screenDetail={ScreenKey.BrowseCourseDetailScreen} />
 
-                <HeaderList title="Tác giả nổi bật" />
+                <HeaderList title={t('homeScreen.topAuthors')} />
                 <Authors authors={authors} direction="row" txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />
               </View>
             </>
