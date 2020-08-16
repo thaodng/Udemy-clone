@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import {
-  StyleSheet, Text, View, Dimensions,
+  StyleSheet, Text, TextInput, View, Dimensions,
   TouchableOpacity, SectionList, Share,
-  ActivityIndicator, AsyncStorage, Alert
+  ActivityIndicator, AsyncStorage, Alert, Modal
 } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper'
 import { Video } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import ReadMore from 'react-native-read-more-text';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import { Rating } from 'react-native-ratings';
 
 import TopTab from '../Common/TopTab';
 import Authors from '../Common/Authors';
@@ -16,6 +18,8 @@ import PopupMenu from '../Common/PopupMenu';
 import Colors from '../../constants/Colors';
 import ScreenKey from '../../constants/ScreenKey';
 import ListCourses from '../ListCourses/ListCourses';
+import UserRating from './UserRating';
+import RatingHeader from './RatingHeader';
 
 import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
@@ -70,6 +74,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   const { courseId, screenDetail } = route.params;
 
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
 
@@ -494,6 +499,68 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     )}
                   />
                 }
+                {
+                  (activeTab === tabs[2]) &&
+                  <View style={styles.ratingContainer}>
+                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, marginTop: 10 }}>Đánh giá trung bình: </Text>
+                    <Rating
+                      type="star"
+                      readonly
+                      fractions={1}
+                      startingValue={3.6}
+                      imageSize={30}
+                      onFinishRating={(rating) => { console.log('Rating is: ' + rating) }}
+                      style={{ paddingVertical: 10 }}
+                    />
+                    <FlatList
+                      style={styles.listRating}
+                      showsVerticalScrollIndicator={false}
+                      data={[{ id: 1, name: 1 }, { id: 2, name: 1 }, { id: 3, name: 1 }, { id: 4, name: 1 }]}
+                      keyExtractor={(item) => `${item.id}`}
+                      renderItem={({ item }) => (
+                        <UserRating
+                          imageUrl={'https://storage.googleapis.com/itedu-bucket/Avatar/8512fcb6-7ac6-4446-bab1-c1e5b2bd5f63.jpg'}
+                          name={"Thao D."}
+                          content="Good"
+                        />  
+                      )}
+                    />
+                    {/*  */}
+                    <TouchableOpacity
+                      style={styles.buttonInfo}
+                      onPress={() => setModal(true)}
+                    >
+                      <Text>
+                        Viết nhận xét
+                      </Text>
+                    </TouchableOpacity>
+                    <Modal
+                      animationType="fade"
+                      transparent={true}
+                      visible={modal}
+                      onRequestClose={() => {
+                        setModal(false)
+                      }}
+                    >
+                      <View style={styles.modalView}>
+                        <RatingHeader title='Hình thức' onFinishRating={(rating) => { console.log('Rating is: ' + rating) }} />
+                        <RatingHeader title='Nội dung' onFinishRating={(rating) => { console.log('Rating is: ' + rating) }} />
+                        <RatingHeader title='Trình bày' onFinishRating={(rating) => { console.log('Rating is: ' + rating) }} />
+                        <TextInput
+                          placeholder="Đánh giá của bạn"
+                        />
+                        <View style={styles.modalButtonView}>
+                          <Button mode="contained" onPress={() => console.log('Nhận xét')}>
+                            Nhận xét
+                          </Button>
+                          <Button mode="contained" onPress={() => setModal(false)}>
+                            Huỷ bỏ
+                        </Button>
+                        </View>
+                      </View>
+                    </Modal>
+                  </View>
+                }
 
               </View>
             </View >
@@ -600,5 +667,31 @@ const styles = StyleSheet.create({
   itemOption: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  listRating: {
+    height: 250
+  },
+  ratingContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    marginLeft: 10
+  },
+  modalView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "100%",
+    backgroundColor: "white",
+    position: "absolute",
+    bottom: 2,
+    shadowColor: "#000",
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modalButtonView: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10
   }
 })
