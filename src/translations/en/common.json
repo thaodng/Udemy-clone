@@ -1,0 +1,38 @@
+{
+	"accountScreen": {
+		"welcome": "Welcome to {{app}}",
+		"userInfo": "User information",
+		"userSetting": "Settings",
+		"logout": "Logout"
+	},
+	"profileScreen": {
+		"email": "Email",
+		"name": "Name",
+		"phone": "Phone",
+		"type": "Type",
+		"gallery": "Gallery",
+		"updateProfile": "Update profile",
+		"updateSuccess": "Update success!"
+	},
+	"settingScreen": {
+		"languague": "Languague",
+		"vietnamese": "Vietnamese",
+		"english": "English",
+		"darkTheme": "Dark theme"
+	},
+	"searchScreen": {
+		"search": "Search",
+		"ALL": "ALL",
+		"COURSES": "COURSES",
+		"AUTHORS": "AUTHORS",
+		"all": "All",
+		"courses": "Courses",
+		"authors": "Authors",
+		"loadMore": "Load more",
+		"coursesNoutFound": "Courses not found!",
+		"authorsNotFound": "Authors not found!",
+		"historySearch": "History search",
+		"clearAll": "Clear all history"
+	}
+
+}

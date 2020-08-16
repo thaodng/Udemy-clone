@@ -1,0 +1,37 @@
+{
+	"accountScreen": {
+		"welcome": "Chào mừng đến với ứng dụng {{app}}",
+		"userInfo": "Thông tin cá nhân",
+		"userSetting": "Cài đặt",
+		"logout": "Đăng xuất"
+	},
+	"profileScreen": {
+		"email": "Email",
+		"name": "Tên",
+		"phone": "Số điện thoại",
+		"type": "Người dùng",
+		"gallery": "Thư viện ảnh",
+		"updateProfile": "Cập nhật thông tin",
+		"updateSuccess": "Cập nhật thành công!"
+	},
+	"settingScreen": {
+		"languague": "Ngôn ngữ",
+		"vietnamese": "Tiếng Việt",
+		"english": "Tiếng Anh",
+		"darkTheme": "Phông nền tối"
+	},
+	"searchScreen": {
+		"search": "Tìm kiếm",
+		"ALL": "TẤT CẢ",
+		"COURSES": "KHOÁ HỌC",
+		"AUTHORS": "TÁC GIẢ",
+		"all": "Tất cả",
+		"courses": "Khoá học",
+		"authors": "Tác giả",
+		"loadMore": "Hiển thị thêm",
+		"coursesNoutFound": "Không tồn tại khoá học theo yêu cầu!",
+		"authorsNotFound": "Không tồn tại tác giả theo yêu cầu!",
+		"historySearch": "Lịch sử tìm kiếm",
+		"clearAll": "Xoá lịch sử"
+	}
+}

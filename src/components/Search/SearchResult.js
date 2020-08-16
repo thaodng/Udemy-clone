@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import MapView, { Marker } from "react-native-maps";
+import { useTranslation } from "react-i18next";
 import HeaderList from '../Common/HeaderList';
 import Authors from '../Common/Authors';
 import TopTab from '../Common/TopTab';
@@ -20,7 +21,8 @@ const LIMIT = 3;
 
 const SearchResult = ({ navigation, route }) => {
   const { screenDetail, keyword, withMap } = route.params;
-  const tabs = ['TẤT CẢ', 'KHOÁ HỌC', 'TÁC GIẢ']
+  const [t] = useTranslation('common');
+  const tabs = [t('searchScreen.ALL'), t('searchScreen.COURSES'), t('searchScreen.AUTHORS')]
   const [activeTab, setActiveTab] = useState(tabs[0]);
 
   const { userSettings } = useContext(SettingContext);
@@ -96,7 +98,7 @@ const SearchResult = ({ navigation, route }) => {
           onPress={type === 'course' ? loadMoreCourses : loadMoreAuthors}
           //On Click of button calling loadMoreData function to load more data
           style={styles.loadMoreBtn}>
-          <Text style={styles.btnText}>Hiển thị thêm</Text>
+          <Text style={styles.btnText}>{t('searchScreen.loadMore')}</Text>
           {fetchingFromServer ? (
             <ActivityIndicator color="white" style={{ marginLeft: 8 }} />
           ) : null}
@@ -129,7 +131,7 @@ const SearchResult = ({ navigation, route }) => {
         return (
           <>
             <HeaderList
-              title="Khoá học"
+              title={t('searchScreen.courses')}
               onPress={() => setActiveTab(tabs[1])}
             />
             {
@@ -142,12 +144,12 @@ const SearchResult = ({ navigation, route }) => {
                   screenDetail={screenDetail}
                   ListFooterComponent={renderFooter('course')}
                 />
-                : emptyResult('Không tồn tại khoá học theo yêu cầu!')
+                : emptyResult(t('searchScreen.coursesNoutFound'))
             }
             <View style={styles.divider} />
 
             <HeaderList
-              title="Tác giả"
+              title={t('searchScreen.authors')}
               onPress={() => setActiveTab(tabs[2])}
             />
             {
@@ -159,11 +161,10 @@ const SearchResult = ({ navigation, route }) => {
                   onPress={onPressAuthor}
                   ListFooterComponent={renderFooter('author')}
                 />
-                : emptyResult('Không tồn tại tác giả theo yêu cầu!')
+                : emptyResult(t('searchScreen.authorsNotFound'))
             }
           </>
         )
-        break;
 
       case tabs[1]:
         return (
@@ -176,7 +177,7 @@ const SearchResult = ({ navigation, route }) => {
               screenDetail={screenDetail}
               ListFooterComponent={renderFooter('course')}
             />
-            : emptyResult('Không tồn tại khoá học theo yêu cầu!')
+            : emptyResult(t('searchScreen.coursesNoutFound'))
         )
         break;
 
@@ -190,7 +191,7 @@ const SearchResult = ({ navigation, route }) => {
               onPress={onPressAuthor}
               ListFooterComponent={() => renderFooter('author')}
             />
-            : emptyResult('Không tồn tại tác giả theo yêu cầu!')
+            : emptyResult(t('searchScreen.authorsNotFound'))
         )
         break;
       default:
@@ -198,7 +199,7 @@ const SearchResult = ({ navigation, route }) => {
     }
   }
 
-  
+
   return (
     <View style={styles.container} >
       <TopTab tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -211,8 +212,8 @@ const SearchResult = ({ navigation, route }) => {
       <View style={{ flex: 1 }}>
         {
           loading
-            ? ( <ActivityIndicator size="large" /> )
-            : renderTab(activeTab)          
+            ? (<ActivityIndicator size="large" />)
+            : renderTab(activeTab)
         }
       </View>
 

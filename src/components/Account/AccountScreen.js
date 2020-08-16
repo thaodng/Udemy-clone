@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper'
+import { useTranslation } from "react-i18next";
 
 import RowItem from '../Common/RowItem';
 import Colors from '../../constants/Colors';
@@ -15,6 +16,7 @@ import { Context as AuthContext } from '../../context/AuthContext';
 
 const AccountScreen = ({ navigation }) => {
   const { state: { isAuthenticated, userInfo }, signout } = useContext(AuthContext);
+  const [t] = useTranslation('common');
 
   const { name, avatar } = userInfo;
 
@@ -38,7 +40,7 @@ const AccountScreen = ({ navigation }) => {
           }
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.welcomeText}>Welcome to online education</Text>
+          <Text style={styles.welcomeText}>{t('accountScreen.welcome', { app: 'Udemy' })}</Text>
           <View style={{ flexDirection: 'row' }}>
             {
               name
@@ -66,7 +68,7 @@ const AccountScreen = ({ navigation }) => {
       <>
         <RowItem
           icon="account-circle"
-          title="Thông tin cá nhân"
+          title={t('accountScreen.userInfo')}
           txColor={txColor}
           bgColor={bgColor}
           onPress={() => {
@@ -78,7 +80,7 @@ const AccountScreen = ({ navigation }) => {
         />
         <RowItem
           icon="settings"
-          title="Cài đặt"
+          title={t('accountScreen.userSetting')}
           txColor={txColor}
           bgColor={bgColor}
           onPress={() => {
@@ -120,7 +122,7 @@ const AccountScreen = ({ navigation }) => {
           }}
           style={styles.buttonSignOut}
           onPress={onSignOut}>
-          Đăng xuất
+          {t('accountScreen.logout')}
       </Button>
       }
     </View >

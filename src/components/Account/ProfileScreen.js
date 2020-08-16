@@ -3,6 +3,8 @@ import { StyleSheet, View, TouchableOpacity, Modal, Alert, KeyboardAvoidingView 
 import { TextInput, Button, Avatar } from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { useTranslation } from "react-i18next";
+
 import Colors from '../../constants/Colors';
 import Layout from '../../constants/Layout';
 
@@ -19,6 +21,7 @@ const { width, height } = Layout.window;
 
 const ProfileScreen = ({ route }) => {
   const { user } = route.params;
+  const [t, i18n] = useTranslation('common');
 
   const { state: { token }, updateUserInfo } = useContext(AuthContext);
 
@@ -34,7 +37,7 @@ const ProfileScreen = ({ route }) => {
     // update in database
     updateUserInfo({ token, newInfo: { name, avatar, phone } });
 
-    Alert.alert('Update success!');
+    Alert.alert(t('profileScreen.updateSuccess'));
   }
 
   const pickImage = async (type) => {
@@ -68,7 +71,7 @@ const ProfileScreen = ({ route }) => {
     const data = new FormData()
     data.append('file', image)
     // hosting file
-    
+
     // update image
     setAvatar(image.uri);
   };
@@ -88,7 +91,7 @@ const ProfileScreen = ({ route }) => {
       {/*  */}
       <View style={styles.profileContainer}>
         <TextInput
-          label='Email'
+          label={t('profileScreen.email')}
           style={styles.inputStyle}
           mode="outlined"
           theme={theme}
@@ -98,7 +101,7 @@ const ProfileScreen = ({ route }) => {
           disabled
         />
         <TextInput
-          label='Name'
+          label={t('profileScreen.name')}
           style={styles.inputStyle}
           mode="outlined"
           theme={theme}
@@ -107,7 +110,7 @@ const ProfileScreen = ({ route }) => {
           onChangeText={text => setName(text)}
         />
         <TextInput
-          label='Phone'
+          label={t('profileScreen.phone')}
           style={styles.inputStyle}
           mode="outlined"
           theme={theme}
@@ -117,7 +120,7 @@ const ProfileScreen = ({ route }) => {
           onChangeText={text => setPhone(text)}
         />
         <TextInput
-          label='Type'
+          label={t('profileScreen.type')}
           style={styles.inputStyle}
           mode="outlined"
           theme={theme}
@@ -133,7 +136,7 @@ const ProfileScreen = ({ route }) => {
         mode="contained"
         theme={theme}
         onPress={() => updateDetails()}>
-        Update profile
+        {t('profileScreen.updateProfile')}
         </Button>
       {/*  */}
       <Modal
@@ -147,7 +150,7 @@ const ProfileScreen = ({ route }) => {
         <View style={styles.modalView}>
           <View style={styles.modalButtonView}>
             <Button mode="contained" icon="camera" theme={theme} onPress={() => pickImage('Gallery')}>
-              Gallery
+              {t('profileScreen.gallery')}
               </Button>
             <Button mode="contained" icon="image-area" theme={theme} onPress={() => pickImage('Camera')}>
               Camera

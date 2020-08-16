@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, Switch, StyleSheet } from "react-native";
+import { useTranslation } from "react-i18next";
+
 import { Context as AuthContext } from '../../context/AuthContext';
 import { SettingContext } from '../../context/SettingContext';
 import Colors from '../../constants/Colors';
@@ -12,16 +14,19 @@ const SettingsScreen = () => {
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
 
+  const [t, i18n] = useTranslation('common');
+
   useEffect(() => {
     const { settings } = getUserSettings({ token });
     setUserSettings(settings); // update context
   }, [])
 
   const toggleSwitch = (label, value) => {
-    userSettings[label] = value;
-    setUserSettings({
-      ...userSettings,
-    });
+    i18n.changeLanguage('vi');
+    // userSettings[label] = value;
+    // setUserSettings({
+    //   ...userSettings,
+    // });
   };
 
   const Setting = ({ label, value, toggleSwitch }) => {

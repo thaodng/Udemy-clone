@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { useTranslation } from "react-i18next";
 import RowItem from '../Common/RowItem';
 import SearchBar from './SearchBar';
 import Colors from '../../constants/Colors';
@@ -15,6 +16,8 @@ const SearchScreen = ({ navigation }) => {
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
   const txColor = userSettings[Colors.DarkTheme] ? Colors.lightText : Colors.darkText;
+
+  const [t] = useTranslation('common');
 
   const updateRecentSearch = (searchTerm) => {
     setRecentSearch([...recentSearch, { id: searchTerm, title: searchTerm }]);
@@ -79,12 +82,12 @@ const SearchScreen = ({ navigation }) => {
           (recentSearch.length > 0) &&
           <>
             <View style={styles.recentBar}>
-              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >Lịch sử tìm kiếm</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 18, color: txColor }} >{t('searchScreen.historySearch')}</Text>
               <TouchableOpacity onPress={() => {
                 setRecentSearch([]);
                 setTerm('');
               }}>
-                <Text style={{ color: Colors.tintColor }}>Xoá tất cả</Text>
+                <Text style={{ color: Colors.tintColor }}>{t('searchScreen.clearAll')}</Text>
               </TouchableOpacity>
             </View>
 
@@ -96,18 +99,6 @@ const SearchScreen = ({ navigation }) => {
             />
           </>
         }
-
-        {
-          /* 
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={topCategories}
-              keyExtractor={item => item.id}
-              renderItem={({ item }) => renderItem({ title: item.title, icon: item.icon, rightIcon: true })}
-            /> 
-          */
-        }
-
       </View>
 
     </SafeAreaView>

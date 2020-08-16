@@ -1,9 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useTranslation } from "react-i18next";
 import Colors from '../../constants/Colors';
 
 const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onSearch, txColor, bgColor }) => {
+  const [t] = useTranslation('common');
+
+
   return (
     <View style={styles.searchBarContainer}>
       <TouchableOpacity
@@ -12,15 +16,15 @@ const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onS
           backgroundColor: withMap ? Colors.tintColor : bgColor,
         }}
         onPress={() => { setWithMap(!withMap) }}>
-        <Feather name="map-pin" size={20} color={txColor}/>
+        <Feather name="map-pin" size={20} color={txColor} />
       </TouchableOpacity>
 
-      <View style={{...styles.searchInputContainer, backgroundColor: bgColor}}>
+      <View style={{ ...styles.searchInputContainer, backgroundColor: bgColor }}>
         <TextInput
           value={term}
-          placeholder="Search course"
+          placeholder={t('searchScreen.search')}
           onChangeText={text => setTerm(text)}
-          style={{...styles.textInput, backgroundColor: Colors.lightBackground}}
+          style={{ ...styles.textInput, backgroundColor: Colors.lightBackground }}
           onEndEditing={() => {
             onSearch(term);
             updateRecentSearch(term);
@@ -29,7 +33,7 @@ const SearchBar = ({ term, setTerm, withMap, setWithMap, updateRecentSearch, onS
         <TouchableOpacity onPress={() => {
           onSearch(term);
         }}>
-          <Feather name="search" size={20} color={txColor}/>
+          <Feather name="search" size={20} color={txColor} />
         </TouchableOpacity>
       </View>
 
