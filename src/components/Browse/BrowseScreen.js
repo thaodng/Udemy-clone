@@ -94,7 +94,6 @@ const BrowseScreen = () => {
         setMyCourses(mCourses);
       } else {
         Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
-
       }
     };
 

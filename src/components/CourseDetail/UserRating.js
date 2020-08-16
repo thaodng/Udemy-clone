@@ -6,7 +6,7 @@ import { ListItem } from 'react-native-elements';
 const UserRating = ({ imageUrl, name, content,rate }) => {
   return (
     <ListItem
-      leftAvatar={{ source: {uri: imageUrl} }}
+      leftAvatar={{ source: { uri: imageUrl || 'https://previews.123rf.com/images/panyamail/panyamail1809/panyamail180900343/109879063-user-avatar-icon-sign-profile-symbol.jpg'} }}
       title={
         <View>
           <Text style={{ fontWeight: 'bold' }}>{name}</Text>

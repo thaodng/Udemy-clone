@@ -64,11 +64,10 @@ const authReducer = (state, action) => {
 // and we - developer will call this function after that
 const signup = dispatch => async ({ username, email, phone, password }) => {
   try {
-    //const { data: { status } } = await axios.post('https://api.itedu.me/user/register', { username, email, phone, password });
-    //const { data: { status } } = await register({ username, email, phone, password }); // make api request to sign up
-    //if (status === 200) {
-    dispatch({ type: 'add_message', payload: 'signup' });
-    //}
+    const { data: { status } } = await register({ username, email, phone, password }); // make api request to sign up
+    if (status === 200) {
+      dispatch({ type: 'add_message', payload: 'signup' });
+    }
   } catch (err) {
     if (err.response) {
       dispatch({ type: 'add_error', payload: err.response.data.message });
@@ -80,10 +79,10 @@ const signup = dispatch => async ({ username, email, phone, password }) => {
 
 const sendActivateEmail = dispatch => async ({ email }) => {
   try {
-    //const { data: { status } } = await sendActiveEmail({ email }); // make api request to sign up
-    //if (status === 200) {
-    dispatch({ type: 'add_message', payload: 'active' });
-    //}
+    const { data: { status } } = await sendActiveEmail({ email }); // make api request to sign up
+    if (status === 200) {
+      dispatch({ type: 'add_message', payload: 'active' });
+    }
   } catch (err) {
     if (err.response) {
       dispatch({ type: 'add_error', payload: err.response.data.message });
@@ -95,11 +94,8 @@ const sendActivateEmail = dispatch => async ({ email }) => {
 
 const signin = dispatch => async ({ email, password }) => {
   try {
-    // const status = 200;
     const { status, data: { token, userInfo } } = await login({ email, password }); // make api request to sign up
     if (status === 200) {
-      //await AsyncStorage.setItem('token', 'response.data.token');
-      // dispatch({ type: 'signin', payload: 'response.data.token' });
       await AsyncStorage.setItem('token', token);
       dispatch({ type: 'signin', payload: token, userInfo });
     }
@@ -114,11 +110,8 @@ const signin = dispatch => async ({ email, password }) => {
 
 const signinGoogle = dispatch => async ({ email, id }) => {
   try {
-    // const status = 200;
     const { status, data: { token, userInfo } } = await loginMobile({ email, id }); // make api request to sign up
     if (status === 200) {
-      //await AsyncStorage.setItem('token', 'response.data.token');
-      // dispatch({ type: 'signin', payload: 'response.data.token' });
       await AsyncStorage.setItem('token', token);
       dispatch({ type: 'signin', payload: token, userInfo });
     }
@@ -133,8 +126,7 @@ const signinGoogle = dispatch => async ({ email, id }) => {
 
 const forgetPass = dispatch => async ({ email }) => {
   try {
-    const status = 200;
-    // const { data: { status } } = await forgetPassword({ email }); // make api request to sign up
+    const { data: { status } } = await forgetPassword({ email }); // make api request to sign up
     if (status === 200) {
       dispatch({ type: 'add_message', payload: 'forget' });
     }
@@ -149,8 +141,7 @@ const forgetPass = dispatch => async ({ email }) => {
 
 const resetPass = dispatch => async ({ id, password }) => {
   try {
-    const status = 200;
-    // const { data: { status } } = await resetPassword({ id, password }); // make api request to sign up
+    const { data: { status } } = await resetPassword({ id, password }); // make api request to sign up
     if (status === 200) {
       dispatch({ type: 'add_message', payload: 'newpass' });
     }
@@ -165,8 +156,6 @@ const resetPass = dispatch => async ({ id, password }) => {
 
 const updateUserInfo = dispatch => async ({ token, newInfo }) => {
   try {
-    // const { status, data: { payload } } = await updateUser({ token, newInfo });
-
     const { payload } = await updateUser({ token, newInfo });
     dispatch({ type: 'update_info', payload });
   } catch (err) {

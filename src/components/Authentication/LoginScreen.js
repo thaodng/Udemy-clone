@@ -11,9 +11,6 @@ import ScreenKey from '../../constants/ScreenKey';
 
 import { Context as AuthContext } from '../../context/AuthContext';
 
-// import { SettingContext } from '../../context/SettingContext';
-// import { getUserSettings } from '../../core/services/user-setting-service';
-
 const ANDROID_CLIENT_ID = '999772301023-hebd8ma90o6im9vdccg342jdcpj076bu.apps.googleusercontent.com';
 
 const LoginScreen = ({ navigation }) => {
@@ -22,19 +19,10 @@ const LoginScreen = ({ navigation }) => {
   const [focus, setFocus] = useState(null);
 
   const { state: { token, isAuthenticated, errorMessage }, signin, signinGoogle, clearErrorMessage } = useContext(AuthContext);
-  // const { setUserInfo } = useContext(UserContext);
-  // const { setUserSettings } = useContext(SettingContext);
 
   useEffect(() => {
     if (token && isAuthenticated) {
       navigation.navigate(ScreenKey.BrowseTabNavigator);
-      // setAuthentication({ token, isAuthenticated });
-
-      // const { user } = getUserInfo({ token });
-      // setUserInfo(user);
-
-      // const { settings } = getUserSettings({ token });
-      // setUserSettings(settings);
     }
 
     const unsubscribe = navigation.addListener('focus', () => {
@@ -53,7 +41,6 @@ const LoginScreen = ({ navigation }) => {
   const onSubmitLoginGoogle = async () => {
     try {
       const { user, type, accessToken } = await Google.logInAsync({
-        // iosClientId: IOS_CLIENT_ID,
         androidClientId: ANDROID_CLIENT_ID,
         scopes: ["profile", "email", "openid"]
       });

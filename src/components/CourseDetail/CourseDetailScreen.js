@@ -81,7 +81,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const [contentPoint, setContentPoint] = useState(0);
   const [presentationPoint, setPresentationPoint] = useState(0);
   const [content, setContent] = useState('');
-
+  const [ratingList, setRatingList] = useState([]);
 
   useEffect(() => {
 
@@ -157,7 +157,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
         }
 
         setSections(payload.section);
-
+        setRatingList(payload.ratings.ratingList);
       } else {
         console.log('Error');
       };
@@ -183,6 +183,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const onRating = async () => {
     const { message } = await ratingCourse({ token, rating: { courseId: course.id, formalityPoint, contentPoint, presentationPoint, content } });
     if (message === 'OK') {
+      const res = await getCourseDetailById({ id: courseId });
+      setRatingList(res.payload.ratings.ratingList);
       alert('Nhận xét thành công');
       setModalRating(false);
     }
@@ -318,7 +320,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        message: course.name
+        message: `Học ${course.title} trên https://itedu.me/course-detail/${course.id}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -413,23 +415,33 @@ const CourseDetailScreen = ({ route, navigation }) => {
       }
     }
 
+
     const loadMyCourses = async () => {
       const { message, payload } = await getMyCourses({ token });
       if (message === 'OK') {
         const ids = payload.map(course => getCourseById({ id: course.id }));
         const res = await Promise.all(ids);
 
-        const mCourses = res.map(r => r.payload);
+        const mCourses = res.map((r, i) => {
+          return {
+            ...r.payload,
+            total: payload[i].total,
+            learnLesson: payload[i].learnLesson,
+            process: payload[i].process,
+            latestLearnTime: payload[i].latestLearnTime,
+          }
+        });
+
         setMyCourses(mCourses);
       } else {
         Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
-
       }
     };
 
     enroll();
     loadMyCourses();
-    navigation.navigate(ScreenKey.BrowseScreen);
+    setIsEnrolled(true);
+    // navigation.navigate(ScreenKey.BrowseScreen);
   }
 
   const renderItem = ({ id, name, hours, videoUrl }) => {
@@ -601,7 +613,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                     <FlatList
                       style={styles.listRating}
                       showsVerticalScrollIndicator={false}
-                      data={course.ratings.ratingList}
+                      data={ratingList}
                       keyExtractor={(item) => `${item.id}`}
                       renderItem={({ item }) => (
                         <UserRating
