@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Rating } from 'react-native-ratings';
 import { ListItem } from 'react-native-elements';
 
-const UserRating = ({ imageUrl, name, content,rate }) => {
+const UserRating = ({ imageUrl, name, content, rate, bgColor, txColor }) => {
   return (
     <ListItem
-      leftAvatar={{ source: { uri: imageUrl || 'https://previews.123rf.com/images/panyamail/panyamail1809/panyamail180900343/109879063-user-avatar-icon-sign-profile-symbol.jpg'} }}
+      leftAvatar={{ source: { uri: imageUrl || 'https://previews.123rf.com/images/panyamail/panyamail1809/panyamail180900343/109879063-user-avatar-icon-sign-profile-symbol.jpg' } }}
       title={
         <View>
           <Text style={{ fontWeight: 'bold' }}>{name}</Text>

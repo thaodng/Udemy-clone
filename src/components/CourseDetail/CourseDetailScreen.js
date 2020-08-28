@@ -408,8 +408,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const onRegisterCourse = () => {
     const enroll = async () => {
       try {
-        const { message } = await registerFreeCourse({ token, courseId: course.id });
-        if (message === 'OK') {
+        const { messsage } = await registerFreeCourse({ token, courseId: course.id });
+        if (messsage === 'OK') {
           Alert.alert('Đăng ký khoá học thành công');
         }
       } catch (error) {
@@ -436,7 +436,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
         setMyCourses(mCourses);
       } else {
-        Alert.alert('Lỗi khi load danh sách khoá học nổi bật!');
+        Alert.alert('Lỗi khi load danh sách khoá học!');
       }
     };
 
@@ -601,19 +601,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
                 }
                 {
                   (activeTab === tabs[2]) &&
-                  <View style={styles.ratingContainer}>
-                    <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, marginTop: 10 }}>{t('courseDetail.averageRating')}: </Text>
+                  <View style={{ ...styles.ratingContainer, backgroundColor: bgColor }}>
+                    {/* <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 16, marginTop: 10, color: txColor }}>{t('courseDetail.averageRating')}: </Text> */}
                     <Rating
                       type="star"
-                      readonly
+                      // readonly
+                      showRating
                       fractions={1}
-                      startingValue={3.6}
+                      startingValue={course.contentPoint}
                       imageSize={30}
                       onFinishRating={(rating) => { console.log('Rating is: ' + rating) }}
-                      style={{ paddingVertical: 5 }}
+                      style={{ paddingVertical: 5, backgroundColor: bgColor }}
                     />
                     <FlatList
-                      style={styles.listRating}
+                      style={{ ...styles.listRating, backgroundColor: bgColor}}
                       showsVerticalScrollIndicator={false}
                       data={ratingList}
                       keyExtractor={(item) => `${item.id}`}
@@ -623,6 +624,8 @@ const CourseDetailScreen = ({ route, navigation }) => {
                           name={item.user.name}
                           content={item.content}
                           rate={item.averagePoint}
+                          bgColor={bgColor}
+                          txColor={txColor}
                         />
                       )}
                     />
@@ -658,7 +661,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                           </Button>
                           <Button mode="contained" onPress={() => setModalRating(false)}>
                             {t('course.cancel')}
-                        </Button>
+                          </Button>
                         </View>
                       </View>
                     </Modal>

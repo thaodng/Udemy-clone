@@ -18,7 +18,7 @@ const AccountScreen = ({ navigation }) => {
   const { state: { isAuthenticated, userInfo }, signout } = useContext(AuthContext);
   const [t] = useTranslation('common');
 
-  const { name, avatar } = userInfo;
+  const { email, name, avatar } = userInfo;
 
   const { userSettings } = useContext(SettingContext);
   const bgColor = userSettings[Colors.DarkTheme] ? Colors.darkBackground : Colors.lightBackground;
@@ -43,8 +43,8 @@ const AccountScreen = ({ navigation }) => {
           <Text style={styles.welcomeText}>{t('accountScreen.welcome', { app: 'Udemy' })}</Text>
           <View style={{ flexDirection: 'row' }}>
             {
-              name
-                ? <Text style={styles.authText}>{name}</Text>
+              email
+                ? <Text style={styles.authText}>{name || email}</Text>
                 : (
                   <>
                     <TouchableOpacity TouchableOpacity onPress={() => { navigation.navigate(ScreenKey.LoginScreen) }}>
