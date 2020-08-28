@@ -27,6 +27,10 @@
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
+    },
+     "android": {
+      "package": "com.hcmus.EducationApp",
+      "versionCode": 1
     }
   }
 }

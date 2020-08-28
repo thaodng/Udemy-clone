@@ -9,7 +9,6 @@ import ScreenKey from '../../constants/ScreenKey';
 import { Context as AuthContext } from '../../context/AuthContext';
 
 const NewPassword = ({ navigation }) => {
-  const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [focus, setFocus] = useState(null);
@@ -52,20 +51,10 @@ const NewPassword = ({ navigation }) => {
 
       <View style={styles.action}>
         <Row
-          icon="people"
-          placeholder="Id"
-          value={id}
-          color={focus === 'Id' ? Colors.tintColor : Colors.lightGray}
-          secureTextEntry={false}
-          onFocus={() => setFocus('Id')}
-          onChangeText={text => setId(text)}
-        />
-
-        <Row
           icon="lock-outline"
           placeholder="New password"
           value={password}
-          color={focus === 'Password' ? Colors.tintColor : Colors.lightBackground}
+          color={focus === 'Password' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={true}
           onFocus={() => setFocus('Password')}
           onChangeText={text => setPassword(text)}
@@ -75,7 +64,7 @@ const NewPassword = ({ navigation }) => {
           icon="check"
           placeholder="Confirm new password"
           value={password2}
-          color={focus === 'ConfirmPassword' ? Colors.tintColor : Colors.lightBackground}
+          color={focus === 'ConfirmPassword' ? Colors.tintColor : Colors.lightGray}
           secureTextEntry={true}
           onFocus={() => setFocus('ConfirmPassword')}
           onChangeText={text => setPassword2(text)}
@@ -85,6 +74,7 @@ const NewPassword = ({ navigation }) => {
       <ButtonConfirm
         content="Reset password"
         onPress={onSubmit}
+        backgroundColor={Colors.tintColor}
       />
 
       <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>

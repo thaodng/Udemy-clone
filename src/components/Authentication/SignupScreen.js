@@ -28,7 +28,7 @@ const SignupScreen = ({ navigation }) => {
         [{
           text: 'OK', onPress: () => {
             clearErrorMessage();
-            navigation.navigate(ScreenKey.ActiveScreen)
+            navigation.navigate(ScreenKey.LoginScreen)
           }
         }]
       );
@@ -45,8 +45,8 @@ const SignupScreen = ({ navigation }) => {
   const onSubmit = () => {
 
     if (password === password2) {
-      signup({ username: 'mrtester1234', email: 'mrtester1234@gmail.com', phone: '0909991234', password: '123456' })
-      // signup({ username, email, phone, password });
+      // signup({ username: 'mrtester1234', email: 'mrtester1234@gmail.com', phone: '0909991234', password: '123456' })
+      signup({ username, email, phone, password });
 
       setUsername('');
       setPhone('');
@@ -131,6 +131,7 @@ const SignupScreen = ({ navigation }) => {
       <ButtonConfirm
         content="Signup"
         onPress={onSubmit}
+        backgroundColor={Colors.tintColor}
       />
 
       <Footer

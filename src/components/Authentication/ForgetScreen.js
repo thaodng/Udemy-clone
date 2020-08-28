@@ -65,6 +65,7 @@ const ForgetScreen = ({ navigation }) => {
       <ButtonConfirm
         content="Send password reset link"
         onPress={onSubmit}
+        backgroundColor={Colors.tintColor}
       />
 
       <Footer

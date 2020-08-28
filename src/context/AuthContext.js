@@ -64,7 +64,7 @@ const authReducer = (state, action) => {
 // and we - developer will call this function after that
 const signup = dispatch => async ({ username, email, phone, password }) => {
   try {
-    const { data: { status } } = await register({ username, email, phone, password }); // make api request to sign up
+    const { status } = await register({ username, email, phone, password }); // make api request to sign up
     if (status === 200) {
       dispatch({ type: 'add_message', payload: 'signup' });
     }
@@ -79,7 +79,7 @@ const signup = dispatch => async ({ username, email, phone, password }) => {
 
 const sendActivateEmail = dispatch => async ({ email }) => {
   try {
-    const { data: { status } } = await sendActiveEmail({ email }); // make api request to sign up
+    const { status } = await sendActiveEmail({ email }); // make api request to sign up
     if (status === 200) {
       dispatch({ type: 'add_message', payload: 'active' });
     }
@@ -126,7 +126,7 @@ const signinGoogle = dispatch => async ({ email, id }) => {
 
 const forgetPass = dispatch => async ({ email }) => {
   try {
-    const { data: { status } } = await forgetPassword({ email }); // make api request to sign up
+    const { status } = await forgetPassword({ email }); // make api request to sign up
     if (status === 200) {
       dispatch({ type: 'add_message', payload: 'forget' });
     }
@@ -141,7 +141,7 @@ const forgetPass = dispatch => async ({ email }) => {
 
 const resetPass = dispatch => async ({ id, password }) => {
   try {
-    const { data: { status } } = await resetPassword({ id, password }); // make api request to sign up
+    const { status } = await resetPassword({ id, password }); // make api request to sign up
     if (status === 200) {
       dispatch({ type: 'add_message', payload: 'newpass' });
     }
