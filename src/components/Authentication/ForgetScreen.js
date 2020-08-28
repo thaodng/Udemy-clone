@@ -24,7 +24,7 @@ const ForgetScreen = ({ navigation }) => {
         [{
           text: 'OK', onPress: () => {
             clearErrorMessage();
-            navigation.navigate(ScreenKey.NewPassword)
+            navigation.navigate(ScreenKey.LoginScreen)
           }
         }]
       );

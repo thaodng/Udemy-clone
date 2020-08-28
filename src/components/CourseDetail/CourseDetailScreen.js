@@ -516,7 +516,11 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       isEnrolled
                         ? (
                           <View style={styles.activityContainer}>
-                            <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} onPress={onHandleDownload}>
+                            <TouchableOpacity 
+                            style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} 
+                            onPress={onHandleDownload}
+                            disabled={course.typeUploadVideoLesson === 2 ? true: false}
+                            >
                               <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
@@ -690,7 +694,7 @@ const styles = StyleSheet.create({
   /* Info  */
   activityContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-evenly'
   },
   buttonInfo: {
     flex: 1,
