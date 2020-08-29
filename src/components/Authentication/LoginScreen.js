@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
 import * as Google from "expo-google-app-auth";
 import Header from './Common/Header';
 import Row from './Common/Row';
@@ -17,6 +17,7 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [focus, setFocus] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { state: { token, isAuthenticated, errorMessage }, signin, signinGoogle, clearErrorMessage } = useContext(AuthContext);
 
@@ -33,9 +34,11 @@ const LoginScreen = ({ navigation }) => {
   }, [token, navigation]);
 
   const onSubmitLogin = () => {
+    setLoading(true);
     signin({ email, password });
     setEmail('');
     setPassword('');
+    setLoading(false);
   };
 
   const onSubmitLoginGoogle = async () => {
@@ -60,56 +63,62 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {
+        loading
+          ? (<ActivityIndicator size="large" />)
+          : (
+            <>
+              <Header title="Udemy" />
+              <View style={styles.action}>
+                <Row
+                  icon="email"
+                  placeholder="Email"
+                  value={email}
+                  color={focus === 'Email' ? Colors.tintColor : Colors.lightGray}
+                  secureTextEntry={false}
+                  onFocus={() => setFocus('Email')}
+                  onChangeText={text => setEmail(text)}
+                />
 
-      <Header title="Udemy" />
+                <Row
+                  icon="lock-outline"
+                  placeholder="Password"
+                  value={password}
+                  color={focus === 'Password' ? Colors.tintColor : Colors.lightGray}
+                  secureTextEntry={true}
+                  onFocus={() => setFocus('Password')}
+                  onChangeText={text => setPassword(text)}
+                />
 
-      <View style={styles.action}>
-        <Row
-          icon="email"
-          placeholder="Email"
-          value={email}
-          color={focus === 'Email' ? Colors.tintColor : Colors.lightGray}
-          secureTextEntry={false}
-          onFocus={() => setFocus('Email')}
-          onChangeText={text => setEmail(text)}
-        />
+              </View>
 
-        <Row
-          icon="lock-outline"
-          placeholder="Password"
-          value={password}
-          color={focus === 'Password' ? Colors.tintColor : Colors.lightGray}
-          secureTextEntry={true}
-          onFocus={() => setFocus('Password')}
-          onChangeText={text => setPassword(text)}
-        />
+              <LinkScreen
+                content="Forgot password?"
+                onPress={() => { navigation.navigate(ScreenKey.ForgetScreen) }}
+              />
 
-      </View>
+              <ButtonConfirm
+                content="Login"
+                onPress={onSubmitLogin}
+                backgroundColor={Colors.tintColor}
+              />
 
-      <LinkScreen
-        content="Forgot password?"
-        onPress={() => { navigation.navigate(ScreenKey.ForgetScreen) }}
-      />
+              <ButtonConfirm
+                content="Login with Google"
+                onPress={onSubmitLoginGoogle}
+                backgroundColor={Colors.errorBackground}
+              />
 
-      <ButtonConfirm
-        content="Login"
-        onPress={onSubmitLogin}
-        backgroundColor={Colors.tintColor}
-      />
+              <Footer
+                label="Don't have an account?"
+                onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}
+                content="Signup"
+              />
+              <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>
+            </>
+          )
+      }
 
-      <ButtonConfirm
-        content="Login with Google"
-        onPress={onSubmitLoginGoogle}
-        backgroundColor={Colors.errorBackground}
-      />
-
-      <Footer
-        label="Don't have an account?"
-        onPress={() => { navigation.navigate(ScreenKey.SignupScreen) }}
-        content="Signup"
-      />
-
-      <Text style={{ color: Colors.errorBackground, textAlign: 'center' }}>{errorMessage}</Text>
 
     </View>
   );
