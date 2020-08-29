@@ -441,7 +441,9 @@ const CourseDetailScreen = ({ route, navigation }) => {
     };
 
     enroll();
-    loadMyCourses();
+    setTimeout(() => {
+      loadMyCourses();  
+    }, 1000);
     setIsEnrolled(true);
     // navigation.navigate(ScreenKey.BrowseScreen);
   }
