@@ -59,7 +59,7 @@ const CourseItemRow = ({ item, txColor, bgColor, screenDetail }) => {
             : (
               <>
                 <Text numberOfLines={1} style={{ color: txColor }}>{item['instructor.user.name']}</Text>
-                <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? t('course.free') : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
+                {(<Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? t('course.free') : ''}</Text>)}
                 <Text numberOfLines={2} style={{ color: Colors.tintColor, width: '100%', maxHeight: 40 }}>{totalHours} {t('course.hours')} - {soldNumber} {t('course.students')} - {ratedNumber} {t('course.ratings')} </Text>
                 <View style={styles.rating}>
                   <Rating rating={contentPoint} />

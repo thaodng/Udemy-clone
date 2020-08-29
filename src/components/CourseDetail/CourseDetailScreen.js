@@ -516,13 +516,15 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       isEnrolled
                         ? (
                           <View style={styles.activityContainer}>
-                            <TouchableOpacity 
-                            style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }} 
-                            onPress={onHandleDownload}
-                            disabled={course.typeUploadVideoLesson === 2 ? true: false}
-                            >
-                              <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
-                            </TouchableOpacity>
+                            {
+                              course.typeUploadVideoLesson === 1 && (
+                                <TouchableOpacity
+                                  style={{ ...styles.buttonInfo, backgroundColor: isDownloaded ? Colors.tintColor : bgColor }}
+                                  onPress={onHandleDownload}
+                                >
+                                  <Text style={{ color: isDownloaded ? txColor : Colors.tintColor }}>{buttonDownload}</Text>
+                                </TouchableOpacity>)
+                            }
                             <TouchableOpacity style={{ ...styles.buttonInfo, backgroundColor: isFavorite ? Colors.tintColor : bgColor }} onPress={onHandleFavorite}>
                               <Text style={{ color: isFavorite ? txColor : Colors.tintColor }}>{isFavorite ? t('courseDetail.unFavorite') : t('courseDetail.favorite')}</Text>
                             </TouchableOpacity>
@@ -618,7 +620,7 @@ const CourseDetailScreen = ({ route, navigation }) => {
                       style={{ paddingVertical: 5, backgroundColor: bgColor }}
                     />
                     <FlatList
-                      style={{ ...styles.listRating, backgroundColor: bgColor}}
+                      style={{ ...styles.listRating, backgroundColor: bgColor }}
                       showsVerticalScrollIndicator={false}
                       data={ratingList}
                       keyExtractor={(item) => `${item.id}`}

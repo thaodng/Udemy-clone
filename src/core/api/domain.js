@@ -19,6 +19,8 @@ const getCategoryByIdUrl = (id) => `${DOMAIN}/category/${id}`;
 const getAllAuthorsUrl = `${DOMAIN}/instructor`;
 const getAuthorByIdUrl = (id) => `${DOMAIN}​/instructor​/detail​/${id}`;
 
+// https://api.itedu.me/user/recommend-course/01671008-c8c1-4f04-9694-711e81d92165/10/0
+const getRecommendCoursesUrl = (userId) => `${DOMAIN}/user/recommend-course/${userId}/10/0`;
 const getNewCoursessUrl = `${DOMAIN}/course/top-new`;
 const getTopRateCoursessUrl = `${DOMAIN}/course/top-rate`;
 const getProcessCoursesUrl = `${DOMAIN}/user/get-process-courses`;
@@ -61,6 +63,7 @@ export {
   getAllAuthorsUrl,
   getAuthorByIdUrl,
 
+  getRecommendCoursesUrl,
   getNewCoursessUrl,
   getTopRateCoursessUrl,
   getProcessCoursesUrl,

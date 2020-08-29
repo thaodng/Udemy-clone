@@ -20,7 +20,7 @@ import { SettingContext } from '../../context/SettingContext';
 import { getAuthors } from '../../core/services/authors-service';
 import { getCategories } from '../../core/services/categories-service';
 import {
-  getNewCourses, getTopRateCourses, getMyCourses, getCoursesByCategory, getCourseById
+  getRecommendCourses, getNewCourses, getTopRateCourses, getMyCourses, getCoursesByCategory, getCourseById
 } from '../../core/services/courses-service';
 
 const BrowseScreen = () => {
@@ -28,7 +28,7 @@ const BrowseScreen = () => {
   const [t] = useTranslation('common');
   const { categories, setCategories } = useContext(CategoriesContext);
   const { authors, setAuthors } = useContext(AuthorsContext);
-  const { state: { isAuthenticated, token } } = useContext(AuthContext);
+  const { state: { isAuthenticated, token, userInfo } } = useContext(AuthContext);
 
   const {
     newCourses,
@@ -37,7 +37,9 @@ const BrowseScreen = () => {
     setTopRateCourses,
     setDownloadedCourses,
     myCourses,
-    setMyCourses
+    setMyCourses,
+    recommendedCourses,
+    setRecommendedCourses
   } = useContext(CoursesContext);
 
 
@@ -58,6 +60,17 @@ const BrowseScreen = () => {
         }
       }
     }
+
+    const loadRecommendedCourses = async () => {
+      const { message, payload } = await getRecommendCourses({ userId: userInfo.id });
+
+      // const { data: { message, payload } } = await getRecommendCourses({ userId: userInfo.id });
+      if (message === 'OK') {
+        setRecommendedCourses(payload);
+      } else {
+        Alert.alert('Lỗi khi load danh sách khoá học gợi ý!');
+      }
+    };
 
     const loadNewCourses = async () => {
       const { data: { message, payload } } = await getNewCourses({ limit: 10, page: 1 });
@@ -129,6 +142,7 @@ const BrowseScreen = () => {
     loadAuthors();
 
     if (isAuthenticated) {
+      loadRecommendedCourses();
       loadMyCourses();
     }
 
@@ -264,6 +278,34 @@ const BrowseScreen = () => {
 
                   data={topRateCourses}
                   screenDetail={ScreenKey.BrowseCourseDetailScreen} />
+
+                {
+                  isAuthenticated &&
+                  <>
+                    <HeaderList
+                      title={t('homeScreen.recommendCourse')}
+                      txColor={txColor}
+                      bgColor={bgColor}
+
+                      onPress={() =>
+                        navigation.navigate(
+                          ScreenKey.BrowseCoursesScreen, {
+                          screenDetail: ScreenKey.BrowseCourseDetailScreen,
+                          subject: t('homeScreen.recommendCourse'),
+                          data: recommendedCourses
+                        })
+                      }
+                    />
+
+                    <ListCourses
+                      direction="row"
+                      txColor={txColor}
+                      bgColor={bgColor}
+                      data={recommendedCourses}
+                      screenDetail={ScreenKey.BrowseCourseDetailScreen}
+                    />
+                  </>
+                }
 
                 <HeaderList title={t('homeScreen.topAuthors')} />
                 <Authors authors={authors} direction="row" txColor={txColor} bgColor={bgColor} onPress={onPressAuthor} />

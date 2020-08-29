@@ -76,7 +76,7 @@ const CourseItemColumn = ({ item, txColor, bgColor, screenDetail }) => {
           item['instructor.user.name'] &&
           <Text style={{ color: txColor }}>{item['instructor.user.name']}</Text>
         }
-        <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? t('course.free') : `${price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}đ`}</Text>
+        <Text numberOfLines={1} style={{ color: Colors.errorBackground }}>{price === 0 ? t('course.free') : ``}</Text>
         <Text style={{ color: Colors.lightGray, width: '100%', maxWidth: width * 3 / 4, maxHeight: 40 }}>{totalHours} {t('course.hours')} - {soldNumber} {t('course.students')}</Text>
         <View style={styles.rating}>
           <Rating rating={contentPoint} />

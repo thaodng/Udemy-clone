@@ -7,6 +7,7 @@ const CoursesProvider = ({ children }) => {
   const [topRateCourses, setTopRateCourses] = useState([]);
   const [downloadedCourses, setDownloadedCourses] = useState([])
   const [myCourses, setMyCourses] = useState([]);
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
 
   return (
     <CoursesContext.Provider
@@ -18,7 +19,9 @@ const CoursesProvider = ({ children }) => {
         downloadedCourses,
         setDownloadedCourses,
         myCourses,
-        setMyCourses
+        setMyCourses,
+        recommendedCourses,
+        setRecommendedCourses
       }}>
 
       {children}

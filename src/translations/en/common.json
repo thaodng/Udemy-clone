@@ -36,6 +36,7 @@
 	},
 	"homeScreen": {
 		"categories": "Categories",
+		"recommendCourse": "Recommended courses",
 		"myCourses": "My courses",
 		"newCourses": "New courses",
 		"topCourses": "Top rated courses",

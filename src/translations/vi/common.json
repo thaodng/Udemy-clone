@@ -36,6 +36,7 @@
 	},
 	"homeScreen": {
 		"categories": "Danh sách danh mục",
+		"recommendCourse": "Khoá học gợi ý",
 		"myCourses": "Khoá học của tôi",
 		"newCourses": "Khoá học mới",
 		"topCourses": "Khoá học nổi bật",
