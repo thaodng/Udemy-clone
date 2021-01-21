@@ -8,6 +8,6 @@
  * Xem và tìm kiếm khóa học: https://youtu.be/Xi7mQzocCzw 
  * Chi tiết khóa học: https://youtu.be/asqfVwTs3s8 
  * Quản lý tài khoản, cấu hình ứng dụng và đánh giá khoá học: https://youtu.be/bzH_qonzRXM 
- * Hỗ trợ đa ngôn ngữ (Tiếng anh và tiếng việt): có sử dụng package i18n-next và react-i18next: https://youtu.be/cxsHxQ2dr48 
+ * Hỗ trợ đa ngôn ngữ (Tiếng anh và tiếng việt): https://youtu.be/cxsHxQ2dr48 
 
 
