@@ -40,7 +40,7 @@ const AccountScreen = ({ navigation }) => {
           }
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.welcomeText}>{t('accountScreen.welcome', { app: 'Udemy' })}</Text>
+          <Text style={styles.welcomeText}>{t('accountScreen.welcome', { app: 'Gothams' })}</Text>
           <View style={{ flexDirection: 'row' }}>
             {
               email
